@@ -956,8 +956,8 @@ function add_accordion_start( $html, $attributes, $itemcount, $alignclass ) {
 		if ( ! empty( $alignclass ) ) {
 			$html_class .= " $alignclass";
 		}
-
 		$html = "<$title_tag class=\"$html_class\">$title_text</$title_tag>\n";
+	        $title_text = $html = "";
 	}
 
 	// If there are no items in the table of contents, return an empty string.
