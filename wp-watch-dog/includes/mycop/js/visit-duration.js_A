@@ -1,0 +1,14 @@
+document.addEventListener("DOMContentLoaded", function() {
+    var startTime = Date.now();
+
+    function sendDuration() {
+        var endTime = Date.now();
+        var duration = Math.round((endTime - startTime) / 1000); // Duration in seconds
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://localhost/restor/wp-admin/admin-ajax.php?action=track_visit_duration", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send("duration=" + duration);
+    }
+
+    window.addEventListener("beforeunload", sendDuration);
+});
