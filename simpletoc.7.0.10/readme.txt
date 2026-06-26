@@ -1,9 +1,9 @@
 === SimpleTOC - Table of Contents Block ===
 Contributors: MarcDK
 Tags: TOC, Table of Contents, Block, Accessibility, Table
-Requires at least: 6.2
+Requires at least: 5.9
 Tested up to: 7.0
-Stable tag: 7.1.1
+Stable tag: 7.0.10
 Requires PHP: 7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -72,16 +72,6 @@ Hidden TOCs use native `<details>` and `<summary>` semantics without extra ARIA 
 SimpleTOC is open-source and developed on [GitHub Pages](https://github.com/mtoensing/SimpleTOC). If you find a bug or have an idea for a feature please feel free to contribute and create a pull request. 
 
 == Changelog ==
-= 7.1.1 =
-* Fixed: Prevented WordPress HTML API notices when nested block content is not a string.
-* Fixed: Escaped TOC links and titles before rendering them.
-* Fixed: Preserved legacy SimpleTOC block validity in the WordPress editor.
-
-= 7.1.0 =
-* Fixed: Avoid DOMDocument HTML parsing for highlighted heading markup by using the WordPress HTML API.
-* Changed: Minimum required WordPress version is now 6.2.
-* Added: PHPUnit coverage for core rendering helpers and an editor e2e smoke test.
-
 = 7.0.10 =
 * Fixed: Prevent the SimpleTOC editor preview from collapsing during WordPress autosaves.
 * Changed: Automatic editor refresh now runs after manual post saves and keeps the previous TOC visible while updating.
@@ -92,6 +82,68 @@ SimpleTOC is open-source and developed on [GitHub Pages](https://github.com/mtoe
 
 = 7.0.8 =
 * Fixed: Prevent editor preview errors when another plugin adds editor-only attributes to blocks, for example Noted! block notes. Thanks Hans-Gerd Gerhards (@hage).
+
+= 7.0.7 =
+* Fix invalid frontend TOC list markup when excluded heading levels appear between included headings.
+
+= 7.0.6 =
+* Prepared release for WordPress 7.0 compatibility.
+
+
+= 7.0.5 =
+* Fixed: GenerateBlocks dynamic tags in heading links keep working when SimpleTOC adds heading IDs.
+* Fixed: GenerateBlocks dynamic heading text is resolved consistently in the TOC and matching heading anchors.
+* Maintenance: Added automated GitHub README generation from the WordPress.org `readme.txt`.
+
+= 7.0.4 =
+* Fixed: GenerateBlocks dynamic tags in heading links keep working when SimpleTOC adds heading IDs.
+* Fixed: GenerateBlocks dynamic heading text is resolved consistently in the TOC and matching heading anchors.
+
+= 7.0.3 =
+* Fixed: Removed an invalid `aria-labelledby` reference from hidden TOC `<details>` markup and now rely on native `<summary>` labeling.
+
+= 7.0.2 =
+* Fixed: Removed an invalid `aria-labelledby` reference from hidden TOC `<details>` markup and now rely on native `<summary>` labeling.
+
+= 7.0.1 =
+* Added: Direct link from the Advanced Features sidebar to the global SimpleTOC settings.
+* Fixed: Global settings link now appears reliably in the editor sidebar.
+* Changed: Wrapper toggle now reflects the automatic wrapper state while box style is active.
+
+= 7.0.0 =
+* Added: Box style option in the block sidebar with a color picker and default gray background.
+* Added: Global setting to force the default gray box style for all SimpleTOC blocks.
+* Added: Frontend box-style CSS registered through block metadata.
+
+= 6.9.8 = 
+* Updated: Dependencies and house-keeping. 
+* Fix: corrected dependency declarations.
+
+= 6.9.7 = 
+* Fixed: GeneratePress Dynamic Tags work again - hopefully. If not, please report here https://github.com/mtoensing/simpletoc/issues/79#issuecomment-3745650464 Thanks @jhanten
+
+= 6.9.6 =
+* Added: Coding standards cleanup with improved rules, cleaner code, safer output, and consistent naming. Thanks @ronalfy
+* Added: Minimum PHP version requirement set to 7.3
+
+= 6.9.4 =
+* Added: Introduced proper PHP namespaces to avoid class and function name conflicts and improve overall code robustness. Thanks @ronalfy.
+* Added: Improved sidebar sub-menu for the “Hide SimpleTOC” option
+
+= 6.9.3 =
+* Fix: Fix Multiple IDs in Table of Contents Thanks @ronalfy
+* Added: Support for GenerateBlocks 2.1.0 Thanks @ronalfy
+
+= 6.9.1 =
+* Added: Support for the new V3 block api. 
+* Added: Tested compatibility with WordPress 6.9
+
+= 6.7.3 =
+* Added: Tested compatibility with WordPress 6.8
+
+= 6.7.2 = 
+* Added: Support for GenerateBlocks 2.0. Thanks @blronaldhuereca 
+* Added: Included an accessibility statement in the plugin description. Thanks Gen Herres.
 
 == Installation ==
 
@@ -159,6 +211,8 @@ I don’t see an easy solution at the moment. SimpleTOC is only a block that can
 9. SimpleTOC global settings.
 
 == Credits ==
+
+This plugin is forked from [pdewouters](https://github.com/pdewouters/gutentoc) and uses code from [Easy-Table-of-Contents](https://github.com/shazahm1/Easy-Table-of-Contents)
 
 Many thanks to [Tom J Nowell](https://tomjn.com) and and Sally CJ who both helped me a lot with my questions over at wordpress.stackexchange.com
 

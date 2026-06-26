@@ -2,10 +2,6 @@
 	margin-bottom: 1em;
 }
 
-.simpletoc-accordion-heading {
-	margin: 0;
-}
-
 .simpletoc-collapsible {
 	background-color: #eee;
 	color: #444;
@@ -51,3 +47,4 @@
 	border-bottom-right-radius: 5px;
 	border-bottom-left-radius: 5px;
 }
+
