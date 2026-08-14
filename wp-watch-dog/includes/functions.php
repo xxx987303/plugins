@@ -5,8 +5,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('WDDB', 'wd_visitor_stats');
+define('WDstats',   $wpdb->prefix.'wd_visitor_stats');
+define('WDremotes', $wpdb->prefix.'wd_visitor_remotes');
 define('WD_TIMEOUT', 1000);
+define('WD_HOME', basename(get_home_url()));
 
 function wd_add_items($admin_bar) {
     if ( ! current_user_can( 'manage_options' ) ) { return; }
@@ -14,8 +16,7 @@ function wd_add_items($admin_bar) {
               'parent' => null,
               'group'  => null,
               'title' => '<span class="ab-icon"></span>'.'Статистика',
-              'href'  => "/restor/stat/",
-              //'href'  => admin_url('admin.php?page=wsm_traffic'),
+              'href'  => '/'.WD_HOME.'/stat/',
               //'meta'  => array('title' => __('visitor statistics', 'wp-watch-dog'), 'class' => '')
               'meta'  => ['title' => 'Статистика', 'class' => '' ]];
     //This is where the magic works.
@@ -31,12 +32,16 @@ echo '<style>
 if (!CLI_MODE) add_action('admin_bar_menu', 'wd_add_items',  40);
 
 /**
+ * Populate 'wd_visitor_stats' table
  */
 function wd_track_visitor() {
     global $wpdb;
     
     echo "\n<!-- ".__function__." -->\n";
-    
+
+    if (preg_match('/wp-content/', $_SERVER['REQUEST_URI'])) {
+	wd_log("IGNORE $_SERVER[REQUEST_URI]");
+    }else{
     if (is_user_logged_in()) {
         wd_create_tables();
         wd_set_durations();
@@ -48,16 +53,16 @@ function wd_track_visitor() {
     }
     
     if (empty($_POST['duration'])) $_POST['duration'] = -1;
-    $table_name = $wpdb->prefix . WDDB;
-    $wpdb->insert($table_name, ($a=['user_id'   => (($u=$user_id) ? $u : 0),
-                                    'user_name' => (($u=$user_id) ? $name : 'anonymous'),
-                                    'uri'       => $_SERVER['REQUEST_URI'],
-                                    'user_agent'=> ($ua=$_SERVER['HTTP_USER_AGENT']),
-                                    'remote'    => $_SERVER['REMOTE_ADDR'],
-                                    'duration'  => $_POST['duration'],
-                                    'mode'      => (PRODUCTION_MODE ? 'prod' : 'debug'),
-                                    'time'      => current_time('mysql')]));
+    $wpdb->insert(WDstats, ($a=['user_id'   => (($u=$user_id) ? $u : 0),
+                                'user_name' => (($u=$user_id) ? $name : 'anonymous'),
+                                'uri'       => $_SERVER['REQUEST_URI'],
+                                'user_agent'=> ($ua=$_SERVER['HTTP_USER_AGENT']),
+                                'remote'    => $_SERVER['REMOTE_ADDR'],
+                                'duration'  => $_POST['duration'],
+                                'mode'      => (PRODUCTION_MODE ? 'prod' : 'debug'),
+                                'time'      => current_time('mysql')]));
     wd_log(join(', ', [$a['user_name'], wd_getOS($ua), wd_getBrowser($ua), $a['uri']]), $user_id);
+    }
 }
 if (!CLI_MODE) add_action('wp_head', 'wd_track_visitor');
 
@@ -67,10 +72,10 @@ function wd_create_tables() {
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     global $wpdb;
 
-    $table_name = $wpdb->prefix . WDDB;
     $charset_collate = $wpdb->get_charset_collate();
     
-    $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+    $sql = "
+      CREATE TABLE IF NOT EXISTS " . WDstats . " (
       id mediumint(9) NOT NULL AUTO_INCREMENT,
       time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
       remote varchar(32),
@@ -82,7 +87,15 @@ function wd_create_tables() {
       mode  varchar(16),
       PRIMARY KEY  (id),
       UNIQUE KEY `log_entry` (`time`,`user_id`)
-    ) $charset_collate;";
+    ) $charset_collate;
+
+      CREATE TABLE IF NOT EXISTS " . WDremotes . " (
+      time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+      remote   varchar(32),
+      country  varchar(32)
+    ) $charset_collate;
+";
+
     dbDelta($sql);
 }
 if (!CLI_MODE) register_activation_hook(__FILE__, 'wd_create_tables');
@@ -110,7 +123,7 @@ function wd_set_durations() {
     global $wpdb;
 
     echo "\n<!-- ".__function__." -->\n";
-    $table_name = $wpdb->prefix . WDDB;
+    $table_name = WDstats;
     
     foreach ($wpdb->get_results("SELECT CONCAT('user_id=',user_id,' remote=',remote) AS x, user_id FROM $table_name GROUP BY x") as $r) {
         $cache = [];
@@ -145,7 +158,6 @@ function wd_set_durations() {
 
 /**
  */
-
 function wd_log($text, $user_id) {
     $mode = (PRODUCTION_MODE ? 'prod' : 'debug');
     if (!PRODUCTION_MODE || !$user_id) {
@@ -156,24 +168,6 @@ function wd_log($text, $user_id) {
         file_put_contents('/tmp/log', preg_replace('/\s+/', ' ', str_replace("\n", " ", $text))."\n", FILE_APPEND);
     }
 }
-
-/**
- * Get country name from IP
- */
-function wd_getCC($ip) {
-    global $cacheCC;
-    $cacheFile = "/tmp/IP_cache.txt";
-    if (file_exists($cacheFile)) $cacheCC = unserialize(file_get_contents($cacheFile));
-    if (empty($cacheCC)) $cacheCC = [];
-echo "$ip\n";
-    if (empty($CC = @$cacheCC[$ip])) {
-        $ipdat = @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=$ip"));
-        $CC = $cacheCC[$ip] = $ipdat->geoplugin_countryName; 
-        file_put_contents($cacheFile, serialize($cacheCC));
-    }
-    return $CC;
-}
-
 
 /**
 /**
@@ -202,11 +196,11 @@ function wd_getOS($user_agent) {
       '/win98/i'              => 'Windows 98',
       '/win95/i'              => 'Windows 95',
       '/win16/i'              => 'Windows 3.11',
-      '/Mac ?OS/i'            => 'MacOS',
-      '/macintosh|mac ?os/i'  => 'Mac OS',
-      '/mac_powerpc/i'        => 'Mac OS 9',
+      '/Mac ?OS|Lynx/i'       => 'MacOS',
+      '/macintosh|mac ?os/i'  => 'MacOS',
+      '/mac_powerpc/i'        => 'MacOS 9',
       '/linux/i'              => 'Linux',
-      '/ubuntu/i'             => 'Ubuntu',
+      '/ubuntu/i'             => 'Linux',
       '/ipod/i'               => 'iPod',
       '/ipad/i'               => 'iPad',
       '/blackberry/i'         => 'BlackBerry',

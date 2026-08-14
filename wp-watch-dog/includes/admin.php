@@ -6,6 +6,8 @@ if (!defined('ABSPATH')) {
 
 function wd_register_admin_page() {
     wd_log();
+    $wcd = getcwd();
+    var_dump($_SERVER['REQUEST_URI']); exit;
     add_menu_page(
         'Visitor Counter',
         'Visitor Counter',
@@ -20,6 +22,7 @@ add_action('admin_menu', 'wd_register_admin_page');
 
 function wd_display_admin_page() {
     global $wpdb;
+    var_dump($_SERVER['REQUEST_URI']); exit;
     wd_log();
     $table_name = $wpdb->prefix . 'visitor_stats';
     
