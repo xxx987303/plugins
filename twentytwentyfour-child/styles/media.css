@@ -1,0 +1,35 @@
+
+@media print {
+/*
+    body * {
+        visibility: hidden;
+    }
+    .printme, .printme * {
+        visibility: visible;
+    }
+    .printme {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    .printme, .printme:last-child {
+        page-break-after: avoid;
+    }
+
+    .display-none-on, .display-none-on * {
+        display: none !important;
+    }
+*/
+    html, body {
+        height: auto;
+        font-size: 12pt; /* changing to 10pt has no impact */
+    }
+
+    /* footer div .wp-block-navigation, */
+    footer,
+    #backToTop,
+    .simpletoc {
+	display:none;
+    }
+
+}

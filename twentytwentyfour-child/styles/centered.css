@@ -1,0 +1,16 @@
+/* Centered pair of images, one over another, e.g. to highlight "work in progress" */
+.centered-images {
+    position: relative;
+    display: inline-block;
+}
+.centered-images img:nth-child(1) {
+    width: 100%;
+}
+.centered-images img:nth-child(2) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    z-index: 1;
+}

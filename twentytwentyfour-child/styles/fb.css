@@ -1,0 +1,67 @@
+/*
+Theme Name: Twenty Twenty-Four Child
+Theme URI: http://example.com/twenty-twenty-four-child/
+Description: Twenty Twenty-Four Child Theme
+Author: YB
+Author URI: http://yb
+Template: twentytwentyfour
+Version: 2.1.27
+*/
+
+.fbimage-thumbnail-text {
+/*  color: blue; */
+}
+
+.fbimage-thumbnail {
+  height: 150px;
+  width: auto;
+}
+    
+.fbimage-thumbnail-img-caption {
+  position: absolute;
+  text-align: center;
+  font-size: smaller;
+}
+
+.fancybox-caption,
+.fancybox-caption__body {
+  font-style: italic;
+  text-align: center;
+}
+
+.fancybox-caption,
+.fancybox-caption__body {
+  font-size: 22px;  
+}
+
+.fancybox-caption--separate {
+}
+
+/* AI influenced... */
+.img-container {
+    width: auto;     /* or any specific width you want */
+    max-width: 100%; /* Ensure it doesn't overflow its parent container */
+}
+
+.wp-block-image,
+.img-container {
+    width: auto;     /* or any specific width you want */
+    max-width: 100%; /* Ensure it doesn't overflow its parent container */
+}
+  
+figure,  
+img {
+    display: block;  /* Ensure the image is a block element */
+    width: 100%;     /* Make the image take up the full width of its container */
+    max-width: 100%; /* Ensure the image doesn't overflow its container */
+}
+
+.img-caption {
+    display: block; /* Ensure the div is a block element */
+    width: 100%;    /* Make the div take up the full width of its container */
+    text-align: center; /* Optional: Center the text inside the div */
+    font-style: italic;
+    font-size: smaller;
+    color:red;
+    /*    font-weight: bold; */
+}

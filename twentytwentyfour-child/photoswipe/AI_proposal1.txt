@@ -1,0 +1,242 @@
+Excellent. 😊 This is exactly the point where I’d stop experimenting and start building something that is easy to understand and maintain.
+
+I also know a little about your style from our previous WordPress discussions. You like to understand why things work, not just paste code. So I’ll explain every design decision.
+
+Design goals
+
+The solution should:
+
+* use the official PhotoSwipe ESM modules;
+* use WordPress 7’s native script loading;
+* require zero changes when editing pages;
+* automatically detect every Gutenberg Image block;
+* automatically create a gallery if there is more than one image;
+* use <figcaption> as the PhotoSwipe caption;
+* avoid jQuery;
+* avoid any PhotoSwipe HTML markup.
+
+⸻
+
+Directory structure
+
+Inside your child theme:
+
+twentytwentyfour-child/
+    functions.php
+    photoswipe/
+        init.js
+        photoswipe.css
+        photoswipe.esm.js
+        photoswipe-lightbox.esm.js
+
+Nothing else.
+
+⸻
+
+Step 1 — functions.php
+
+Let’s keep it simple initially. Don’t worry about Script Modules yet; we’ll first get a working gallery.
+
+function memoir_enqueue_photoswipe() {
+    $uri = get_stylesheet_directory_uri() . '/photoswipe';
+    wp_enqueue_style(
+        'photoswipe',
+        $uri . '/photoswipe.css',
+        [],
+        '5.4.4'
+    );
+    wp_enqueue_script(
+        'memoir-photoswipe',
+        $uri . '/init.js',
+        [],
+        '1.0',
+        [
+            'strategy' => 'defer',
+            'in_footer' => true,
+        ]
+    );
+}
+add_action('wp_enqueue_scripts', 'memoir_enqueue_photoswipe');
+
+Notice that this is not final.
+
+It simply gets us running.
+
+After everything works we’ll convert this to a true Script Module.
+
+Small steps.
+
+⸻
+
+Step 2 — init.js
+
+Now comes the important part.
+
+The very first lines are
+
+import PhotoSwipeLightbox
+from './photoswipe-lightbox.esm.js';
+import PhotoSwipe
+from './photoswipe.esm.js';
+
+Immediately we know we are using the official modules.
+
+⸻
+
+Now build the gallery.
+
+const images =
+    document.querySelectorAll(
+        '.entry-content figure.wp-block-image'
+    );
+
+No classes to add.
+
+No galleries to define.
+
+WordPress already tells us exactly which elements are images.
+
+⸻
+
+Next:
+
+images.forEach((figure)=>{
+    const link = figure.querySelector('a');
+    if(!link)
+        return;
+    link.dataset.pswpWidth  = 1;
+    link.dataset.pswpHeight = 1;
+});
+
+You’ll probably ask:
+
+Width and height equal to 1?
+
+Exactly.
+
+PhotoSwipe wants dimensions.
+
+WordPress usually doesn’t provide them.
+
+We’ll calculate them dynamically.
+
+⸻
+
+Then create the lightbox
+
+const lightbox =
+new PhotoSwipeLightbox({
+    gallery: '.entry-content',
+    children: 'figure.wp-block-image > a',
+    pswpModule: PhotoSwipe
+});
+
+Notice what happened.
+
+We never created a gallery.
+
+The page itself is the gallery.
+
+⸻
+
+Now the nice part.
+
+PhotoSwipe lets us modify every slide before it is shown.
+
+We’ll calculate the image size.
+
+lightbox.on(
+'contentLoad',
+({content})=>{
+    const img = new Image();
+    img.onload = ()=>{
+        content.width  = img.naturalWidth;
+        content.height = img.naturalHeight;
+    };
+    img.src = content.data.src;
+});
+
+This means you don’t have to enter dimensions manually.
+
+⸻
+
+Captions.
+
+lightbox.on(
+'uiRegister',
+()=>{
+    lightbox.pswp.ui.registerElement({
+        name:'caption',
+        order:9,
+        appendTo:'root',
+        html:'',
+        onInit:(el,pswp)=>{
+            pswp.on(
+            'change',
+            ()=>{
+                const fig = pswp.currSlide.data.element.closest('figure');
+                const cap = fig.querySelector('figcaption');
+                el.innerHTML = cap ? cap.innerHTML : '';
+            });
+        }
+    });
+});
+
+That automatically displays the WordPress caption.
+
+No duplication.
+
+⸻
+
+Finally
+
+lightbox.init();
+
+Finished.
+
+⸻
+
+Why I like this design
+
+There is almost no coupling.
+
+The editor inserts
+
+figure
+    img
+    figcaption
+
+Our code simply discovers those.
+
+Nothing is stored in the database.
+
+Nothing modifies Gutenberg output.
+
+Nothing depends on a plugin.
+
+⸻
+
+Phase 2 (after it works)
+
+Once we’ve confirmed the basic gallery is functioning, I’d like to refine it further:
+
+1. Replace the width = 1 / height = 1 workaround. We’ll read the real image dimensions from the <img> element (naturalWidth/naturalHeight) or from the image metadata, so PhotoSwipe opens without waiting for a preload.
+2. Use the WordPress Script Modules API instead of wp_enqueue_script(). Since you’re on WordPress 7.0.2, we should take advantage of the native module support.
+3. Package it as a reusable class. Instead of having everything in one file, I’d wrap it in a small ES6 class, something like:
+
+class MemoirGallery {
+    constructor() { ... }
+    discoverImages() { ... }
+    initLightbox() { ... }
+}
+new MemoirGallery();
+
+    That makes the code much easier to extend later.
+
+⸻
+
+I have one more suggestion, based on your memoir project.
+
+Rather than simply enlarging images, we can make PhotoSwipe behave like part of the book itself. For example, when a reader clicks any photograph, the background could remain subtly visible instead of becoming completely black, giving the impression of opening an illustration in a printed book rather than launching a separate gallery. It’s a small touch, but I think it would suit the atmosphere of the memoirs remarkably well.
+
+My aim is to make this feel like a natural extension of your site, not just “a lightbox that happens to work.”

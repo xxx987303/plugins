@@ -1,0 +1,26 @@
+
+/* Front page heading image backgrounds ------------------------------------*/ 
+.wp-block-cover .has-background-dim:not([class*="-background-color"]),
+.wp-block-cover-image .has-background-dim:not([class*="-background-color"]),
+.wp-block-cover-image.has-background-dim:not([class*="-background-color"]),
+.wp-block-cover.has-background-dim:not([class*="-background-color"]) {
+    /* To be considered "transparent", "floralwhite", "cornsilk", "bisque"... */
+    background-color: floralwhite !important;
+}
+
+/* Centered pair of images, one over another, e.g. to highlight "work in progress" */
+.centered-images {
+    position: relative;
+    display: inline-block;
+}
+.centered-images img:nth-child(1) {
+    width: 100%;
+}
+.centered-images img:nth-child(2) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    z-index: 1;
+}

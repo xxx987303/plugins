@@ -1,0 +1,60 @@
+
+/**
+ * WP carousel
+ */
+
+.wpcp-carousel-section .wpcp-single-item img {
+    height: unset;
+    width: auto;
+    max-height: 120px;
+    max-width: unset;
+}
+
+#sp_wpcf_live_preview img {
+    height: unset;
+    width: auto;
+    max-height: 120px;
+    max-width: unset;
+}
+
+#sp-wp-carousel-free-id-583.sp-wpcp-583 .wpcp-single-item,
+#sp-wp-carousel-free-id-892.sp-wpcp-892 .wpcp-single-item,
+#sp-wp-carousel-free-id-801.sp-wpcp-801 .wpcp-single-item,
+#sp-wp-carousel-free-id-892.sp-wpcp-892 .wpcp-single-item {
+    height: unset;
+    width: auto;
+    max-height: 120px;
+    max-width: unset;
+}
+
+.caption-thumbnail-wpc-bkg {
+    padding: 4px;
+    border-radius:8px;
+    background-color: lightgray;
+}
+ 
+.caption-thumbnail-wpc-grid,
+.caption-thumbnail-wpc-caro {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    z-index: 1;
+    font-size: smaller;  
+    font-style: italic;
+    text-align: center;
+}
+
+.caption-thumbnail-wpc-grid {
+    bottom: 1em;
+    position: relative;
+}
+
+.caption-thumbnail-wpc-caro {
+    top: 90%;
+    position: absolute;
+}
+ 
+/* Images caption in gallery block */
+.wp-block-gallery.has-nested-images figure.wp-block-image figcaption {
+    font-size: 1.1em;
+}

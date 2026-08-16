@@ -1,0 +1,61 @@
+#memoir-caption,
+.memoir-caption {
+/*  position: absolute; */
+    position: relative;
+    top: 0px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 12px 24px;
+    color: white;
+    background: rgba(0,0,0,.55);
+    font-size: 1.5em;
+    line-height: 1.5;
+    text-align: center;
+/*    z-index: 1000; */
+}
+
+figure, figcaption, .wp-block-image :where(figcaption) {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+
+.memoir-tooltip {
+    position: relative;
+    cursor: help;
+    border-bottom: 1px dotted #777;
+}
+
+.memoir-tooltip-box {
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 260px;
+    padding: 12px 14px;
+    background: #f8f6f1;
+    color: #222;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 15px;
+    line-height: 1.5;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+    z-index: 9999;
+}
+
+.memoir-tooltip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -8px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: #f8f6f1 transparent transparent transparent;
+}

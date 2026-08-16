@@ -1,0 +1,51 @@
+/* General settings */
+h1,
+h2,
+h3 {
+  opacity: 50%
+}
+
+a:where(.caption-thumbnail-wpc-caro, .wcp-light-box, .wp-block-site-title) {
+    color: var(--wp--preset--color--contrast);
+}
+
+
+/*a:where(:not(.wp-element-button)) {*/
+p a:where(:not(.caption-thumbnail-wpc-caro, .wcp-light-box, .wp-block-site-title)) {
+/*  color: orangered ! important;*/
+    color: blue ! important;
+    text-decoration: underline;
+}
+
+.wp-block-site-title {
+    font-weight: bold;
+    color: var(--wp--preset--color--contrast) ! important;
+}
+
+/* Separator */
+
+.yb-separator-wrapper {
+    /* text-align: -moz-center; */
+    /* text-align: -webkit-center; */
+    height: 8em;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+}
+
+.yb-separator {
+    width: unset;
+    opacity: 70%;
+}
+
+
+/* Debuggings... */
+.yb-comments,
+.yb-diff {
+  background: gainsboro;
+  padding: 1%;
+  margin-left: 10%;
+  margin-right: 10%;
+  font-size: small;
+}

@@ -1,0 +1,59 @@
+/* SimpleTOC & Navigation block */
+
+/*
+
+Reminder:
+
+a:link    - a normal, unvisited link
+a:visited - a link the user has visited
+a:active  - a link the moment it is clicked
+a:hover   - a link when the user mouses over it
+
+padding    top | right | bottom | left
+*/
+
+a:link   { color: blue; }
+a:visited{ color: blue; }
+a:active { color: blue; }
+a:hover  { color: red !important; }
+/*
+a:link   { color: #a62b0c; }
+a:visited{ color: #a62b0c; }
+a:active { color: #a62b0c; }
+a:hover  { color: red !important; }
+*/
+
+/* Force it, may be there is a way to do it better... */
+ul { list-style: none !important; }
+
+/* Does not work yet... */
+.wp-block-navigation .wp-block-navigation-item__label { color: blue; }
+
+/* Navigation block */
+.wp-block-navigation__container {
+    align-items: var(--navigation-layout-align,initial);
+/*  display: flex; */
+    display: block;
+    flex-direction: column;
+    flex-wrap: var(--navigation-layout-wrap,wrap);
+    justify-content: var(--navigation-layout-justify,initial);
+    list-style: none;
+    margin: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    padding-left: 0;
+}
+
+/* simpleTOC */
+.simpletoc.has-simpletoc-box-style {
+    padding: 0 1em 0 40% !important;
+}
+.simpletoc.has-simpletoc-box-style .simpletoc-title {
+/*  font-size:1.6rem; */
+    margin:0 !important;
+}
+
+#toc-comment {
+  font-style: italic;
+}

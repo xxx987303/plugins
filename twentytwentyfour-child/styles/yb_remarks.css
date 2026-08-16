@@ -1,0 +1,25 @@
+img {
+  border-radius: 25px;
+}
+
+.yb_remarks {
+    font-style: italic ! important;
+    background-color: #f3f0e7 ! important;
+    border-radius: 10px !important;
+    padding: 1em !important;
+  }
+
+.yb_remarks h1, 
+.yb_remarks h2, 
+.yb_remarks h3, 
+.yb_remarks h4, 
+.yb_remarks p { 
+  color: #a62b0c; 
+}
+
+.yb_remarks h1, 
+.yb_remarks h2, 
+.yb_remarks h3, 
+.yb_remarks h4 {
+    text-align: center; 
+}
