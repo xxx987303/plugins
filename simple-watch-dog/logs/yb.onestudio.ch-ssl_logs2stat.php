@@ -1,5 +1,7 @@
 <?php
 /**
+ * Auxiliary to $0.sh bash script
+ *
  * Extract information from cPanel logs.
  * Unfortunately user_name is not available...
  */
@@ -11,7 +13,6 @@ define('SQL', '/tmp/tempo.sql');
 require_once '/Users/yb/Sites/adb/wp-config.php';
 require_once '/Users/yb/Sites/adb/wp-includes/class-wpdb.php';
 require_once '/Users/yb/Sites/adb/wp-includes/class-wp-hook.php';
-//require_once __dir__.'/../includes/functions.php';
 
 define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
 define('wddb', new wpdb(DB_USER, DB_PASSWORD, 'yb-watch-dog', DB_HOST));
@@ -78,14 +79,11 @@ function YB_message($a='',$m='') {}
 
 function wp_is_stream( $path ) {
 	$scheme_separator = strpos( $path, '://' );
-
 	if ( false === $scheme_separator ) {
 		// $path isn't a stream.
 		return false;
 	}
-
 	$stream = substr( $path, 0, $scheme_separator );
-
 	return in_array( $stream, stream_get_wrappers(), true );
 }
 

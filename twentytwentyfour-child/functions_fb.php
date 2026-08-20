@@ -91,18 +91,6 @@ function YB_get_thumbnail($text_thumbnail, $img_src="", $caption="") {
 }
 
 /**
- * Apply shortcode defaults, normalize attribute keys (lowercase) 
- */
-function YB_get_atts(&$atts, $tag, $force_defs=[]) {
-  $defaults = $force_defs;
-  foreach (array_change_key_case($atts,CASE_LOWER) as $k=>$v) {
-    $defaults[$k] = "";
-  }
-  $atts = shortcode_atts($defaults, $atts, $tag);
-}
-
-
-/**
  * <div class=\"fancybox-caption fancybox-caption--separate\"><div class=\"fancybox-caption__body\">$caption</div></div>"
  */
 function YB_figcaption($caption) {

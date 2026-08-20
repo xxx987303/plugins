@@ -39,7 +39,6 @@ p a:where(:not(.caption-thumbnail-wpc-caro, .wcp-light-box, .wp-block-site-title
     opacity: 70%;
 }
 
-
 /* Debuggings... */
 .yb-comments,
 .yb-diff {
@@ -47,5 +46,5 @@ p a:where(:not(.caption-thumbnail-wpc-caro, .wcp-light-box, .wp-block-site-title
   padding: 1%;
   margin-left: 10%;
   margin-right: 10%;
-  font-size: small;
+  font-size: x-small;
 }

@@ -3,8 +3,7 @@
  * As is...
  */
 require_once __dir__ . '/functions_fb.php';
-require_once __dir__ . '/functions_adb_shortcodes.php';
-require_once __dir__ . '/functions_adb_no_posts.php';
+require_once __dir__ . '/functions_shortcodes.php';
 
 if (!defined('PRODUCTION_MODE')) define('PRODUCTION_MODE', false);
 if (!defined('AFTER_LOGIN'))     define('AFTER_LOGIN', 'stat/'); // about/
@@ -49,40 +48,40 @@ add_filter( 'relevanssi_search_ok', function( $ok, $query ) {
  * Add dev. comments
  * level might be debug or warn
  */
-if (!function_exists('YB_message')) {
-    function YB_message($textP='', $level='debug') {
-        global $YB_messages, $YB_messages_indent;
+function YB_message($textP='', $level='debug') {
+    global $YB_messages, $YB_messages_indent;
 
-        if (empty($textP)) $textP = "";  // Sanity...
-        if ($textP == 'print'){
-            if (!@$YB_messages) { return ""; }
-            if (CLI_MODE) {
-                echo "\n\nMessages\n--------\n";
-                echo str_replace("<CR>","\n",join("\n",($YB_messages)))."\n";
-            }else {
-                return "<div class='yb-comments'><h3>Messages...</h3><code>".join('<br>',$YB_messages)."</code></div>\n";
-            }
-        } elseif (!PRODUCTION_MODE || ($level == 'warn' && in_array('administrator', wp_get_current_user()->roles))) {
-            $indent = (CLI_MODE ? '  ' : '&nbsp;&nbsp;');
-            $text = $textP;
-            if (empty($YB_messages_indent)) { $YB_messages_indent = ""; }
-            if ($textP == 'exit') $YB_messages_indent = preg_replace("/^$indent/", '', $YB_messages_indent);
-            if (in_array($textP, ["entry","exit"])){ $color = 'blue'; $text = "($text)"; }
-            elseif ($level != 'debug')             { $color = 'red'; }
-            else                                   { $color = '#000000';}
-            $caller = debug_backtrace()[1]['function'];
-            if (!preg_match('/^\(/', $text) && ($caller != '{closure}')) $text = "() $text";
-            $text = $caller . $text;
-            $msg = (CLI_MODE ? $text : "<span style='color:$color'>" . preg_replace(['/</', '/>/'], ['&lt;', '&gt;'], $YB_messages_indent . $text) . "</span>");
-            if (empty($YB_messages)) $YB_messages = [];
-            if (CLI_MODE)  { echo "$msg\n"; }
-            else        { $YB_messages[] = $msg; }
-            if ($textP == 'entry') { $YB_messages_indent .= $indent; }
+    //if ($textP=='exit')echo"<br>";elseif($textP!='entry')echo "<span style='font-size: small'>$textP</span><br>";
+    
+    if (empty($YB_messages)) return "";
+    if (empty($textP)) $textP = "";
+    if ($textP == 'print'){
+        if (CLI_MODE) {
+            echo "\n\nMessages\n--------\n";
+            echo str_replace("<CR>","\n",join("\n",($YB_messages)))."\n";
+        }else {
+            return "<div class='yb-comments'><h3>Messages...</h3><code>".join('<br>',$YB_messages)."</code></div>\n";
         }
-//$YB_messages = [];
-	return "";
+    } elseif (!PRODUCTION_MODE || ($level == 'warn' && in_array('administrator', wp_get_current_user()->roles))) {
+        $indent = (CLI_MODE ? '  ' : '&nbsp;&nbsp;');
+        $text = $textP;
+        if (empty($YB_messages_indent)) { $YB_messages_indent = ""; }
+        if ($textP == 'exit') $YB_messages_indent = preg_replace("/^$indent/", '', $YB_messages_indent);
+        if (in_array($textP, ["entry","exit"])){ $color = 'blue'; $text = "($text)"; }
+        elseif ($level != 'debug')             { $color = 'red'; }
+        else                                   { $color = '#000000';}
+        $caller = debug_backtrace()[1]['function'];
+        if (!preg_match('/^\(/', $text) && ($caller != '{closure}')) $text = "() $text";
+        $text = $caller . $text;
+        $msg = (CLI_MODE ? $text : "<span style='color:$color'>" . preg_replace(['/</', '/>/'], ['&lt;', '&gt;'], $YB_messages_indent . $text) . "</span>");
+        if (empty($YB_messages)) $YB_messages = [];
+        if (CLI_MODE)  { echo "$msg\n"; }
+        else        { $YB_messages[] = $msg; }
+        if ($textP == 'entry') { $YB_messages_indent .= $indent; }
     }
+    return "";
 }
+
 
 //if (!CLI_MODE) {
 
@@ -102,15 +101,29 @@ function YB_get_avatar( $avatar = '', $id_or_email=1, $size = 96, $default = '',
 }
 
 /**
+ * Remove posts, leave pages only
  */
-if (!function_exists('YB_get_template_file_uri')) {
+function remove_posts_menu() {
+    remove_menu_page('edit.php');
+}
+add_action('admin_menu', 'remove_posts_menu');
+
+/**
+ * Remove posts, leave pages only
+ */
+function remove_posts_from_admin_bar($wp_admin_bar) {
+    $wp_admin_bar->remove_node('new-post');
+}
+add_action('admin_bar_menu', 'remove_posts_from_admin_bar', 999);
+
+/**
+ */
 function YB_get_template_file_uri($file, $stripIt=false) {
     $url = get_template_directory_uri();
     if (preg_match(';\-child/;', __file__)) $url .= '-child';
     return ($stripIt ? YB_strip_fn("$url/$file",true) : "$url/$file");
 }
 add_action("wp_print_styles","YB_wp_print_styles"); function YB_wp_print_styles() {if(!PRODUCTION_MODE) echo "\n<!-- ".__function__." -->\n";};
-}
 
 /**
  * Close access for non-registered users
