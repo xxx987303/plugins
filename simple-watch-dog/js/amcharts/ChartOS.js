@@ -2,8 +2,6 @@
 
 am5.ready(function(){});
 ChartOS(1);
-ChartOS(2);
-ChartOS(3);
 
 function ChartOS(ID) {
     var fn = 'ChartOS';
@@ -22,7 +20,18 @@ function ChartOS(ID) {
 	var series = chart.series.push(am5percent.PieSeries.new(root, {valueField: "value",
 	    							       categoryField: "os",
 								       endAngle: 270}));
-	series.states.create("hidden", { endAngle: -90 });
+        series.bullets.push(function(root) {
+            return am5.Bullet.new(root, {
+                sprite: am5.Label.new(root, {
+                    text: "{valueY}",
+                    centerX: am5.p50,
+                    centerY: am5.p100,
+                    populateText: true,
+                    fontSize: fontsize
+                })
+            });
+        });
+ 	series.states.create("hidden", { endAngle: -90 });
 	series.data.setAll(data);
 	series.appear(1000, 100);
     } else {

@@ -1,10 +1,8 @@
 // ChartCC
 
-window.onerror = function(e) { console.log("Error: ", e); };
+//window.onerror = function(e) { console.log("Error: ", e); };
 am5.ready(function() {});
 ChartCC(1);
-ChartCC(2);
-ChartCC(3);
 
 function ChartCC(ID) {
     var fn = 'ChartCC';
@@ -13,29 +11,8 @@ function ChartCC(ID) {
 	var root = am5.Root.new(chartdiv);
 	root.setThemes([ am5themes_Animated.new(root) ]);
 
-	if (true) {
-	    var data = args[fn][ID]['data'];
-	} else {
-            var data = [ { name: "Switzerland",                     
-			   countCC: 45688,
-			   flag: { src: "/restor/wp-content/themes/twentytwentyfour-child/flags/switzerland.png" }},
-			 { name: "Finland",         
-			   countCC: 35781,
-			   flag: { src: "/restor/wp-content/themes/twentytwentyfour-child/flags/finland.png" }},
-			 { name: "Sweden",                   
-			   countCC: 25464,
-			   flag: { src: "/restor/wp-content/themes/twentytwentyfour-child/flags/sweden.png" }},
-			 { name: "Nepal",
-			   countCC: 18788,
-			   flag: { src: "/restor/wp-content/themes/twentytwentyfour-child/flags/nepal.png" }},
-			 { name: "USA",
-			   countCC: 15465,
-			   flag: { src: "/restor/wp-content/themes/twentytwentyfour-child/flags/usa.png" }},
-			 { name: "Italy",
-			   countCC: 11561,
-			   flag: { src: "/restor/wp-content/themes/twentytwentyfour-child/flags/italy.png" }} ];
-	}
 	//document.getElementById("test"+(ID+2)).innerHTML = fn + ": " +ID+"/"+Object.keys(args[fn]).length + " -- " + JSON.stringify(data);
+	var data = args[fn][ID]['data'];
 	dataInfo(ID, args, fn);
 	
 	var chart = root.container.children.push(
@@ -43,15 +20,14 @@ function ChartCC(ID) {
 		panX: false,
 		panY: false,
 		paddingLeft:0,
-		paddingRight:30,
+		paddingRight:10,
 		wheelX: "none",
 		wheelY: "none"
 	    })
 	);
 	
-	// Create axes
+	// Create axis
 	// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-	
 	var yRenderer = am5xy.AxisRendererY.new(root, {
 	    minorGridEnabled:true
 	});
@@ -107,6 +83,22 @@ function ChartCC(ID) {
 	    fillOpacity: 0.8
 	});
 	
+	// Set the font size
+	xAxis.get("renderer").labels.template.setAll({ fontSize: fontsize });
+	yAxis.get("renderer").labels.template.setAll({ fontSize: fontsize });
+	series.bullets.push(function(root) {
+	    return am5.Bullet.new(root, {
+		sprite: am5.Label.new(root, {
+		    text: "{valueY}",
+		    centerX: am5.p50,
+		    centerY: am5.p100,
+		    populateText: true,
+		    fontSize: fontsize
+		})
+	    });
+	});
+	//legend.labels.template.setAll({ fontSize: fontsize });
+
 	var currentlyHovered;
 	
 	series.columns.template.events.on("pointerover", function(e) {
@@ -144,13 +136,13 @@ function ChartCC(ID) {
 	}
 	
 	
-	var circleTemplate = am5.Template.new({});
 	//document.getElementById('test7').innerHTML="circleTemplate";
+	var circleTemplate = am5.Template.new({});
 	
 	series.bullets.push(function(root, series, dataItem) {
 	    var bulletContainer = am5.Container.new(root, {});
 	    var circle = bulletContainer.children.push(am5.Circle.new(root,
-								      { radius: 34 },
+								      { radius: 18 },
 								      circleTemplate));
 	    var maskCircle = bulletContainer.children.push(am5.Circle.new(root, { radius: 27 }));
 	    
@@ -163,8 +155,8 @@ function ChartCC(ID) {
 		    templateField: "flag",
 		    centerX: am5.p50,
 		    centerY: am5.p50,
-		    width: 60,
-		    height: 60
+		    width: 50,
+		    height: 50
 		})
 	    );
 	    

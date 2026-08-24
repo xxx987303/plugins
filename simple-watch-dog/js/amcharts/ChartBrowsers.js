@@ -2,8 +2,6 @@
 
 am5.ready(function(){});
 ChartBrowsers(1);
-ChartBrowsers(2);
-ChartBrowsers(3);
 
 function ChartBrowsers(ID) {    
     var fn = 'ChartBrowsers';

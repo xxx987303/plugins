@@ -14,8 +14,9 @@ define("WD_SKIP_ADMIN", PRODUCTION_MODE);
 
 // WD database
 define('WDDB', 'yb-watch-dog');
-define('WDstats',   WDDB . '.wd_visitor_stats');
-define('WDremotes', WDDB . '.wd_visitor_remotes');
+define('WDvisits',  WDDB . '.wd_visits');
+define('WDdaemon',  WDDB . '.wd_daemon');
+define('WDremotes', WDDB . '.wd_remotes');
 define('wddb', new wpdb(DB_USER, DB_PASSWORD, WDDB, DB_HOST));
 
 // WD timeout

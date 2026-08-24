@@ -1,8 +1,6 @@
 
 am5.ready(function() {});
 ChartUsers(1);
-ChartUsers(2);
-ChartUsers(3);
 
 function ChartUsers(ID) {
     var fn = 'ChartUsers';

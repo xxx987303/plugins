@@ -1,6 +1,6 @@
 // communicator
 
-window.onerror = function(e) { console.log("Error: ", e); };
+//window.onerror = function(e) { console.log("Error: ", e); };
 
 var maxChart = 0;
 

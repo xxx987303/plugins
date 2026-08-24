@@ -7,7 +7,9 @@
  */
 
 define('CLI_MODE', true);
-define('WDstats', '`yb-watch-dog`.`wd_visitor_stats`');
+define('WDdaemon',  '`yb-watch-dog`.`wd_daemon`');
+define('WDremotes', '`yb-watch-dog`.`wd_remotes`');
+define('WDvisits',  '`yb-watch-dog`.`wd_visits`');
 define('SQL', '/tmp/tempo.sql');
 
 require_once '/Users/yb/Sites/adb/wp-config.php';
@@ -18,47 +20,70 @@ define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
 define('wddb', new wpdb(DB_USER, DB_PASSWORD, 'yb-watch-dog', DB_HOST));
 //print_r(wddb);
 
-$log_file = $argv[1];
-if (!file_exists($log_file)) die("Can't get input file $log_file\n");
+//
+// Populate visitors database
+//
+if (($log_file = $argv[1]) && file_exists($log_file)) {
+    populate_WDdaemon($log_file);
+} elseif (preg_match('/remote/i', $argv[1])) {
+    require_once __dir__ . '/../includes/functions.php';
+    populate_WDremotes();
+} else {
+    die("What do you want me to to?\n");
+}
+exit;
 
-$sql = [];
-foreach(explode("\n",file_get_contents($log_file)) as $line) {
-//176.126.133.217 - - [31/Jul/2026:10:07:45 -0400] "GET /restor/device/ HTTP/2" 200 14596 "https://yb.onestudio.ch/restor/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
-echo "\n";
-    echo "$line\n";
-    
-    // Combined Log Format:
-    // %h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-agent}i"
-    //$pattern = '/^(\S+) \S+ \S+ \[([^\]]+)\] "[^"]*" \d+ \S+ "\[^"]*" "([^"]*)"/';
-    
-    //            ---------        ----      -------           -------       --------
-    //$pattern = '/([0-9\.]*) - - \[(.*)\]\s\"([^\"]*)\"[^\"]*\"([^\"]*)\"\s\"([^\"]*)\"/';
-    $pattern = '/([0-9\.]*) - - \[(.*)\] \"([^\"]*)\" [^\"]*\"([^\"]*)\" \"([^\"]*)\"/';
-
-    if (!preg_match($pattern, $line, $match))  continue;
-    
-    //print_r($match);
-    $R = ['mode'      => 'test',	  
-	  'time'      => getParisTime($match[2]),
-	  'remote'    => $match[1],
-	  'user_id'   => 999,
-	  'user_name' => 'nameless',
-	  'user_agent'=> $match[5],
-	  'duration'  => '0',
-	  'uri'       => explode(' ', $match[3])[1],
-    ];
-    // print_r($R);
-    if ($result = wddb->get_results($s="SELECT * FROM ".WDstats." WHERE remote='$R[remote]' AND uri='$R[uri]' AND time='$R[time]' AND user_agent='$R[user_agent]'")) {
-	echo "$s\n";
-	foreach($result as $r) {
-	    //print_r($r);
-	}
-    } else {
-	$insert = wddb->get_results($s='INSERT INTO '.WDstats.' ('.join(',',array_keys($R)).') VALUES ("'.join('","',array_values($R)).'");');
-	echo "$s\n";
+/**
+ * As is...
+ */
+function populate_WDremotes() {
+    foreach (wddb->get_results($s="SELECT remote FROM ".WDdaemon." GROUP BY remote") as $r) {
+	WD_getCC($r->remote, $save_if_new=false);
     }
-//    if (@$ccccc++) break;
-    echo "-----\n";
+}
+    
+/**
+ * Read cPanel log file and fill fill wd_daemon database table.
+ * 176.126.133.217 - - [31/Jul/2026:10:07:45 -0400] "GET /restor/device/ HTTP/2" 200 14596 "https://yb.onestudio.ch/restor/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+ */
+function populate_WDdaemon($log_file){
+
+
+    $sql = [];
+    foreach(explode("\n",file_get_contents($log_file)) as $line) {
+
+	echo "\n";
+	echo "$line\n";
+	
+	// Combined Log Format:
+	// %h %l %u %t "%r" %s %b "%{Referer}i" "%{User-agent}i"
+
+	// Parse the log
+	$pattern = '/([0-9\.]*) - - \[(.*)\] \"([^\"]*)\" [^\"]*\"([^\"]*)\" \"([^\"]*)\"/';
+	if (!preg_match($pattern, $line, $match))  continue;
+	
+	//print_r($match);
+	$R = [//'mode'      => 'daemon',
+	    'time'      => getParisTime($match[2]),
+	      'remote'    => $match[1],
+	      'user_id'   => 999,
+	      'user_name' => 'nameless',
+	      'user_agent'=> $match[5],
+	      //'duration'  => '0',
+	      'uri'       => explode(' ', $match[3])[1],
+	];
+	// print_r($R);
+
+	// Check the database and the record is nor known, insert it
+	if ($result = wddb->get_results($s="SELECT * FROM ".WDdaemon." WHERE remote='$R[remote]' AND uri='$R[uri]' AND time='$R[time]' AND user_agent='$R[user_agent]'")) {
+	    echo "$s\n";
+	} else {
+	    $insert = wddb->get_results($s='INSERT INTO '.WDdaemon.' ('.join(',',array_keys($R)).') VALUES ("'.join('","',array_values($R)).'");');
+	    echo "$s\n";
+	}
+	//    if (@$ccccc++) break;
+	echo "-----\n";
+    }
 }
 
 /**
@@ -66,12 +91,11 @@ echo "\n";
  */
 function getParisTime($logTime) {
     // Parse the timestamp and set the target time zone
-    echo __function__."($logTime)\n";
     $date = DateTime::createFromFormat('d/M/Y:H:i:s O', $logTime);
     $date->setTimezone(new DateTimeZone('Europe/Paris'));
   //$reply = $date->format('d/M/Y:H:i:s O');
     $reply = $date->format('Y-m-d H:i:s');
-    echo __function__."($logTime) $reply\n";
+    //echo __function__."($logTime) $reply\n";
     return $reply;
 }
 
