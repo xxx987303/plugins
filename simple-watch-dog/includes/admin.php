@@ -19,14 +19,12 @@ if (false) {
 	);
     }
     add_action('admin_menu', 'WD_register_admin_page');
-}
     
-function WD_display_admin_page() {
-    var_dump($_SERVER['REQUEST_URI']); exit;
-    wd_log();
-    
-    $total_visits = wddb->get_var("SELECT COUNT(*) FROM ".WDvisits);
-    $user_visits  = wddb->get_results("SELECT user_id, COUNT(*) as visits FROM ".WDvisits." WHERE user_id IS NOT NULL GROUP BY user_id");
+    function WD_display_admin_page() {
+	wd_log();
+	
+	$total_visits = wddb->get_var("SELECT COUNT(*) FROM ".WDvisits);
+	$user_visits  = wddb->get_results("SELECT user_id, COUNT(*) as visits FROM ".WDvisits." WHERE user_id IS NOT NULL GROUP BY user_id");
 ?>    
 <div class="wrap">
  <h1>Visitor Statistics</h1>
@@ -36,15 +34,18 @@ function WD_display_admin_page() {
    <table class="widefat">
    <thead><th>User ID</th><th>Visits</th></thead>
    <tbody>
-<?php    
-    foreach ($user_visits as $user_visit) {
-      echo ('<tr>' .
-	    '<td>' . $user_visit->user_id . '</td>'.
-	    '<td>' . $user_visit->visits . '</td>'.
-	    '</tr>');
-    }
+<?php
+        foreach ($user_visits as $user_visit) {
+	    echo ('<tr>' .
+		  '<td>' . $user_visit->user_id . '</td>'.
+		  '<td>' . $user_visit->visits . '</td>'.
+		  '</tr>');
+	}
 ?>    
     </tbody>
   </table>
 </div>
-<?php } ?>
+<?php
+    }
+}
+?>

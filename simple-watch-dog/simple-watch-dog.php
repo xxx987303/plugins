@@ -1,7 +1,7 @@
 <?php
 /*'
    Plugin Name: Simple Watch Dog
-   Description: A plugin to track the users statistics.
+   Description: User activity tracker.
    Version: 2.0
    Author: YB
  */
@@ -16,6 +16,7 @@ define("WD_SKIP_ADMIN", PRODUCTION_MODE);
 define('WDDB', 'yb-watch-dog');
 define('WDvisits',  WDDB . '.wd_visits');
 define('WDdaemon',  WDDB . '.wd_daemon');
+define('WDdaemon2', WDDB . '.wd_daemon_nonfiltered');
 define('WDremotes', WDDB . '.wd_remotes');
 define('wddb', new wpdb(DB_USER, DB_PASSWORD, WDDB, DB_HOST));
 

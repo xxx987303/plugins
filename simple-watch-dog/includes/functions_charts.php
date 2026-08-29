@@ -21,16 +21,6 @@ add_shortcode( 'ChartCC',      'WD_shortcode_ChartCC');
 add_shortcode( 'ChartOS',      'WD_shortcode_ChartOS');
 
 /**
- */
-function WD_user_not_monitored($r) {
-    $user = get_user_by( 'login', $r->user_login );
-    $not_monitored = WD_SKIP_ADMIN && (($user && $r->user_login != 'mb') ? user_can($user, 'manage_options') : false);
-    if (!PRODUCTION_MODE) $not_monitored = false;
-    if ($not_monitored) WD_message("Not monitored ".$r->user_login);
-    return $not_monitored;
-}
-
-/**
  *
  */
 function YB_amcharts($shortcode, $atts, $argsCodes) {
@@ -53,7 +43,7 @@ function YB_amcharts($shortcode, $atts, $argsCodes) {
     if (isset($atts['title'])) unset($atts['title']);
     
     $args = (empty($atts)
-             ? WD_get_atts_from_WDvisits($shortcode, $chart_id)
+             ? WD_get_data($shortcode, $chart_id)
              : ['id'   => $chart_id,
                 'title'=> $title,
                 'data' => $atts]);
@@ -212,7 +202,7 @@ function repacker($codes, $atts, $defaults=['id'=>1]) {
 /**
  *
  */
-function WD_get_atts_from_WDvisits($type, $chart_id) {
+function WD_get_data($type, $chart_id) {
     global $wpdb, $fillerCount, $dejavu_logs;
 
     WD_message('entry');
@@ -235,9 +225,9 @@ function WD_get_atts_from_WDvisits($type, $chart_id) {
     }
     if (!$dejavu_logs++) { WD_message("$type: known_users=" . join(', ',array_values($known_users))); }
 
-    $results=wddb->get_results("SELECT COUNT(*) AS total_visits, ".
-				"UNIX_TIMESTAMP(MIN(time)) AS t_fr, UNIX_TIMESTAMP(MAX(time)) AS t_to FROM ".WDvisits." WHERE ".MY_SITE);
-    $gen = array_pop($results);
+    $res=wddb->get_results("SELECT COUNT(*) AS total_visits, ".
+			   "UNIX_TIMESTAMP(MIN(time)) AS t_fr, UNIX_TIMESTAMP(MAX(time)) AS t_to FROM ".WDvisits." WHERE ".MY_SITE);
+    $gen = array_pop($res);
     if ( $e = wddb->last_error ) {
         WD_message("($type) $e", "warn");
         WD_message("($type) wpdb error: $e", "warn");
@@ -315,15 +305,14 @@ function WD_get_atts_from_WDvisits($type, $chart_id) {
                     $data["v$countOS"] += $r->count;
 		}
             }
-            $logsTitle = 'Какой компьтер' . (PRODUCTION_MODE ? "" : " (debug)");
+            $logsTitle = 'Какой компьютер' . (PRODUCTION_MODE ? "" : " (debug)");
             break;
             
 	case 'ChartCC':
             foreach (wddb->get_results($q="SELECT remote, time, COUNT(*) as count FROM ".WDvisits." WHERE ".MY_SITE." GROUP BY remote") as $r) {
 		if (empty($r->remote)) continue;
 		if (PRODUCTION_MODE && in_array($r->remote, LOCALHOSTs)) continue;
-
-		if ($country =  WD_getCC($r->remote)[0]) {
+		if ($country =  WD_getCC($r->remote)) {
 		    if (PRODUCTION_MODE && $country == 'localhost') continue;
                     WD_message("ip='".$r->remote . "' remote=$country count=".$r->count, 'warn');
                     if (empty($counter=@$dejavu[$country])) {
