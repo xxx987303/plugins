@@ -98,6 +98,7 @@ function YB_shortcode_FBmodal2_DEV($atts, $content=null, $tag='' ) {
 /**
  * [FBmodal url='url', t='click me']
  */
+/*
 function YB_shortcode_FBmodal($atts=[], $content=null, $tag='' ) {
     global $idFBmodal;
 
@@ -115,6 +116,7 @@ function YB_shortcode_FBmodal($atts=[], $content=null, $tag='' ) {
     YB_message('exit');
     return $reply;
 }
+*/
 
 /**
  * [FBgallery i2="i2.png" i1="i1.png".png" c2="c2" c1="c1"]
@@ -155,11 +157,11 @@ function YB_shortcode_separator($atts=[], $content=null, $tag='' ) {
  * Central location to create all shortcodes.
  */
 function YB_shortcodes_init() {
-    if (!PRODUCTION_MODE) echo "\n<!-- ".__function__." -->\n";
+    //if (!PRODUCTION_MODE) echo "\n<!-- ".__function__." -->\n";
     //add_shortcode( 'FBgallery',   'YB_shortcode_FBgallery_DEV' );
     //add_shortcode( 'FBmodal2',    'YB_shortcode_FBmodal2_DEV');
     add_shortcode( 'FBimage',      'YB_shortcode_FBimage' );
-    add_shortcode( 'FBmodal',      'YB_shortcode_FBmodal');
+    //add_shortcode( 'FBmodal',      'YB_shortcode_FBmodal');
     add_shortcode( 'FBseparator',  'YB_shortcode_separator' );
     add_shortcode(   'separator',  'YB_shortcode_separator' );
 }

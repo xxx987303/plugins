@@ -8,9 +8,14 @@ require_once __dir__ . '/functions_shortcodes.php';
 if (!defined('PRODUCTION_MODE')) define('PRODUCTION_MODE', false);
 if (!defined('AFTER_LOGIN'))     define('AFTER_LOGIN', 'stat/'); // about/
 
-if (!defined('VANILLA_OUTPUT'))  define('VANILLA_OUTPUT', false); // MUST BE 'FALSE'... Apply or not custom changes (VANILLA is "without my changes") 
-if (!defined('FORCE_AUTH'))      define('FORCE_AUTH',   PRODUCTION_MODE);// Force or not "only authenticated users"
-if (!defined('TIDY_SOURCE'))     define('TIDY_SOURCE', !PRODUCTION_MODE);// Tidy source is not recommended for production
+// Apply or not custom changes (VANILLA is "without my changes")  MUST BE 'FALSE' for my changes to work... 
+if (!defined('VANILLA_OUTPUT'))  define('VANILLA_OUTPUT', false);
+
+// Force or not "only authenticated users"
+if (!defined('FORCE_AUTH'))      define('FORCE_AUTH',   PRODUCTION_MODE);
+
+// Tidy source is not recommended for production
+if (!defined('TIDY_SOURCE'))     define('TIDY_SOURCE', !PRODUCTION_MODE);
 
 /**
  *   PhotoSwipe
@@ -192,7 +197,7 @@ function enqueue_custom_scripts() {
     if(!PRODUCTION_MODE) echo "\n<!-- ".__function__." -->\n";
 
     // Modal iFrame
-    wp_enqueue_script( 'custom-hover-script', YB_get_template_file_uri('js/custom_iframeModal.js'), array(), false, true );
+    // wp_enqueue_script( 'custom-hover-script', YB_get_template_file_uri('js/custom_iframeModal.js'), array(), false, true );
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_custom_scripts' );
 

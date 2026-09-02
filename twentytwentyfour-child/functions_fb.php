@@ -41,7 +41,7 @@ if (!CLI_MODE) { add_action('wp_head', 'YB_start_output_buffering'); }
 function YB_end_output_buffering() {
     global $diff_metadata;
     
-    if (!PRODUCTION_MODE) echo "\n<!-- ".__function__." -->\n";
+    if (!PRODUCTION_MODE) echo "\n<!-- entering ".__function__." -->\n";
     IF (!NO_FIX_METADATA) YB_fix_metadata();
   
     $content_parts = preg_split(";<main|</main>;", ob_get_clean());
@@ -71,12 +71,16 @@ function YB_end_output_buffering() {
     }
     
     // Show comments & errors
-    if (in_array('administrator', wp_get_current_user()->roles) && ($messages = YB_message('print'))) {
-        $content = str_replace("</main>", "$messages\n</main>", $content);
+/*
+    if (in_array('administrator', wp_get_current_user()->roles) && ($messages = WD_message('print'))) {
+	$content = str_replace("</main>", "$messages\n</main>", $content);
     }
+ */
+    if (function_exists($f='YB_show_messages')) { $content = YB_show_messages($content); } else { echo "\n<!-- $f DOES NOT EXIST  -->\n"; }
     
     // Return the tidy page if desired
     echo str_replace($CR, "\n", $head) . (TIDY_SOURCE ? getTidy($content) : $content) . $content_parts[2];
+    echo "\n<!-- exiting ".__function__." -->\n";
 }
 if (!CLI_MODE) { add_action('wp_footer', 'YB_end_output_buffering'); }
 
