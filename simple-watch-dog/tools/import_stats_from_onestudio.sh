@@ -1,10 +1,10 @@
 #! /bin/bash
 #
-# This script replaces `yb-watch-dog`.`wd_visits` table with data from OneStudio
-# ------------------------------------------------------------------------------
+# This script creates `yb-watch-dog`.`wd_visits` table with data from OneStudio
+# -----------------------------------------------------------------------------
 #
 
-set +x
+set -x
 set -e
 
 database="yb-watch-dog"
@@ -36,12 +36,13 @@ echo "# Replace the wd_visits table"
 echo "#"
 set -x
 
+#DELETE FROM wd_visits WHERE user_name is null OR user_agent is null;
 cat >t.sql <<EOF
 DELETE FROM wd_visits WHERE user_id=0;
-DELETE FROM wd_visits WHERE user_name is null OR user_agent is null;
 DELETE FROM wd_visits WHERE uri REGEXP 'wp-content';
 DELETE FROM wd_visits WHERE remote = '127.0.0.1';
 EOF
-cat t.sql
 mysql < t.sql $database
 
+# Initialise wd_remotes table with the imported sample
+php  ../logs/Process_wd_daemon.php remotes

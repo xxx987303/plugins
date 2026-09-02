@@ -101,15 +101,25 @@ if (!CLI_MODE) add_filter( 'query', 'YB_query_fix' );
 
 /**
  */
+function YB_display_name($user_id,$f='display_name') {
+    if (empty($user_id)) $user_id = 0;
+    if ($u = wpdb->get_results($sql="SELECT * FROM `".DB_NAME."`.`wp_users` WHERE ID = $user_id")) {
+	return $u[0]->{$f};
+    } else {
+	echo "sql=$sql\n";
+	return 'anonymous';
+    }
+}
+
+/**
+ */
 function WD_user_not_monitored($r) {
     if     (isset($r->user_login)) {$arg1 = 'login'; $arg2 = $r->user_login; }
     elseif (isset($r->r_user_id))  {$arg1 = 'id';    $arg2 = $r->r_user_id; }
     elseif (isset($r->user_id))    {$arg1 = 'id';    $arg2 = $r->user_id; }
     else   die("Please add argument " . joinX($r)."\n"); 
-    $user = get_user_by($arg1, $arg2 );
-    $not_monitored = WD_SKIP_ADMIN && (($user && $arg2 != 'mb') ? user_can($user, 'manage_options') : false);
-    if (!PRODUCTION_MODE) $not_monitored = false;
-    if ($not_monitored) WD_message("Not monitored ".$arg2);
+    $not_monitored = PRODUCTION_MODE && WD_SKIP_ADMIN && ($arg2 == 1 || $arg2=='yb');
+    WD_message("Not monitored ".$arg2." - ".var_export($not_monitored,true));
     return $not_monitored;
 }
 
@@ -148,32 +158,26 @@ function WD_track_visitor() {
     
     if (preg_match('/(github|wp-content)/', $_SERVER['REQUEST_URI'])) {
 	// WD_log(__function__."(): IGNORE $_SERVER[REQUEST_URI]");
-	echo "\n<!-- 2 ".__function__." fires -->\n";
     }else{
-	echo "\n<!-- 3 ".__function__." fires -->\n";
 	if (is_user_logged_in()) {
-	    echo "\n<!-- 4 ".__function__." fires -->\n";
             WD_create_tables();
             WD_set_durations();
             $current_user = wp_get_current_user();
             $user_id  = $current_user->ID;
             $name     = $current_user->display_name;
-	    echo "\n<!-- 4 ".__function__." fires -->\n";
 	} else {
-	    echo "\n<!-- 5 ".__function__." fires -->\n";
             $user_id = 0;
 	}
 	if (empty($_POST['duration'])) $_POST['duration'] = -1;
-	echo "\n<!-- 6 ".__function__." duration=$_POST[duration] fires -->\n";
-	$wpdb->insert(WDvisits, ($a=['user_id'   => (($u=$user_id) ? $u : 0),
-  				     'user_name' => (($u=$user_id) ? $name : 'anonymous'),
-  				     'uri'       => $_SERVER['REQUEST_URI'],
-  				     'user_agent'=> ($ua=$_SERVER['HTTP_USER_AGENT']),
-  				     'remote'    => $_SERVER['REMOTE_ADDR'],
-  				     'duration'  => $_POST['duration'],
-  				     'mode'      => (PRODUCTION_MODE ? 'prod' : 'debug'),
-  				     'time'      => current_time('mysql')]));
-	WD_log($rec = join(', ', [$a['user_name'], WD_getOS($ua), WD_getBrowser($ua), $a['uri']]), $user_id);
+	$wpdb->insert(WDvisits, ($args=['user_id'   => (($u=$user_id) ? $u : 0),
+  					'user_name' => (($u=$user_id) ? $name : 'anonymous'),
+  					'uri'       => $_SERVER['REQUEST_URI'],
+  					'user_agent'=> ($ua=$_SERVER['HTTP_USER_AGENT']),
+  					'remote'    => $_SERVER['REMOTE_ADDR'],
+  					'duration'  => $_POST['duration'],
+  					'mode'      => (PRODUCTION_MODE ? 'prod' : 'debug'),
+  					'time'      => current_time('mysql')]));
+	WD_log($rec = join(', ', [$args['user_name'], WD_getOS($ua), WD_getBrowser($ua), $args['uri']]), $user_id);
 	echo "\n<!-- ".__function__." writes $rec -->\n";
     }
 }
@@ -185,9 +189,8 @@ function WD_create_tables() {
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
     $charset_collate = wddb->get_charset_collate();
-//  wddb->get_results("USE ".WDDB);
     wddb->get_results("CREATE TABLE IF NOT EXISTS ".WDvisits." (
-      id mediumint(9) DEFAULT 0,
+      id varchar(32), default NULL,
       time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
       remote varchar(32),
       user_id bigint(20) UNSIGNED DEFAULT NULL,
@@ -198,25 +201,27 @@ function WD_create_tables() {
       mode  varchar(16),
       UNIQUE KEY `log_entry` (`time`,`user_id`)
     ) $charset_collate;");
+    wddb->get_results("CREATE TABLE IF NOT EXISTS " . WDremotes . " (
+      r_time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+      r_remote   varchar(32) DEFAULT NULL,
+      r_domain   varchar(32) DEFAULT NULL,
+      r_user_id  varchar(16) DEFAULT NULL,
+      r_country  varchar(32) DEFAULT NULL
+    ) $charset_collate;");
     wddb->get_results("CREATE TABLE IF NOT EXISTS ".WDdaemon." (
       d_time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
       d_uri  varchar(255),
       d_remote varchar(32),
       d_user_agent varchar(255)
     ) $charset_collate;");
+/*
     wddb->get_results("CREATE TABLE IF NOT EXISTS ".WDdaemon2." (
       d_time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
       d_uri  varchar(255),
       d_remote varchar(32),
       d_user_agent varchar(255)
     ) $charset_collate;");
-    wddb->get_results("CREATE TABLE IF NOT EXISTS " . WDremotes . " (
-      r_time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
-      r_remote   varchar(32) DEFAULT NULL,
-      r_user_id  varchar(16) DEFAULT NULL,
-      r_country  varchar(32) DEFAULT NULL
-    ) $charset_collate;");
-
+*/
 }
 if (!CLI_MODE) register_activation_hook(__FILE__, 'WD_create_tables');
 
@@ -415,27 +420,53 @@ function WD_getBrowserVersion($browser, $user_agent) {
 }
 
 /**
+ * Get IP domain
+ */
+function getDomain($remote) {
+    global $buffer;
+    if (empty($reply = @$buffer[$remote])) {
+	$domain = trim(shell_exec("host $remote"));;
+	$reply = (preg_match('{not found}',$domain) ? '' : trim(preg_replace(['{.*pointer }','{\s}'], '', $domain)," .\\n\r\t\v\x00"));
+	$buffer[$remote] = $reply;
+    }
+    return $reply;
+};
+
+/**
  * Get the country name from IP, save the result DB using the first 3 digits of IP as key
  */
-function WD_getCC($remote) {
+function WD_getCC($remote, $saveToDB=true) {
+    global $buffer;
     if (in_array($remote, LOCALHOSTs)) return 'localhost';
+
     WD_message('entry');
-    if ($res=wddb->get_results("SELECT * FROM ".WDremotes." WHERE r_remote = '$remote' GROUP BY r_remote")) {
+    if ($res=wddb->get_results("SELECT * FROM ".WDremotes." WHERE r_remote = '$remote' LIMIT 1")) {
 	$country = $res[0]->r_country;
+	if (empty($res[0]->r_domain) && !empty($d=getDomain($remote))) wddb->get_results("UPDATE ".WDremotes." SET r_domain='$d' WHERE r_remote = '$remote'");
+    } elseif (!empty($buffer[$remote])){
+	$country = $buffer[$remote];
     } else {
 	$country = (@json_decode(file_get_contents("http://ip-api.com/json/".$remote)))->country;
-	if ($res=wddb->get_results("SELECT time,user_id  FROM ".WDvisits." WHERE remote = '$remote' ORDER BY time LIMIT 1")) { $time = $res[0]->time; $user_id = $res[0]->user_id; }
-	$args = [];
-	if (isset($time))    $args['r_time']    = $time;
-	if (isset($user_id)) $args['r_user_id'] = $user_id;
-	$args['r_remote']  = $remote;
-	$args['r_country'] = $country;
-	wddb->get_results("INSERT INTO ".WDremotes." (".join(',',array_keys($args)).") VALUES ('".join("','",array_values($args))."')"); 
-	WD_message("Update:".joinX($args));
+	sleep(1);
+	if ($saveToDB) {
+	    // Get the "most frequent flyer"
+	    if ($res=wddb->get_results("SELECT time,user_id  FROM ".WDvisits." WHERE remote = '$remote' ORDER BY time LIMIT 1")) { $time = $res[0]->time; $user_id = $res[0]->user_id; }
+
+	    $args = [];
+	    if (isset($time))    $args['r_time']    = $time;
+	    if (isset($user_id)) $args['r_user_id'] = $user_id;
+	    $args['r_remote']  = $remote;
+	    $args['r_country'] = $country;
+	    $args['r_domain']  = getDomain($remote);
+	    WD_message("Update:".joinX($args));
+	    wddb->get_results("INSERT INTO ".WDremotes." (".join(',',array_keys($args)).") VALUES ('".join("','",array_values($args))."')"); 
+	} elseif (empty($buffer[$remote])) {
+	    $buffer[$remote] = $country;
+	}
     }
-    WD_message("$remote --> $country");
+    // WD_message("$remote --> $country");
     WD_message('exit');
-    return str_replace(" ", "\n", $country);
+    return $country;
 }
 
 /**
@@ -466,7 +497,7 @@ function joinX($a, $skipEmpty=true){
  */
 function truncatePreserveWord($string, $limit = 100, $toTruncate=true) {
     // Return the original string if it is already shorter than the limit
-    //return $string;
+    return $string;
     if (!$toTruncate || mb_strlen($string) <= $limit) return $string;
 
     // Cut the string to the maximum allowed length

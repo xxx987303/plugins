@@ -18,7 +18,8 @@ define('WDvisits',  WDDB . '.wd_visits');
 define('WDdaemon',  WDDB . '.wd_daemon');
 define('WDdaemon2', WDDB . '.wd_daemon_nonfiltered');
 define('WDremotes', WDDB . '.wd_remotes');
-define('wddb', new wpdb(DB_USER, DB_PASSWORD, WDDB, DB_HOST));
+define('wddb', new wpdb(DB_USER, DB_PASSWORD, WDDB,    DB_HOST));
+define('wpdb', new wpdb(DB_USER, DB_PASSWORD, DB_NAME, DB_HOST));
 
 // WD timeout
 define('WD_TIMEOUT', 1000);

@@ -3,11 +3,9 @@
  * Watchdog charts
  */
 
-$notLocal = (PRODUCTION_MODE ? ' remote NOT null AND NOT IN ("' . implode('","', LOCALHOSTs) . '")' : ' 1');
 $notLocal = (PRODUCTION_MODE ? ' remote NOT IN ("' . implode('","', LOCALHOSTs) . '")' : ' 1');
-$mode     = (PRODUCTION_MODE ? " mode='prod' " : "1");
-//define('MY_SITE', " uri REGEXP '".WD_HOME."/[a-zA-Z0-9]+/' AND NOT REGEXP '/[\?]/' AND $notLocal AND $mode AND user_agent IS NOT NULL");
-define('MY_SITE', " uri REGEXP '".WD_HOME."/[a-zA-Z0-9]+/' AND $notLocal AND $mode AND user_agent IS NOT NULL");
+//define('MY_SITE', " uri REGEXP '".WD_HOME."/[a-zA-Z0-9]+/' AND NOT REGEXP '/[\?]/' AND $notLocal AND user_agent IS NOT NULL");
+define('MY_SITE', " uri REGEXP '".WD_HOME."/[a-zA-Z0-9]+/' AND user_id>0 AND $notLocal AND user_agent IS NOT NULL");
 define('VALID_URI', ['restor','restor_tmp','adb','adb_tmp']);
 
 /*
@@ -23,7 +21,7 @@ add_shortcode( 'ChartOS',      'WD_shortcode_ChartOS');
 /**
  *
  */
-function YB_amcharts($shortcode, $atts, $argsCodes) {
+function YB_envoce_amchart($shortcode, $atts, $argsCodes) {
     global $dejaVu_amcharts, $chart_counter, $communicator;
     WD_message('entry');
     if (empty($atts)) WD_message("EMPTY ATTS shortcode=$shortcode argsCodes=".joinX($argsCodes));
@@ -76,7 +74,7 @@ function YB_amcharts($shortcode, $atts, $argsCodes) {
  */
 function WD_shortcode_ChartPages($atts, $content=null, $tag='' ) {
     WD_message('entry');
-    $reply = YB_amcharts('ChartPages',
+    $reply = YB_envoce_amchart('ChartPages',
                           $atts,
                           ['k' => 'page',
                            'v' => 'value']);
@@ -88,7 +86,7 @@ function WD_shortcode_ChartPages($atts, $content=null, $tag='' ) {
  */
 function WD_shortcode_ChartTimes($atts, $content=null, $tag='' ) {
     WD_message('entry');
-    $reply = YB_amcharts('ChartTimes',
+    $reply = YB_envoce_amchart('ChartTimes',
                           $atts,
                           ['k' => 'time',
                            'v' => 'value']);
@@ -101,7 +99,7 @@ function WD_shortcode_ChartTimes($atts, $content=null, $tag='' ) {
  */
 function WD_shortcode_ChartCC($atts, $content=null, $tag='' ) {
     WD_message('entry');
-    $reply = YB_amcharts('ChartCC',
+    $reply = YB_envoce_amchart('ChartCC',
                           $atts,
                           ['k' => 'name',
                            'v' => 'countCC',
@@ -115,7 +113,7 @@ function WD_shortcode_ChartCC($atts, $content=null, $tag='' ) {
  */
 function WD_shortcode_ChartBrowsers($atts, $content=null, $tag='' ) {
     WD_message('entry');
-    $reply = YB_amcharts('ChartBrowsers',
+    $reply = YB_envoce_amchart('ChartBrowsers',
                           $atts,
                           ['k' => 'browser',
                            'v' => 'value']);
@@ -128,7 +126,7 @@ function WD_shortcode_ChartBrowsers($atts, $content=null, $tag='' ) {
  */
 function WD_shortcode_ChartOS($atts, $content=null, $tag='' ) {
     WD_message('entry');
-    $reply = YB_amcharts('ChartOS',
+    $reply = YB_envoce_amchart('ChartOS',
                           $atts,
                           ['k' => 'os',
                            'v' => 'value']);
@@ -142,7 +140,7 @@ function WD_shortcode_ChartOS($atts, $content=null, $tag='' ) {
 
 function WD_shortcode_ChartUsers($atts, $content=null, $tag='' ) {
     WD_message('entry');
-    $reply = YB_amcharts('ChartUsers',
+    $reply = YB_envoce_amchart('ChartUsers',
                           $atts,
                           ['n' => 'name',
                            'v' => 'value',
@@ -203,7 +201,7 @@ function repacker($codes, $atts, $defaults=['id'=>1]) {
  *
  */
 function WD_get_data($type, $chart_id) {
-    global $wpdb, $fillerCount, $dejavu_logs;
+    global $wpdb, $fillerCount, $dejavu_logs, $notLocal;
 
     WD_message('entry');
 
@@ -233,7 +231,8 @@ function WD_get_data($type, $chart_id) {
         WD_message("($type) wpdb error: $e", "warn");
     }
     if (empty($gen)) return [];
-    
+    /**
+     */
     $filler = function(&$data, $key, $value) {
         global $fillerCount;
         $fillerCount++;
@@ -241,6 +240,8 @@ function WD_get_data($type, $chart_id) {
         $data["v$fillerCount"] = $value;
     };
 
+    /**
+     */
     $translator = function ($text) {
 	$tr = ['Jan'=>'Января',
 	       'Feb'=>'Февраля',
@@ -256,30 +257,80 @@ function WD_get_data($type, $chart_id) {
 	       'Dec'=>'Декабря'];
 	return str_replace(array_keys($tr),array_values($tr),$text);
     };
+
+    /**
+     */
+    $getChartData = function($pivot) {
+	global $notLocal;
+	$results = wddb->get_results($sql="SELECT $pivot,user_id,concat_ws('|',time,uri,$pivot) AS stamp,count(*) AS count ".
+					  " FROM wd_visits ".
+					  " LEFT JOIN wd_remotes ON remote=r_remote ".
+					  " WHERE user_id>0 AND ".MY_SITE." AND $notLocal AND remote != '46.252.8.1' ".
+					  " GROUP BY $pivot");
+	$results = wddb->get_results($sql="SELECT $pivot,user_id,concat_ws('|',time,uri,$pivot) AS stamp,count(*) AS count ".
+					  " FROM wd_visits ".
+					  ($pivot=='r_country' ? " LEFT JOIN wd_remotes ON remote=r_remote " : "").
+					  " WHERE user_id>0 AND ".MY_SITE." AND $notLocal AND remote != '46.252.8.1' ".
+					  " GROUP BY $pivot");
+	WD_message("getChartData($pivot) $sql)", "green");
+	// Massage the reply, merge multiple answers (the snipped was provided by Claude AI)
+	$grouped = [];
+	foreach ($results as $item) {
+            $key = $item->$pivot;
+            if (!isset($grouped[$key])) {
+		$grouped[$key] = clone $item;
+            } else {
+		$grouped[$key]->user_id = max($grouped[$key]->user_id, $item->user_id);
+		$grouped[$key]->count  += $item->count;
+            }
+	    unset($grouped[$key]->stamp);
+	}
+	//echo "<pre style=font-size:x-small>";print_r($results);echo"</pre>";
+	//echo "<pre style=font-size:x-small>";print_r(array_values($grouped));echo"</pre>";
+	return (array_values($grouped));
+    };
     
     switch(preg_replace('/[0-9]*$/', '', $type)) {    
+
 	case 'ChartUsers':
-            // Title
-            //        foreach(wddb->get_results("SELECT COUNT(*) AS total_visits, ".
-            //                           "UNIX_TIMESTAMP(MIN(time)) AS t_fr, UNIX_TIMESTAMP(MAX(time)) AS t_to FROM ".WDvisits." WHERE ".MY_SITE) as $r) {
+	    foreach(wddb->get_results($sql="SELECT user_id,count(*) AS visits  FROM wd_visits WHERE ".MY_SITE." GROUP BY  user_id") as $r){
+ 		foreach($getChartData('user_id') as $counter=>$r) {
+		    if (WD_user_not_monitored($r)) continue;
+                    $data["n$counter"] = ($login=YB_display_name($r->user_id,'user_login')); // ('id',$r->user_id)->user_login);
+                    $data["v$counter"] = $r->count;
+                    $data["i$counter"] = ['src' => YB_get_template_file_uri("photos/$login.png", true)];
+		}
+	    }
+	    WD_message($sql,'blue');
             $logsTitle = sprintf("%s ÷ %s %s",
 				 $translator(date('j M Y',$gen->t_fr)), $translator(date('j M Y',$gen->t_to)),
 				 //$gen->total_visits, date('Y-m-d',$gen->t_fr), (date('Y-m-d',$gen->t_to)),
 				 (PRODUCTION_MODE ? "" : " (debug)"));
-            
-            // Data
-            foreach ($logins as $user_id=>$name) {
-		foreach (wddb->get_results($sql="SELECT *, COUNT(*) as visits FROM ".WDvisits." WHERE user_id = $user_id AND ".MY_SITE) as $r) {
-		    if (empty($r->visits)) continue;
-                    $fillerCount++;
-                    $data["n$fillerCount"] = $name;
-                    $data["v$fillerCount"] = $r->visits;
-                    $data["i$fillerCount"] = ['src' => YB_get_template_file_uri("photos/$name.png", true)];
-		}
-            }
-            //var_dump($data);
-            break;
+	    break;
 	    
+	case 'ChartCC':
+/*
+	    //SELECT user_id,concat_ws('|',time,uri,remote) AS stamp,count(*) AS count  FROM wd_visits WHERE user_id>0 AND uri REGEXP '^/(adb|restor)/[a-z0-9]* /$' AND remote != '127.0.0.1' GROUP BY user_id
+//SELECT r_country,user_id,concat_ws('|',time,uri,remote) AS stamp,count(*) AS count  FROM wd_visits LEFT JOIN wd_remotes ON remote=r_remote WHERE user_id>0 AND uri REGEXP '^/(adb|restor)/[a-z0-9]* /$' AND remote NOT IN  ('46.252.8.1','127.0.0.1') GROUP BY user_id;
+            //foreach (wddb->get_results($q="SELECT r_country, COUNT(*) as count FROM ".WDvisits." LEFT JOIN wd_remotes ON r_remote=remote WHERE ".MY_SITE." GROUP BY r_country") as $r) {
+	    foreach (wddb->get_results($sql="SELECT r_country,user_id,concat_ws('|',time,uri,remote) AS stamp,count(*) AS count ".
+					    " FROM wd_visits ".
+					    " LEFT JOIN wd_remotes ON remote=r_remote ".
+					    " WHERE user_id>0 AND ".MY_SITE." AND $notLocal AND remote != '46.252.8.1' ".
+					    " GROUP BY r_country") as $r) {
+		WD_message($sql, 'blue');
+		WD_message(joinX($r));
+            WD_message("$r->count $r->r_country");
+*/
+ 	    foreach($getChartData('r_country') as $counter=>$r) {	    
+		$data["k$counter"] = str_replace(" ","\n",($country=(empty($c=$r->r_country) ? 'localhost' : $c)));
+		$data["v$counter"] = $r->count;
+		$data["s$counter"] = ['src' => YB_get_template_file_uri("flags/".my_slug("$country.png"), true)];
+            }
+            WD_message("($type) ".var_export($data,true));
+            $logsTitle = "Из каких стран смотрят ".(PRODUCTION_MODE ? "" : " (debug)");
+	    break;
+            
 	case 'ChartBrowsers':
             foreach (wddb->get_results($q="SELECT user_agent,  COUNT(*) as count FROM ".WDvisits." WHERE ".MY_SITE." GROUP BY user_agent") as $r) {
 		if (empty($countBR=@$dejavu[$browser=wd_getBrowser($r->user_agent)])) {
@@ -308,29 +359,6 @@ function WD_get_data($type, $chart_id) {
             $logsTitle = 'Какой компьютер' . (PRODUCTION_MODE ? "" : " (debug)");
             break;
             
-	case 'ChartCC':
-            foreach (wddb->get_results($q="SELECT remote, time, COUNT(*) as count FROM ".WDvisits." WHERE ".MY_SITE." GROUP BY remote") as $r) {
-		if (empty($r->remote)) continue;
-		if (PRODUCTION_MODE && in_array($r->remote, LOCALHOSTs)) continue;
-		if ($country =  WD_getCC($r->remote)) {
-		    if (PRODUCTION_MODE && $country == 'localhost') continue;
-                    WD_message("ip='".$r->remote . "' remote=$country count=".$r->count, 'warn');
-                    if (empty($counter=@$dejavu[$country])) {
-			$dejavu[$country] = $counter = ++$fillerCount;
-			$data["k$counter"] = $country;
-			$data["v$counter"] = $r->count;
-			$data["s$counter"] = ['src' => YB_get_template_file_uri("flags/".my_slug(str_replace("\n",' ',"$country.png")), true)];
-                    } else {
-			$data["v$counter"] += $r->count;
-                    }
-		} else {
-                    WD_message("($type) WD_getCC fails for \"".$r->remote."\"", 'warn');
-		}
-            }
-            WD_message("($type) ".var_export($data,true));
-            $logsTitle = "Из каких стран смотрят ".(PRODUCTION_MODE ? "" : " (debug)");
-	    break;
-            
 	case 'ChartTimes':
 	    $times = [];
             foreach (wddb->get_results("SELECT time  FROM ".WDvisits." WHERE ".MY_SITE) as $r) @$times[date('H'.':00', strtotime($r->time))]++;
@@ -341,7 +369,7 @@ function WD_get_data($type, $chart_id) {
 		$data["v$counter"] = $value;
 	    }
 	    WD_message('ChartTimes: '.joinX($data));
-	    $logsTitle = "В какое время смотрят " . (PRODUCTION_MODE ? "" : " (debug)");
+	    $logsTitle = "В какое время дня смотрят " . (PRODUCTION_MODE ? "" : " (debug)");
 	    break;
 	    
 	case 'ChartPages':

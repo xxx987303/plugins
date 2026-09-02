@@ -11,20 +11,18 @@ set -e
 
 tp=yb.onestudio.ch-ssl_log-???-20??
 echo "Processing $tp"
-sleep 1
 
 cd ~/github/plugins.git/simple-watch-dog/logs
-rm -f $tp
-open -g -W $tp.gz
-ls -l $tp
-sleep 1
-for f in $(ls -1 $tp); do
-    # f=$(echo $gz|sed s/.gz$//)
-    # [ -f $f ] || { open -g -W $gz; sleep 5; }
-    tmp=/tmp/$f
-    grep -E "/(adb|restor)/[a-z0-9]*/ " $f > $tmp || echo -n
-    x=$(basename $0)
-    script=$(echo $x|sed s/sh$/php/)
-    php $script $tmp || echo -n
-done
-rm -fv $tp | wc
+
+# Unpack logfiles
+#rm -f $tp;
+#open -g -W $tp.gz
+
+# Get the php script
+x=$(basename $0)
+script=$(echo $x|sed s/sh$/php/)
+
+# Execute it
+php $script "$tp" || echo -n
+
+#rm -fv $tp | wc

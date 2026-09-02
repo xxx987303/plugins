@@ -23,10 +23,10 @@
  *        gessing the user_id
  */
 
-$MY_SITES  = '/(restor|adb)/[a-z0-9]*/';
+$MY_SITES  = '/(restor|adb)/([a-z0-9]*/|XXXwp-login.php)';
+
 define('CLI_MODE', true);
 define('WDdaemon',  '`yb-watch-dog`.`wd_daemon`');
-define('WDdaemon2', '`yb-watch-dog`.`wd_daemon_nonfiltered`');
 define('WDremotes', '`yb-watch-dog`.`wd_remotes`');
 define('WDvisits',  '`yb-watch-dog`.`wd_visits`');
 define('SQL', '/tmp/tempo.sql');
@@ -37,6 +37,7 @@ require_once '/Users/yb/Sites/adb/wp-includes/class-wpdb.php';
 require_once '/Users/yb/Sites/adb/wp-includes/class-wp-hook.php';
 require_once '/Users/yb/Sites/adb/wp-includes/class-wp-user.php';
 require_once '/Users/yb/Sites/adb/wp-includes/cache.php';
+require_once '/Users/yb/Sites/adb/wp-includes/formatting.php';
 require_once __dir__ . '/../includes/functions.php';
 
 define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
@@ -46,12 +47,43 @@ $wp_object_cache  = new WP_Object_Cache();
 $wpdb = wddb;
 
 if (empty($argv[1])) $argv[1] = '';
-if (($log_file = $argv[1]) && file_exists($log_file)) {
-    populate_WDdaemon($log_file);
-    populate_WDdaemon_nonfiltered($log_file);
-} elseif (preg_match('/update/i', $argv[1])) {
+if (0 && preg_match('/7/', $argv[1])) {
+    //
+    // Impose user_id
+    // ==============
+    //
+    WD_impose_user7();
+}elseif (0 && ($ls=shell_exec("ls -1 $argv[1] 2>/dev/null"))) {
+    //
+    // Populate WDdaemon
+    // =================
+    //
+    foreach(explode("\n",$ls) as $log_file) {
+	populate_WDdaemon($log_file);
+    }
+} elseif (0 && preg_match('/update/i', $argv[1])) {
+    //
+    // Upgrade WDvisits with WDdaemon
+    // ==============================
+    //
     WDaemon_to_WDvisits();
+} elseif ('remote' == $argv[1]) {
+    //
+    // Initialise wd_remotes from visits
+    // ===============================
+    //
+    WD_init_remotes();
+} elseif ('import' == $argv[1]) {
+    //
+    // Import wd_visits from cPanel logs
+    // =================================
+    //
+    WD_import_cPanel();
 } else {
+    echo"
+   import - Import cPanel logs
+   remote - Init wd_remotes table 
+";
     die("What do you want me to to?\n");
 }
 exit;
@@ -62,6 +94,9 @@ exit;
 function WDaemon_to_WDvisits() {
     global $MY_SITES;
     
+    echo "Doing ".__function__."\n";
+    echo "Doing ".__function__."\n";
+    echo "Doing ".__function__."\n";
     $MAX_DELAY = 60;
     
     // Collect WDdaemon file names
@@ -125,7 +160,7 @@ function WDaemon_to_WDvisits() {
 	    $duration = $v[0]->delay;
 	}else{
 	    // Guess the user. First skip admin.
-	    $user_id = '';
+	    $user_id = 0;
 	    foreach(wddb->get_results("SELECT user_id FROM $OneStudioDB WHERE user_id != '1' AND remote = '$d->d_remote' GROUP BY user_id") as $r){
 		$user_id = $r->user_id;
 		printf("%-16s user_id %s NON-ADMIN\n", $d->d_remote, $user_id);
@@ -138,8 +173,8 @@ function WDaemon_to_WDvisits() {
 	    
 	    // This record is missing in WDvisits. Should be just one entry with this time
 	    $R = ['time'      => $d->d_time,
-		  'user_id'   => (($id=$user_id) ? $id : 0),
-		  'user_name' => user_name($user_id),
+		  'user_id'   => $user_id,
+		  'user_name' => display_name($user_id),
 		  'uri'       => $d->d_uri,
 		  'remote'    => $d->d_remote,
 		  'duration'  => $duration,
@@ -147,8 +182,10 @@ function WDaemon_to_WDvisits() {
 		  'user_agent'=> $d->d_user_agent,
 	    ];
 	    $sql = "INSERT INTO ".WDvisits." (".join(',',array_keys($R)).") VALUES ('".join("','",array_values($R))."')";
-	    //wddb->get_results($sql);
-	    echo preg_replace(["{INSERT.*VALUES }","{daemon.*}"], ["INSERT",""],$sql)."\n";
+	    wddb->get_results($sql);
+	    echo preg_replace(["{INSERT.*VALUES }", "{daemon.*}"],
+			      ["INSERT", ""],
+			      str_replace(['(',')'],'',$sql))."\n";
 	}
     }
 }
@@ -160,63 +197,11 @@ function WDaemon_to_WDvisits() {
  */
 function populate_WDdaemon($log_file){
     global $MY_SITES;
-
-    foreach(explode("\n",file_get_contents($log_file)) as $line) {
-	if (empty(trim($line))) continue;
-	
-	// Parse the log
-	// 84.17.46.88 - - [14/Oct/2025:12:25:25 -0400] "GET /restor/bt/ HTTP/2" 404 13715 "https://yb.onestudio.ch/restor/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)...
-	$pattern = '/([0-9\.]*) - - \[(.*)\] \"([^\"]*)\" [^\"]*\"([^\"]*)\" \"([^\"]*)\"/';             // recommended
-	$pattern = '/([0-9\.]*) - - \[(.*)\] \"([^\"]*)\" ([\S]*) ([\S]*)[^\"]*\"([^\"]*)\" \"([^\"]*)\"/'; // my extended
-	//           ----IP----     --date--   -"uri"-    --code- --code-        ---url--      ---UA--
-
-	// Combined Log Format:
-	// %h %l %u %t "%r" %s %b "%{Referer}i" "%{User-agent}i"
-
-	if (!preg_match($pattern, $line, $match))  die("??? no match for line \"$line\"\n");
-      //if (!preg_match($pattern, $line, $match))  continue;
-	if (count(array_values($match)) != 8) { print_r($match); die("????\n"); }
-	//print_r($match);	if (@$cont++ > 5) exit;
-
-	$uri   = explode('/',explode(' ', $match[3])[1]);
-	if (empty($uri[2])) continue;
-	$d_uri = "/$uri[1]/".explode('?',$uri[2])[0]."/";
-
-	// Accept "my sites" only
-	if (!preg_match("{".$MY_SITES."}", $d_uri)) continue;
-	    // Accept code 200 only
-	    //if ($match[4] != 200) continue;
-
-	if (empty($ParisTime = getParisTime($match[2]))) {
-	    die("Empty Paris time\n");
-	}
-	$R = ['d_time'      => $ParisTime,
-	      'd_remote'    => $match[1],
-	      'd_uri'       => $d_uri,
-	    //'d_user_agent'=> $match[5],
-	      'd_user_agent'=> $match[7],
-	];
-
-	//echo "\n$line\n";
-	if ($res=wddb->get_results("SELECT * FROM ".WDdaemon." WHERE d_remote='$R[d_remote]'  AND d_time='$R[d_time]' AND d_uri='$R[d_uri]' AND d_user_agent='$R[d_user_agent]'")) {
-	    if (($c=count($res)) !=1 ) die("Count = $c???\n");
-	    unset($res[0]->d_user_agent);
-	    printf("FOUND %s\n",joinX($res[0]));
-        } else {
-	    $sql = 'INSERT INTO '.WDdaemon.' ('.join(',',array_keys($R)).') VALUES ("'.join('","',array_values($R)).'");';
-	    wddb->get_results($sql);
-	    echo "$sql\n";
-	    // if (@$ccccc++) break;
-	}
-    }
-}
-
-/**
- * Read cPanel log file and fill fill wd_daemon database table.
- * Typical entry in cPanel logs:
- * 176.126.133.217 - - [31/Jul/2026:10:07:45 -0400] "GET /restor/device/ HTTP/2" 200 14596 "https://yb.onestudio.ch/restor/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ...
- */
-function populate_WDdaemon_nonfiltered($log_file){
+    
+    if (empty($log_file))  return;
+    echo "Doing ".__function__."\n";
+    echo "Doing ".__function__."\n";
+    echo "Doing ".__function__."\n";
     
     foreach(explode("\n",file_get_contents($log_file)) as $line) {
 	if (empty(trim($line))) continue;
@@ -224,12 +209,39 @@ function populate_WDdaemon_nonfiltered($log_file){
 	$pattern = '/([0-9\.]*) - - \[(.*)\] \"([^\"]*)\" ([\S]*) ([\S]*)[^\"]*\"([^\"]*)\" \"([^\"]*)\"/'; // my extended
 	//           ----IP----     --date--   -"uri"-    --code- --code-        ---url--      ---UA--
 	
-	if (!preg_match($pattern, $line, $match))  die("??? no match for line \"$line\"\n");
+	if (!preg_match($pattern, $line, $match))  {
+	    echo ("??? no match for line \"$line\"\n");
+	    continue;
+	}
 	if (count(array_values($match)) != 8) { print_r($match); die("????\n"); }
 
-	$uri = explode(' ', $match[3])[1];
-	echo "uri=$uri\n";
+	// Get uri, skip rubbish
+	$uri = explode('?', explode(' ', $match[3])[1].'??', 2)[0];
+	//echo "preg_match(;$MY_SITES;, $uri)\n";
+	if (!preg_match(";$MY_SITES;", $uri)) continue; // { echo "no match\n"; continue; }
+	if ( preg_match("{css|/wp-(includes|cron)|/feed/|//}", $uri)) continue;
+	
+	// Look for login attempts
+	if (preg_match('{/wp-login.php}', $uri)) {
+	    // Consider only the known IPs
+	    if (wddb->get_results($sql="SELECT r_remote FROM ".WDremotes." WHERE r_remote = '$match[1]' LIMIT 1")) {
+		echo "ACCEPT KNOWN $match[1] $uri\n";
+		//echo "$sql\n";
+		//exit;
+	    }else{
+		echo "IGNORE $match[1] $uri\n";
+		//echo "$sql\n";
+		continue;
+	    }
+	}
 
+	// IGNORE US, there are too many ....
+	//if (WD_getCC($match[1],false) == 'United States') continue; 
+	
+	// Skip the crawler entries
+	if (preg_match('{bot|crawler|spider|slurp|seek|checker|archiver|agent}',$match[7])) continue;
+
+	// Convert server time to Europe TZ
 	if (empty($ParisTime = getParisTime($match[2]))) die("Empty Paris time\n");
 	
 	$R = ['d_time'      => $ParisTime,
@@ -239,31 +251,226 @@ function populate_WDdaemon_nonfiltered($log_file){
 	];
 
 	//echo "\n$line\n";
-	if ($res=wddb->get_results("SELECT * FROM ".WDdaemon2." WHERE d_remote='$R[d_remote]'  AND d_time='$R[d_time]' AND d_uri='$R[d_uri]' AND d_user_agent='$R[d_user_agent]'")) {
+	if ($res=wddb->get_results("SELECT * FROM ".WDdaemon." WHERE d_remote='$R[d_remote]'  AND d_time='$R[d_time]' AND d_uri='$R[d_uri]' AND d_user_agent='$R[d_user_agent]'")) {
 	    if (($c=count($res)) !=1 ) die("Count = $c???\n");
 	    unset($res[0]->d_user_agent);
-	    printf("FOUND nonfiltered %s\n",joinX($res[0]));
+	    //printf("FOUND nonfiltered %s\n",joinX($res[0]));
         } else {
-	    $sql = 'INSERT INTO '.WDdaemon2.' ('.join(',',array_keys($R)).') VALUES ("'.join('","',array_values($R)).'");';
+	    $sql = 'INSERT INTO '.WDdaemon.' ('.join(',',array_keys($R)).') VALUES ("'.join('","',array_values($R)).'");';
 	    wddb->get_results($sql);
 	    echo "$sql\n";
 	}
     }
+
+    // Assign country to the IPs
+    foreach(wddb->get_results("SELECT d_remote FROM ".WDdaemon." GROUP BY d_remote") as $r) {
+	WD_getCC($r->d_remote);
+    }
 }
 
 /**
- * $logTime = "31/Jul/2026:12:08:17 -0400";
  */
-/*
-function getParisTime($logTime) {
-    // Parse the timestamp and set the target time zone
-    $date = DateTime::createFromFormat('d/M/Y:H:i:s O', $logTime);
-    $date->setTimezone(new DateTimeZone('Europe/Paris'));
-  //$reply = $date->format('d/M/Y:H:i:s O');
-    $reply = $date->format('Y-m-d H:i:s');
-    //echo __function__."($logTime) $reply\n";
-    return $reply;
+function WD_init_remotes() {
+
+    define('dry_run', true);
+    
+    if (!dry_run) wddb->get_results("TRUNCATE TABLE ".WDremotes);
+    foreach (wddb->get_results("SELECT remote FROM ".WDvisits." WHERE remote NOT IN ('".join("','",LOCALHOSTs)."') GROUP BY remote") as $r) {
+	if (dry_run) {
+	    echo "$r->remote\n";
+	}else{
+	    WD_getCC($r->remote);
+	}
+    }
+    
+    if (!dry_run) {
+	wddb->get_results("UPDATE wd_remotes SET r_user_name='Антон' WHERE r_remote='93.158.130.173'");
+	wddb->get_results("UPDATE wd_visits  SET   user_name='Антон' WHERE user_id=4");
+    }
 }
+
+/**
+ *
+ */
+function WD_import_cPanel($tp = 'yb.onestudio.ch-ssl_log-???-20??'){
+    global $MY_SITES;
+
+    $dry_run = true;
+    
+    echo "Doing ".__function__."\n";
+    echo "Doing ".__function__."\n";
+    echo "Doing ".__function__."\n";
+
+    // Get RE
+    $remote3 = function($remote){
+    	$items = explode('.',$remote);
+	$remoteRE = "$items[0].$items[1].$items[2].[0-9]+";
+	return $remoteRE;
+    };
+
+    
+    //
+    // Build list of known countries
+    //
+    $usersByIP = [];
+    // RE - Regular Expression
+    foreach(wddb->get_results("SELECT r_remote,r_user_id,r_country FROM wd_remotes WHERE r_user_id>=0 GROUP BY r_remote") as $r){
+	if ($r->r_country == 'Sweden') $r->r_user_id = 1;
+	elseif ($r->r_user_id == 1) continue;
+	$usersByIP[$remote3($r->r_remote)] = $r->r_user_id;
+    }
+    echo "\nIP regexps\n==========\n";
+    asort($usersByIP);
+    print_r($usersByIP);
+
+    $fmt = "%4s  %-17s %-17s %-37s %5s\n";
+    printf($fmt, 'ID', 'Country', 'Remout', 'Domain', 'Count');
+    foreach(wddb->get_results("SELECT user_id, remote, count(*) AS count ".
+			      "FROM WD_visits ".
+			      "WHERE user_id IN (1,2,3,4,5,6,7,8) AND remote NOT IN ('" . implode("','", LOCALHOSTs) ."') ".
+			      "GROUP BY CONCAT_WS(user_id,remote) ". // CONCAT_WS('|',uri,remote) ".
+			      "ORDER BY user_id") as $r) {
+	printf($fmt, $r->user_id, $r->remote, WD_getCC($r->remote), getDomain($r->remote), $r->count);
+    }
+
+    // Change the misplaced IPs
+    WD_fix_SwissIPs();
+
+    $updates   = ['84.17.46.88'    => '212.233.85.247',
+                  '185.214.97.147' => '194.230.146.126',
+                  '185.225.28.204' => '194.230.146.126'];
+
+    // Loop over the cPanel logs
+    $logs = shell_exec("ls -1 $tp");
+    // print_r($logs);
+    foreach($logs=explode("\n",$logs) as $k=>$log_file){
+	echo "-$k------------------------------------ $log_file\n";
+	if (empty($log_file)) continue;
+	
+	foreach(explode("\n",file_get_contents($log_file)) as $line) {
+	    if (empty(trim($line))) continue;
+	    $pattern = '/([0-9\.]*) - - \[(.*)\] \"([^\"]*)\" ([\S]*) ([\S]*)[^\"]*\"([^\"]*)\" \"([^\"]*)\"/'; // my extended
+	    //           ----IP----     --date--   -"uri"-    --code- --code-        ---url--      ---UA--
+	    
+	    if (!preg_match($pattern, $line, $match)) continue;
+	    if (count(array_values($match)) != 8) { print_r($match); die("????\n"); }
+	    
+	    // Get uri, skip rubbish
+	    $uri = explode('?', explode(' ', $match[3])[1].'??', 2)[0];
+	    if (!preg_match(";$MY_SITES;", $uri)) continue;
+
+	    $remote = str_replace(array_keys($updates),array_values($updates),$match[1]);
+	    //if (empty($usersByIP[$remote])) continue;
+	  //$ok = preg_match('{(91.78.36.225|91.79.37.8)}', $remote, $m);
+	    $ok = preg_match(($re='{^('.join('|',array_keys($usersByIP)).')$}'), $remote, $m);
+	    if (!$ok) continue;
+	    
+	    $ua      = $match[7];
+	    $time    = getParisTime($match[2]);
+	    $country = WD_getCC($remote,false);
+
+	    // Rely of info in wd_remotes table
+	    $user_id = $usersByIP[$remote3($remote)];
+	    //echo "XXX $remote $country $user_id\n";
+
+	    $MAX_DELAY = 60;
+	    $select = "SELECT *,ABS(TIMESTAMPDIFF(SECOND,time,'$time')) AS delay ".
+		      " FROM ".WDvisits.
+		      " WHERE uri='$uri' AND remote='$remote' AND user_agent='$ua'".
+		      " HAVING delay>=0 AND delay<$MAX_DELAY ".
+		      " ORDER BY delay LIMIT 1";
+	    if ($r=wddb->get_results($select)) {
+		// echo "Matched with delay=".$r[0]->delay."\n";
+	    } else {
+		$args=['time'      => $time,
+                       'user_id'   => display_name($user_id, 'ID'),
+                       'user_name' => display_name($user_id),
+		       'uri'       => $uri,
+                       'user_agent'=> $ua,
+                       'remote'    => $remote,
+                       'mode'      => 'daemon',
+		       //'country'   => $country,
+                       //'duration'  => $_POST['duration',,
+		];
+		if ($dry_run) {
+		    echo "INSERT $time $user_id $remote $country $ua\n";
+		}else{
+	            $sql = "INSERT INTO ".WDvisits." (".join(',',array_keys($args)).") VALUES ('".join("','",array_values($args))."')";
+		    echo "$sql\n";
+		    wddb->get_results($sql);
+		}
+	    }
+	}
+    }
+    // Change the misplaced IPs
+    WD_fix_SwissIPs();
+}
+
+/**
+ * 2024-07-17 10:26:39 | 185.214.97.147  |                                  | 2         | Spain           |
+ * 2024-07-17 10:50:43 | 185.225.28.204  |                                  | 2         | North Macedonia |
+ * 2024-07-24 15:25:01 | 194.230.146.126 | mob-194-230-146-126.cgn.sunrise. | 2         | Switzerland     |
+ * 2025-10-05 16:22:04 | 212.233.85.247  |                                  | 3         | Russia
+ * 2025-10-14 18:24:34 | 84.17.46.88     | unn-84-17-46-88.cdn77.com        | 3         | The Netherlands |
+ */
+function WD_fix_SwissIPs(){
+    echo "\n\n".__function__."())\n\n===================\n";
+
+    $WDremotes = '`yb-watch-dog`.`wd_remotes`';
+    $WDvisits  = '`yb-watch-dog`.`wd_visits`';
+    $WDdaemon  = '`yb-watch-dog`.`wd_daemon`';
+    $tblRep    = [$WDvisits  => '',
+		  $WDdaemon  => 'd_'];
+    $tblDel    = [$WDremotes => 'r_'];
+    $updates   = ['84.17.46.88'    => '212.233.85.247',
+		  '185.214.97.147' => '194.230.146.126',
+		  '185.225.28.204' => '194.230.146.126'];
+    
+    foreach(['remote'] as $field) {
+	// Checking the result
+	$Fail = 0;
+	foreach (array_merge($tblRep,
+			     $tblDel) as $tbl=>$prefix) {
+	    foreach($updates as $from=>$to) {
+		$sql = "SELECT {$prefix}{$field}, COUNT(*) AS count FROM $tbl WHERE {$prefix}{$field} = '$from' GROUP BY {$prefix}{$field}";
+		if ($r=wddb->get_results($sql)) { echo "Found  ".$r[0]->count." {$prefix}{$field} = '$from'\n"; $Fail++;}
+		else                            { echo "OK, no  $tbl WHERE {$prefix}{$field} = '$from'\n"; }
+	    }
+	}
+	if (!$Fail) break;
+	
+	// Deleting fields
+	foreach ($tblDel as $table=>$prefix) {
+	    foreach($updates as $from=>$to) {
+		$sql = "DELETE FROM $table WHERE {$prefix}{$field} = '$from'";
+		echo "$sql\n";
+		wddb->get_results($sql);
+	    }
+	}
+	// Updating fields
+	foreach ($tblRep as $table=>$prefix) {
+	    foreach($updates as $from=>$to) {
+		$sql = "UPDATE $table SET {$prefix}{$field} = '$to' WHERE {$prefix}{$field} = '$from'";
+		echo "$sql\n";
+		wddb->get_results($sql);
+	    }
+	}
+	// Checking the result
+	foreach (array_merge($tblRep,
+			     $tblDel) as $tbl=>$prefix) {
+	    foreach($updates as $from=>$to) {
+		$sql = "SELECT * FROM $tbl WHERE {$prefix}{$field} = '$from'";
+		if (wddb->get_results($sql)) { echo "??? still find  $tbl WHERE {$prefix}{$field} = '$from'\n"; }
+		else                         { echo "OK, no  $tbl WHERE {$prefix}{$field} = '$from'\n"; }
+	    }
+	}
+    }
+    echo "\n";
+}
+
+
+/**
+ * $logTime = "31/Jul/2026:12:08:17 -0400";
  */
 function getParisTime($logTime) {
     $date = DateTime::createFromFormat('d/M/Y:H:i:s O', $logTime);
@@ -274,27 +481,64 @@ function getParisTime($logTime) {
     return $date->format('Y-m-d H:i:s');
 }
 
-function user_name($user_id) {
-    if (empty($user_id)) $user_id = 0;
-    if ($u = wpdb->get_results($sql="SELECT * FROM `".DB_NAME."`.`wp_users` WHERE ID = $user_id")) {
-	return $u[0]->display_name;
-    } else {
-	echo "sql=$sql\n";
-	return 'anonymous';
+/**
+ * Fix missing log records...
+ */
+/*
+function WD_impose_user7(){
+    // Set user_id
+    foreach (wddb->get_results("SELECT remote FROM ".WDvisits." LEFT JOIN ".WDremotes." ON r_remote = remote WHERE r_country='Ukraine'") as $r) {
+	wddb->get_results("UPDATE ".WDvisits. " SET   user_id = 7 WHERE   remote = '$r->remote'");
+	wddb->get_results("UPDATE ".WDremotes." SET r_user_id = 7 WHERE r_remote = '$r->remote'");
     }
+    // Check the result
+    foreach([WDvisits=>'',WDremotes=>'r_'] as $db=>$prefix) {
+	printf("\nTable %s\n",$db);
+	//foreach(wddb->get_results("SELECT FROM $db {$prefix}remote,{$prefix}user_id WHERE {$prefix}user_id=7") as $r){
+	foreach(wddb->get_results("SELECT * FROM $db WHERE {$prefix}user_id=7") as $r){
+	    printf("%17s %s\n", $r->{$prefix}{remote}, $r->{$prefix}{user_id});
+	}
+    }
+}
+ */
+
+/**
+ */
+function display_name($user_id,$field='display_name') {
+    if (!empty($user_id) && ($u = wpdb->get_results($sql="SELECT * FROM `".DB_NAME."`.`wp_users` WHERE ID = $user_id"))) {
+	return $u[0]->{$field};
+    } else {
+	//echo "sql=$sql\n";
+	return ($field=='display_name' ? 'anonymous' : 0);
+    }
+}
+
+function is_wp_error( $thing ) {
+	$is_wp_error = ( $thing instanceof WP_Error );
+
+	if ( $is_wp_error ) {
+		/**
+		 * Fires when `is_wp_error()` is called and its parameter is an instance of WP_Error.
+		 *
+		 * @since 5.6.0
+		 *
+		 * @param WP_Error $thing The error object passed to `is_wp_error()`.
+		 */
+		do_action( 'is_wp_error_instance', $thing );
+	}
+
+	return $is_wp_error;
 }
 
 function is_multisite() { return false; }
 
-    function get_user_by( $field, $value ) {
-	$userdata = WP_User::get_data_by( $field, $value );
-	if ( ! $userdata ) {
-		return false;
-	}
-	$user = new WP_User();
-	$user->init( $userdata );
-
-	return $user;
+function get_user_by( $field, $value ) {
+    $user = [];
+    if ($field == 'id')    $field = 'ID';
+    if ($field == 'login') $field = 'user_login';
+    if ($u = wpdb->get_results($sql="SELECT * FROM `".DB_NAME."`.`wp_users` WHERE $field = '$value'")) $user = $u[0];
+    //echo __function__."($field,$value) = ".joinX($user)."\n";
+    return $user;
 }
 
 function YB_message($a='',$m='') {}
