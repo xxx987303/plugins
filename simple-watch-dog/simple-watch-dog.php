@@ -13,7 +13,7 @@
 define("WD_SKIP_ADMIN", PRODUCTION_MODE);
 
 // WD database
-define('WDDB', 'yb-watch-dog');
+define('WDDB', 'yb_watch_dog');
 define('WDvisits',  WDDB . '.wd_visits');
 define('WDdaemon',  WDDB . '.wd_daemon');
 define('WDdaemon2', WDDB . '.wd_daemon_nonfiltered');

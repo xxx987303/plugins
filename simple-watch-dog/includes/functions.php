@@ -101,12 +101,13 @@ if (!CLI_MODE) add_filter( 'query', 'YB_query_fix' );
 
 /**
  */
-function YB_display_name($user_id,$f='display_name') {
-    if (empty($user_id)) $user_id = 0;
+function WD_display_name($user_id,$f='display_name') {
+    if     ($user_id == 999) return ($f == 'display_name' ? 'x999' : 999);
+    elseif (empty($user_id)) $user_id = 0;
     if ($u = wpdb->get_results($sql="SELECT * FROM `".DB_NAME."`.`wp_users` WHERE ID = $user_id")) {
 	return $u[0]->{$f};
     } else {
-	echo "sql=$sql\n";
+	echo __function__."($user_id,$f): sql=$sql\n";
 	return 'anonymous';
     }
 }
@@ -212,6 +213,7 @@ function WD_create_tables() {
       d_time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
       d_uri  varchar(255),
       d_remote varchar(32),
+      d_duration int DEFAULT NULL,
       d_user_agent varchar(255)
     ) $charset_collate;");
 /*
@@ -427,6 +429,7 @@ function getDomain($remote) {
     if (empty($reply = @$buffer[$remote])) {
 	$domain = trim(shell_exec("host $remote"));;
 	$reply = (preg_match('{not found}',$domain) ? '' : trim(preg_replace(['{.*pointer }','{\s}'], '', $domain)," .\\n\r\t\v\x00"));
+	if (preg_match('{noserverscouldbereached}', $reply)) $reply = "From VPN?";
 	$buffer[$remote] = $reply;
     }
     return $reply;
@@ -439,6 +442,8 @@ function WD_getCC($remote, $saveToDB=true) {
     global $buffer;
     if (in_array($remote, LOCALHOSTs)) return 'localhost';
 
+    $DRY_RUN = defined('DRY_RUN') && DRY_RUN;
+    
     WD_message('entry');
     if ($res=wddb->get_results("SELECT * FROM ".WDremotes." WHERE r_remote = '$remote' LIMIT 1")) {
 	$country = $res[0]->r_country;
@@ -447,7 +452,6 @@ function WD_getCC($remote, $saveToDB=true) {
 	$country = $buffer[$remote];
     } else {
 	$country = (@json_decode(file_get_contents("http://ip-api.com/json/".$remote)))->country;
-	sleep(1);
 	if ($saveToDB) {
 	    // Get the "most frequent flyer"
 	    if ($res=wddb->get_results("SELECT time,user_id  FROM ".WDvisits." WHERE remote = '$remote' ORDER BY time LIMIT 1")) { $time = $res[0]->time; $user_id = $res[0]->user_id; }
@@ -458,13 +462,27 @@ function WD_getCC($remote, $saveToDB=true) {
 	    $args['r_remote']  = $remote;
 	    $args['r_country'] = $country;
 	    $args['r_domain']  = getDomain($remote);
-	    WD_message("Update:".joinX($args));
-	    wddb->get_results("INSERT INTO ".WDremotes." (".join(',',array_keys($args)).") VALUES ('".join("','",array_values($args))."')"); 
+	    WD_message("Adding:".joinX($args));
+	    // Optionally save the query for later updates. DRY_RUN is debined only for CLI runs
+	    $sql = "INSERT INTO ".WDremotes." (".join(',',array_keys($args)).") VALUES ('".join("','",array_values($args))."')";
+	    if (defined('DRY_RUN')) WD_save_sql($sql); 
+	    if (!$DRY_RUN) wddb->get_results("INSERT INTO ".WDremotes." (".join(',',array_keys($args)).") VALUES ('".join("','",array_values($args))."')"); 
+	    
+	    //Fix the wd_remots r_time. Вообще-то это выебон...
+            foreach (wddb->get_results("SELECT r_remote,r_time,MIN(time) AS time_min ".
+				       " FROM ".WDvisits.
+				       " LEFT JOIN wd_remotes ON r_remote = remote") as $r) {
+		if ($r->time_min != $r->r_time) {
+		    $sql = "UPDATE ".WDremotes." SET r_time = '".$r->time_min."' WHERE r_remote = '".$r->r_remote."'";
+		    if (defined('DRY_RUN')) WD_save_sql($sql); 
+		    if (!$DRY_RUN) wddb->get_results($sql);
+		    WD_message("Changing r_time($r->r_remote) $r->r_time  -->  $r->time_min");
+		}
+	    }
 	} elseif (empty($buffer[$remote])) {
 	    $buffer[$remote] = $country;
 	}
     }
-    // WD_message("$remote --> $country");
     WD_message('exit');
     return $country;
 }

@@ -5,7 +5,7 @@
 
 $notLocal = (PRODUCTION_MODE ? ' remote NOT IN ("' . implode('","', LOCALHOSTs) . '")' : ' 1');
 //define('MY_SITE', " uri REGEXP '".WD_HOME."/[a-zA-Z0-9]+/' AND NOT REGEXP '/[\?]/' AND $notLocal AND user_agent IS NOT NULL");
-define('MY_SITE', " uri REGEXP '".WD_HOME."/[a-zA-Z0-9]+/' AND user_id>0 AND $notLocal AND user_agent IS NOT NULL");
+define('MY_SITE', " uri REGEXP '".WD_HOME."/([a-zA-Z0-9]+|55120-2|from-archive)/' AND user_id>0 AND $notLocal AND user_agent IS NOT NULL");
 define('VALID_URI', ['restor','restor_tmp','adb','adb_tmp']);
 
 /*
@@ -296,7 +296,7 @@ function WD_get_data($type, $chart_id) {
 	    foreach(wddb->get_results($sql="SELECT user_id,count(*) AS visits  FROM wd_visits WHERE ".MY_SITE." GROUP BY  user_id") as $r){
  		foreach($getChartData('user_id') as $counter=>$r) {
 		    if (WD_user_not_monitored($r)) continue;
-                    $data["n$counter"] = ($login=YB_display_name($r->user_id,'user_login')); // ('id',$r->user_id)->user_login);
+                    $data["n$counter"] = ($login=WD_display_name($r->user_id,'user_login')); // ('id',$r->user_id)->user_login);
                     $data["v$counter"] = $r->count;
                     $data["i$counter"] = ['src' => YB_get_template_file_uri("photos/$login.png", true)];
 		}

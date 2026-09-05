@@ -1,13 +1,13 @@
 #! /bin/bash
 #
-# This script creates `yb-watch-dog`.`wd_visits` table with data from OneStudio
+# This script creates `yb_watch_dog`.`wd_visits` table with data from OneStudio
 # -----------------------------------------------------------------------------
 #
 
 set -x
 set -e
 
-database="yb-watch-dog"
+database="yb_watch_dog"
 
 # Run script restor_one_M2:
 # ~/bin/restor_one_M2.sh
