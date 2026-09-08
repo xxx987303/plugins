@@ -3,17 +3,19 @@
  * 4. ProcessWire side (e.g. site/init.php or a small autoload module)
  */
 
-require_once __DIR__ . '/../shared/sso-bridge.php';
+require_once __dir__ . '/SSOBridge.php';
 
 function sso_get_bridge(): \SSOBridge {
+    global $config;
     static $bridge = null;
+
     if ($bridge === null) {
         $pdo = new \PDO(
             'mysql:host=localhost;dbname=sso_shared;charset=utf8mb4',
-            'ssouser', getenv('SSO_DB_PASS'),
+	    $config->dbUser, $config->dbPass,
             [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
         );
-        $bridge = new \SSOBridge($pdo, '.example.com');
+        $bridge = new \SSOBridge($pdo, SSO_DOMAIN);
     }
     return $bridge;
 }

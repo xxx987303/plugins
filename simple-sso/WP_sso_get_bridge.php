@@ -1,17 +1,17 @@
 <?php
 /* Plugin Name: SSO Bridge */
 
-require_once '/path/to/shared/sso-bridge.php';
+require_once __dir__ . '/SSOBridge.php';
 
 function sso_get_bridge(): SSOBridge {
     static $bridge = null;
     if ($bridge === null) {
         $pdo = new PDO(
-            'mysql:host=localhost;dbname=sso_shared;charset=utf8mb4',
-            'ssouser', getenv('SSO_DB_PASS'),
+            'mysql:host='.DB_HOST.';dbname=sso_shared;charset=utf8mb4',
+            DB_USER, DB_PASSWORD,
             [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
         );
-        $bridge = new SSOBridge($pdo, '.example.com');
+        $bridge = new SSOBridge($pdo, SSO_DOMAIN);
     }
     return $bridge;
 }
