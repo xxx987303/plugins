@@ -10,26 +10,35 @@ function sso_get_bridge(): \SSOBridge {
     static $bridge = null;
 
     if ($bridge === null) {
-        $pdo = new \PDO(
-            'mysql:host=localhost;dbname=sso_shared;charset=utf8mb4',
+	try {
+        $pdo = new \PDO( 'mysql:host=localhost;dbname=yb_sso;charset=utf8mb4',
 	    $config->dbUser, $config->dbPass,
             [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
         );
+	} catch (PDOException $e) {
+	    echo "FAILED: " . $e->getMessage();
+	}
         $bridge = new \SSOBridge($pdo, SSO_DOMAIN);
     }
     return $bridge;
 }
-
+/*
 // A. On successful PW login, register the shared session
 $wire->addHookAfter('Session::login', function (HookEvent $event) {
-    $user = $event->return; // the logged-in User, or false on failure
+    $user = $event->return;
     if ($user && $user->id) {
-        sso_get_bridge()->createSession($user->email);
+        try {
+            sso_get_bridge()->createSession($user->email);
+        } catch (\Throwable $e) {
+            error_log('[SSO] createSession failed: ' . $e->getMessage());
+            // swallow it — local login must still succeed
+        }
     }
 });
 
 // B. On every load, if not locally logged in, check for a valid SSO session
 if (!$wire->user->isLoggedin()) {
+    debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
     $email = sso_get_bridge()->getSessionEmail();
     if ($email) {
         $pwUser = $wire->users->get("email=$email");
@@ -43,3 +52,4 @@ if (!$wire->user->isLoggedin()) {
 $wire->addHookBefore('Session::logout', function (HookEvent $event) {
     sso_get_bridge()->destroySession();
 });
+ */

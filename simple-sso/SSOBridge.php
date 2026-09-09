@@ -5,31 +5,45 @@
  */
 // SSOBridge.php
 
-define('SSO_DOMAIN', $_SERVER['HTTP_HOST']);
+define('TS', 'Y-m-d H:i:s');
+define('SSO_DOMAIN', @$_SERVER['HTTP_HOST']);
+if (!defined('LOCALHOSTs')) define('LOCALHOSTs', ['127.0.0.1', '::1', 'localhost']);
 
 /**
+ *function setcookie(
+ *    string $name,
+ *    string $value = "",
+ *    int $expires_or_options = 0,
+ *    string $path = "",
+ *    string $domain = "",
+ *    bool $secure = false,
+ *    bool $httponly = false
+ *   ): bool
  */
-class SSOBridge {
+class SSOBridge
+{
     private PDO $db;
     private string $cookieName = 'SSOSESSID';
     private string $cookieDomain;
     private int $ttl = 60 * 60 * 24 * 14; // 14 days
 
-    public function __construct(PDO $db, string $cookieDomain) {
+    public function __construct(PDO $db, string $cookieDomain)
+    {
         $this->db = $db;
         $this->cookieDomain = $cookieDomain;
 	$this->initDB();
     }
 
     /** Create table(s) if not yet done */
-    public function initDB() {
-	$sql = "CREATE DATABASE IF NOT EXISTS `sso_shared`;
-                CREATE TABLE    IF NOT EXISTS `sso_shared`.`sso_sessions` (
+    public function initDB()
+    {
+	$sql = "CREATE DATABASE IF NOT EXISTS `yb_sso`;
+                CREATE TABLE    IF NOT EXISTS `yb_sso`.`sso_sessions` (
                  token         CHAR(64)      PRIMARY KEY,
                  user_email    VARCHAR(255)  NOT NULL,
-                 created_at    INT UNSIGNED  NOT NULL,
-                 expires_at    INT UNSIGNED  NOT NULL,
-                 last_seen_at  INT UNSIGNED  NOT NULL,
+                 created_at    datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                 expires_at    datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                 last_seen_at  datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
                  ip            VARCHAR(45),
                  user_agent    VARCHAR(255),
                  KEY idx_email (user_email),
@@ -40,7 +54,8 @@ class SSOBridge {
     }
     
     /** Call right after a successful local login on either site. */
-    public function createSession(string $email): string {
+    public function createSession(string $email): string
+    {
         $token = bin2hex(random_bytes(32));
         $now = time();
 
@@ -52,10 +67,10 @@ class SSOBridge {
         $stmt->execute([
             ':token' => $token,
             ':email' => $email,
-            ':now'   => $now,
-            ':exp'   => $now + $this->ttl,
-            ':ip'    => $_SERVER['REMOTE_ADDR'] ?? '',
-            ':ua'    => substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 255),
+            ':now'   => date(TS,$now),
+            ':exp'   => date(TS,$now + $this->ttl),
+            ':ip'    => in_array(($ip=$_SERVER['REMOTE_ADDR']), LOCALHOSTs) ? '127.0.0.1' : $ip,
+	    ':ua'    => substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 255),
         ]);
 
         setcookie($this->cookieName, $token, [
@@ -71,7 +86,8 @@ class SSOBridge {
     }
 
     /** Call on every page load. Returns the logged-in email, or null. */
-    public function getSessionEmail(): ?string {
+    public function getSessionEmail(): ?string
+    {
         $token = $_COOKIE[$this->cookieName] ?? null;
         if (!$token || !preg_match('/^[a-f0-9]{64}$/', $token)) {
             return null;
@@ -83,23 +99,27 @@ class SSOBridge {
         $stmt->execute([':token' => $token]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$row || $row['expires_at'] < time()) {
+        if (!$row || strtotime($row['expires_at']) < time()) {
             $this->destroySession(); // stale/invalid cookie, clean it up
             return null;
         }
 
         // sliding expiry — keep active users logged in
         $this->db->prepare("UPDATE sso_sessions SET last_seen_at = :now WHERE token = :token")
-                 ->execute([':now' => time(), ':token' => $token]);
+                 ->execute([':now' => date(TS,time()), ':token' => $token]);
 
         return $row['user_email'];
     }
 
     /** Call on logout from either site. */
-    public function destroySession(): void {
+    public function destroySession(): void
+    {
         $token = $_COOKIE[$this->cookieName] ?? null;
-        if ($token) $this->db->prepare("DELETE FROM sso_sessions WHERE token = :token")->execute([':token' => $token]);
-	
+        if ($token) {
+	    $this->db->prepare("DELETE FROM sso_sessions WHERE token = :token")
+		     ->execute([':token' => $token]);
+	}
+
         setcookie($this->cookieName, '', [
             'expires'  => time() - 3600,
             'path'     => '/',

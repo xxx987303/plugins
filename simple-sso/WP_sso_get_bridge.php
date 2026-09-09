@@ -7,7 +7,7 @@ function sso_get_bridge(): SSOBridge {
     static $bridge = null;
     if ($bridge === null) {
         $pdo = new PDO(
-            'mysql:host='.DB_HOST.';dbname=sso_shared;charset=utf8mb4',
+            'mysql:host='.DB_HOST.';dbname=yb_sso;charset=utf8mb4',
             DB_USER, DB_PASSWORD,
             [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
         );
