@@ -29,7 +29,8 @@ define('WDdaemon',  '`yb_watch_dog`.`wd_daemon`');
 define('WDremotes', '`yb_watch_dog`.`wd_remotes`');
 define('WDvisits',  '`yb_watch_dog`.`wd_visits`');
 define('SQL', '/tmp/tempo.sql');
-define( 'WPINC', 'wp-includes' );
+define('WPINC', 'wp-includes' );
+define('TS', 'Y-m-d H:i:s');
 
 $root = __dir__ . '/../../../../';
 $MY_SITES  = '/(restor|adb)/([a-z0-9]+|55120-2|from-archive)/';
@@ -37,10 +38,11 @@ if (DRY_RUN) for($k=0; $k<5; $k++) echo "----------------------------------- DRY
 
 require_once "$root/Sites/adb/wp-config.php";
 require_once "$root/Sites/adb/wp-includes/class-wpdb.php";
-require_once "$root/Sites/adb/wp-includes/class-wp-hook.php";
+//require_once "$root/Sites/adb/wp-includes/class-wp-hook.php";
 require_once "$root/Sites/adb/wp-includes/class-wp-user.php";
 require_once "$root/Sites/adb/wp-includes/cache.php";
 require_once "$root/Sites/adb/wp-includes/formatting.php";
+require_once "$root/Sites/adb/wp-includes/plugin.php";
 require_once __dir__ . "/../includes/functions.php";
 
 define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
@@ -49,6 +51,14 @@ define('wpdb', new wpdb(DB_USER, DB_PASSWORD, DB_NAME, DB_HOST));
 $wp_object_cache  = new WP_Object_Cache();
 $wpdb = wddb;
 
+// Apache logs pattern
+define('PATTERN', '/^(\S+) \S+ \S+ \[([^\]]+)\] "\S+ (\S+) [^"]*" (\d+) (\S+) "[^"]*" "([^"]*)"/');
+
+// Some strange IP-addresses
+define('IP_UPDATES', ['84.17.46.88'    => '212.233.85.247',
+                      '185.214.97.147' => '194.230.146.126',
+                      '185.225.28.204' => '194.230.146.126']);
+    
 if (@$argv[1] == 'remote') {
     //
     // Initialise wd_remotes from visits
@@ -61,11 +71,13 @@ if (@$argv[1] == 'remote') {
     // =================================
     //
     if (0) {
-	foreach(['May','Jun','Jul','Aug','Sep'] as $m) {
+	foreach(['Aug'] as $m) {
+      //foreach(['May','Jun','Jul','Aug','Sep'] as $m) {
 	    WD_import_cPanel("yb.onestudio.ch-ssl_log-$m-2026", $argv[1]);
 	}
     } else {
-	    WD_import_cPanel("yb.onestudio.ch-ssl_log-???-20??", $argv[1]);
+	//if ($argv[1] == 'daemon') wddb->query('TRUNCATE TABLE '.WDdaemon);
+	WD_import_cPanel("yb.onestudio.ch-ssl_log-???-20??", $argv[1]);
     }
 }else{
     echo"
@@ -84,12 +96,12 @@ function WD_init_remotes() {
     WD_getCC('95.75.213.135',  !DRY_RUN);
     WD_getCC('176.223.173.229',!DRY_RUN);
 
-    //if (!DRY_RUN) wddb->get_results("TRUNCATE TABLE ".WDremotes);
+    //if (!DRY_RUN) wddb->query("TRUNCATE TABLE ".WDremotes);
     foreach (wddb->get_results("SELECT remote FROM ".WDvisits." WHERE remote NOT IN ('".join("','",LOCALHOSTs)."') GROUP BY remote") as $r) {
- WD_getCC($r->remote, !DRY_RUN);
+	WD_getCC($r->remote, !DRY_RUN);
     }
 
-    wddb->get_results("UPDATE wd_visits  SET   user_name='Антон' WHERE user_id=4");
+    wddb->query("UPDATE wd_visits  SET   user_name='Антон' WHERE user_id=4");
 }
 
 /**
@@ -103,6 +115,9 @@ function WD_import_cPanel($logs_template, $mode) {
     echo "Doing ".__function__."\n";
     echo "Doing ".__function__."\n";
 
+    // Get the legal bots list
+    $crawlers = WD_getCrawlers($logs_template);
+    
     // Get RE
     $remote3 = function($remote){
 	$items = explode('.',$remote);
@@ -141,9 +156,6 @@ function WD_import_cPanel($logs_template, $mode) {
     // Change the misplaced IPs
     WD_fix_SwissIPs();
 
-    $updates   = ['84.17.46.88'    => '212.233.85.247',
-                  '185.214.97.147' => '194.230.146.126',
-                  '185.225.28.204' => '194.230.146.126'];
     //
     // Loop over the cPanel logs
     //
@@ -154,26 +166,33 @@ function WD_import_cPanel($logs_template, $mode) {
 	foreach(explode("\n",file_get_contents($log_file)) as $line) {
 	    if (empty(trim($line))) continue;
 
-	    $pattern = '/^(\S+) \S+ \S+ \[([^\]]+)\] "\S+ (\S+) [^"]*" \d+ \S+ "[^"]*" "([^"]*)"/';
-	    if (!preg_match($pattern, $line, $match)) continue;
-	    if (count(array_values($match)) != 5) { print_r($match); die("????\n"); }
+	    //46.252.8.1 - - [05/Sep/2026:06:51:27 -0400] "GET /adb/stat/ HTTP/3" 200 15681 "https://yb.onestudio.ch/adb/" "Mozilla/5.0 ...  Firefox/154.0"
+	    if (!preg_match(PATTERN, $line, $match)) continue;
+	    //if (count(array_values($match)) != 7) { print_r($match); die("????\n"); }
 
-	    $remote    = str_replace(array_keys($updates),array_values($updates),$match[1]);
+	    $remote    = str_replace(array_keys(IP_UPDATES),array_values(IP_UPDATES),$match[1]);
 	    $time      = getParisTime($match[2]); // e.g. 31/Jul/2026:12:08:17 -0400
 	    $uri       = $match[3];
-	    $ua        = $match[4] !== '' ? $match[4] : '(unknown)';
+	    $status    = $match[4];
+	    $size      = $match[5];
+	    $ua        = $match[6] !== '' ? $match[6] : '(unknown)';
 
+	    // Skip crawlers
+	    if (preg_match($crawlers, $remote)) continue;
+	    if (preg_match("{crawler}", $ua))   continue;
+	    
 	    // Get nake uri
 	    $uri = explode('?', $uri.'??', 2)[0];
-	    if (!preg_match(";$MY_SITES;", $uri)) continue;
+	    if (!preg_match(($s=";$MY_SITES;"), $uri, $m))   { continue; }
 	    if ( preg_match("{wp-|https|/feed/}", $uri)) continue;
- 	
 	    $country   = @WD_getCC($remote, true);
 	    //if ($country == 'United States') continue;
  	    $args = ($mode == 'daemon'
  		? ['d_time'    => $time,
 		   'd_uri'     => $uri,
 		   'd_remote'  => $remote,
+		   'd_status'  => $status,
+		   'd_size'    => $size,
 		   'd_user_agent'=> $ua]
  		: ['time'      => $time,
                    'user_id'   => $user_id,
@@ -238,13 +257,72 @@ function WD_import_cPanel($logs_template, $mode) {
  * whenever the gap between two consecutive requests exceeds a timeout.
  *
  */
-function set_duration($logfile) {
+function set_duration() {
+
+    date_default_timezone_set("Europe/Paris");
+    $timeoutSeconds = 15 * 60;
+
+    // Loop thru wd_daemon
+    $requests = []; // key = ip|user-agent, value = array of unix timestamps
+    foreach(wddb->get_results("SELECT d_time,d_remote,d_user_agent,d_uri FROM ".WDdaemon) as $r){
+	if (!($dt = DateTime::createFromFormat(TS, $r->d_time))) die("continue; // skip unparseable timestamps\n");
+	//printf("%-15s %s %-15s\n", $r->d_remote, $r->d_time, $r->d_uri);
+	$key = implode('|', [$r->d_remote, $r->d_user_agent]);
+	$requests[$key][] = $dt->getTimestamp();
+	//echo $r->d_time." --> ".date(TS,$dt->getTimestamp())."\n"; exit;
+    }
+
+    foreach ($requests as $key => $timestamps) {
+	[$ip, $userAgent] = explode('|', $key, 2);
+	sort($timestamps);
+
+	$sessionStart = $timestamps[0];
+	$prevTime     = $timestamps[0];
+	$requestCount = 1;
+
+	$flushSession = function ($start, $end, $count) use ($ip, $userAgent) {
+	    $duration = $end - $start;
+            $startFmt = date(TS, $start);
+            $endFmt   = date(TS, $end);
+            $uaEscaped = str_replace('"', '""', $userAgent);
+	    //        echo "\"$ip\",\"$uaEscaped\",\"$startFmt\",\"$endFmt\",$duration,$count\n";
+	    $sql = "UPDATE wd_daemon SET d_duration = $duration WHERE d_time = '$startFmt' AND d_remote='$ip' AND d_user_agent='$userAgent'";
+	    echo "$sql;\n";
+	    //if (wddb->get_results("SELECT * FROM wd_daemon WHERE d_time='$startFmt'")) echo "startFmt $startFmt\n";
+	    //if (wddb->get_results("SELECT * FROM wd_daemon WHERE d_time='$endFmt'"))   echo "endFmt   $endFmt\n";
+	    if (!DRY_RUN) {
+		// wddb->get_results($sql);
+		if (false === ($rows_affected = wddb->query(wddb->prepare($sql,'active','subscriber'))) || empty($rows_affected)) {
+		    // echo "An error occurred during the update query\n";
+		} else {
+		    echo $rows_affected . " row(s) were successfully updated.\n";
+		}
+	    }
+	};
+
+	for ($i = 1; $i < count($timestamps); $i++) {
+            $gap = $timestamps[$i] - $prevTime;
+            if ($gap > $timeoutSeconds) {
+ 		// Gap too large: close out the current session, start a new one
+ 		$flushSession($sessionStart, $prevTime, $requestCount);
+ 		$sessionStart = $timestamps[$i];
+ 		$requestCount = 0;
+            }
+            $prevTime = $timestamps[$i];
+            $requestCount++;
+	}
+
+	// Flush the final session for this ip+user-agent group
+	$flushSession($sessionStart, $prevTime, $requestCount);
+    }
+}
+function set_duration_Claude($logfile) {
     global $MY_SITES;
 
     date_default_timezone_set("Europe/Paris");
 
     $timeoutSeconds = 15 * 60;
-    $pattern = '/^(\S+) \S+ \S+ \[([^\]]+)\] "\S+ (\S+) [^"]*" \d+ \S+ "[^"]*" "([^"]*)"/';
+    $PATTERN = '/^(\S+) \S+ \S+ \[([^\]]+)\] "\S+ (\S+) [^"]*" \d+ \S+ "[^"]*" "([^"]*)"/';
 
     if (!($handle = fopen(__dir__."/../logs/".basename($logfile), 'r'))) {
 	fwrite(STDERR, "Failed to open $logfile.\n");
@@ -253,7 +331,7 @@ function set_duration($logfile) {
 
     $requests = []; // key = ip|user-agent, value = array of unix timestamps
     while (($line = fgets($handle)) !== false) {
-	if (!preg_match($pattern, $line, $m)) continue; // skip lines that don't match (malformed / different log format)
+	if (!preg_match($PATTERN, $line, $m)) continue; // skip lines that don't match (malformed / different log format)
 	$ip        = $m[1];
 	$timeStr   = $m[2]; // e.g. 31/Jul/2026:12:08:17 -0400
 	$uri       = $m[3];
@@ -261,7 +339,7 @@ function set_duration($logfile) {
 	if (!preg_match(";$MY_SITES;", $uri)) continue;
 
 	// Parse Apache log time format: d/M/Y:H:i:s O
-	if (!($dt = DateTime::createFromFormat('d/M/Y:H:i:s O', $timeStr))) continue; // skip unparseable timestamps
+	if (!($dt = DateTime::createFromFormat(TS, $timeStr))) die("continue; // skip unparseable timestamps\n");
 	//printf("%-15s %s %-15s\n", $ip, $timeStr, $uri);
 	$key = $ip . '|' . $userAgent;
 	//$requests[$key][] = getParisTime($timeStr);
@@ -282,8 +360,8 @@ function set_duration($logfile) {
 
 	$flushSession = function ($start, $end, $count) use ($ip, $userAgent) {
             $duration = $end - $start;
-            $startFmt = date('Y-m-d H:i:s', $start);
-            $endFmt   = date('Y-m-d H:i:s', $end);
+            $startFmt = date(TS, $start);
+            $endFmt   = date(TS, $end);
             $uaEscaped = str_replace('"', '""', $userAgent);
 	    //        echo "\"$ip\",\"$uaEscaped\",\"$startFmt\",\"$endFmt\",$duration,$count\n";
 	    $sql = "UPDATE wd_daemon SET d_duration = $duration WHERE d_time = '$startFmt'";
@@ -327,54 +405,74 @@ function WD_fix_SwissIPs(){
     $tblRep    = [$WDvisits  => '',
  	  $WDdaemon  => 'd_'];
     $tblDel    = [$WDremotes => 'r_'];
-    $updates   = ['84.17.46.88'    => '212.233.85.247',
- 	  '185.214.97.147' => '194.230.146.126',
- 	  '185.225.28.204' => '194.230.146.126'];
-
+    
     foreach(['remote'] as $field) {
- // Checking the result
- $Fail = 0;
- foreach (array_merge($tblRep,
- 		     $tblDel) as $tbl=>$prefix) {
-     foreach($updates as $from=>$to) {
- 	$sql = "SELECT {$prefix}{$field}, COUNT(*) AS count FROM $tbl WHERE {$prefix}{$field} = '$from' GROUP BY {$prefix}{$field}";
- 	if ($verbose) {
- 	    if ($r=wddb->get_results($sql)) { echo "Found  ".$r[0]->count." {$prefix}{$field} = '$from'\n"; $Fail++;}
- 	    else                            { echo "OK, no  $tbl WHERE {$prefix}{$field} = '$from'\n"; }
- 	}
-     }
- }
- if (!$Fail) break;
-
- // Deleting fields
- foreach ($tblDel as $table=>$prefix) {
-     foreach($updates as $from=>$to) {
- 	$sql = "DELETE FROM $table WHERE {$prefix}{$field} = '$from'";
- 	if ($verbose) echo "$sql\n";
- 	wddb->get_results($sql);
-     }
- }
- // Updating fields
- foreach ($tblRep as $table=>$prefix) {
-     foreach($updates as $from=>$to) {
- 	$sql = "UPDATE $table SET {$prefix}{$field} = '$to' WHERE {$prefix}{$field} = '$from'";
- 	if ($verbose) echo "$sql\n";
- 	wddb->get_results($sql);
-     }
- }
- // Checking the result
- foreach (array_merge($tblRep,
- 		     $tblDel) as $tbl=>$prefix) {
-     foreach($updates as $from=>$to) {
- 	$sql = "SELECT * FROM $tbl WHERE {$prefix}{$field} = '$from'";
- 	if (wddb->get_results($sql)) { echo "??? still find  $tbl WHERE {$prefix}{$field} = '$from'\n"; }
- 	else                         { echo "OK, no  $tbl WHERE {$prefix}{$field} = '$from'\n"; }
-     }
- }
+	// Checking the result
+	$Fail = 0;
+	foreach (array_merge($tblRep,
+ 			     $tblDel) as $tbl=>$prefix) {
+	    foreach(IP_UPDATES as $from=>$to) {
+ 		$sql = "SELECT {$prefix}{$field}, COUNT(*) AS count FROM $tbl WHERE {$prefix}{$field} = '$from' GROUP BY {$prefix}{$field}";
+ 		if ($verbose) {
+ 		    if ($r=wddb->get_results($sql)) { echo "Found  ".$r[0]->count." {$prefix}{$field} = '$from'\n"; $Fail++;}
+ 		    else                            { echo "OK, no  $tbl WHERE {$prefix}{$field} = '$from'\n"; }
+ 		}
+	    }
+	}
+	if (!$Fail) break;
+	
+	// Deleting fields
+	foreach ($tblDel as $table=>$prefix) {
+	    foreach(IP_UPDATES as $from=>$to) {
+ 		$sql = "DELETE FROM $table WHERE {$prefix}{$field} = '$from'";
+ 		if ($verbose) echo "$sql\n";
+ 		wddb->get_results($sql);
+	    }
+	}
+	// Updating fields
+	foreach ($tblRep as $table=>$prefix) {
+	    foreach(IP_UPDATES as $from=>$to) {
+ 		$sql = "UPDATE $table SET {$prefix}{$field} = '$to' WHERE {$prefix}{$field} = '$from'";
+ 		if ($verbose) echo "$sql\n";
+ 		wddb->get_results($sql);
+	    }
+	}
+	// Checking the result
+	foreach (array_merge($tblRep,
+ 			     $tblDel) as $tbl=>$prefix) {
+	    foreach(IP_UPDATES as $from=>$to) {
+ 		$sql = "SELECT * FROM $tbl WHERE {$prefix}{$field} = '$from'";
+ 		if (wddb->get_results($sql)) { echo "??? still find  $tbl WHERE {$prefix}{$field} = '$from'\n"; }
+ 		else                         { echo "OK, no  $tbl WHERE {$prefix}{$field} = '$from'\n"; }
+	    }
+	}
     }
     echo "\n";
 }
 
+/**
+ */
+function WD_getCrawlers($template) {
+    
+    $cmd = "cat  ".__dir__."/../logs/$template | grep -E '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+ .*robots.txt'";
+    $crawlers = ['66.249.93.102',
+		 '192.178.11.133',
+		 '31.220.97.[0-9]+',
+		 '104.164.126.[0-9]+',
+		 '104.252.191.[0-9]+',
+		 '107.172.195.[0-9]+',
+		 '176.126.133.[0-9]+',
+		 '65.21.124.[0-9]+'];
+    
+    foreach(explode("\n",shell_exec($cmd)) as $line) {
+	if (empty(trim($line))) continue;
+	echo "$line\n";
+	echo PATTERN."\n";
+	if (!preg_match(PATTERN, $line, $match)) die("Something is wrong\n");
+	$crawlers[] = ($remote = str_replace(array_keys(IP_UPDATES),array_values(IP_UPDATES),$match[1]));
+    }
+    return  '{'.implode('|',array_unique($crawlers)).'}';
+}
 
 /**
  * $logTime = "31/Jul/2026:12:08:17 -0400";
@@ -385,7 +483,7 @@ function getParisTime($logTime) {
         return null; // caller can skip/flag this line instead of crashing
     }
     $date->setTimezone(new DateTimeZone('Europe/Paris'));
-    return $date->format('Y-m-d H:i:s');
+    return $date->format(TS);
 }
 
 /**
@@ -433,6 +531,117 @@ function get_user_by( $field, $value ) {
 }
 
 function YB_message($a='',$m='') {}
+
+if (!function_exists('add_filter')) {
+    function add_filter( $hook_name, $callback, $priority = 10, $accepted_args = 1 ) {
+	global $wp_filter;
+
+	if ( ! isset( $wp_filter[ $hook_name ] ) ) {
+		$wp_filter[ $hook_name ] = new WP_Hook();
+	}
+
+	$wp_filter[ $hook_name ]->add_filter( $hook_name, $callback, $priority, $accepted_args );
+
+	return true;
+}
+}
+
+function wp_load_translations_early() {
+	global $wp_textdomain_registry, $wp_locale;
+	static $loaded = false;
+
+	if ( $loaded ) {
+		return;
+	}
+
+	$loaded = true;
+
+	if ( function_exists( 'did_action' ) && did_action( 'init' ) ) {
+		return;
+	}
+
+	// We need $wp_local_package.
+	require ABSPATH . WPINC . '/version.php';
+
+	// Translation and localization.
+	require_once ABSPATH . WPINC . '/pomo/mo.php';
+	require_once ABSPATH . WPINC . '/l10n/class-wp-translation-controller.php';
+	require_once ABSPATH . WPINC . '/l10n/class-wp-translations.php';
+	require_once ABSPATH . WPINC . '/l10n/class-wp-translation-file.php';
+	require_once ABSPATH . WPINC . '/l10n/class-wp-translation-file-mo.php';
+	require_once ABSPATH . WPINC . '/l10n/class-wp-translation-file-php.php';
+	require_once ABSPATH . WPINC . '/l10n.php';
+	require_once ABSPATH . WPINC . '/class-wp-textdomain-registry.php';
+	require_once ABSPATH . WPINC . '/class-wp-locale.php';
+	require_once ABSPATH . WPINC . '/class-wp-locale-switcher.php';
+
+	// General libraries.
+	require_once ABSPATH . WPINC . '/plugin.php';
+
+	$locales   = array();
+	$locations = array();
+
+	if ( ! $wp_textdomain_registry instanceof WP_Textdomain_Registry ) {
+		$wp_textdomain_registry = new WP_Textdomain_Registry();
+	}
+
+	while ( true ) {
+		if ( defined( 'WPLANG' ) ) {
+			if ( '' === WPLANG ) {
+				break;
+			}
+			$locales[] = WPLANG;
+		}
+
+		if ( isset( $wp_local_package ) ) {
+			$locales[] = $wp_local_package;
+		}
+
+		if ( ! $locales ) {
+			break;
+		}
+
+		if ( defined( 'WP_LANG_DIR' ) && @is_dir( WP_LANG_DIR ) ) {
+			$locations[] = WP_LANG_DIR;
+		}
+
+		if ( defined( 'WP_CONTENT_DIR' ) && @is_dir( WP_CONTENT_DIR . '/languages' ) ) {
+			$locations[] = WP_CONTENT_DIR . '/languages';
+		}
+
+		if ( @is_dir( ABSPATH . 'wp-content/languages' ) ) {
+			$locations[] = ABSPATH . 'wp-content/languages';
+		}
+
+		if ( @is_dir( ABSPATH . WPINC . '/languages' ) ) {
+			$locations[] = ABSPATH . WPINC . '/languages';
+		}
+
+		if ( ! $locations ) {
+			break;
+		}
+
+		$locations = array_unique( $locations );
+
+		foreach ( $locales as $locale ) {
+			foreach ( $locations as $location ) {
+				if ( file_exists( $location . '/' . $locale . '.mo' ) ) {
+					load_textdomain( 'default', $location . '/' . $locale . '.mo', $locale );
+
+					if ( defined( 'WP_SETUP_CONFIG' ) && file_exists( $location . '/admin-' . $locale . '.mo' ) ) {
+						load_textdomain( 'default', $location . '/admin-' . $locale . '.mo', $locale );
+					}
+
+					break 2;
+				}
+			}
+		}
+
+		break;
+	}
+
+	$wp_locale = new WP_Locale();
+}
 
 function wp_is_stream( $path ) {
  $scheme_separator = strpos( $path, '://' );
@@ -519,87 +728,68 @@ function wp_debug_backtrace_summary( $ignore_class = null, $skip_frames = 0, $pr
  }
 }
 
-function _wp_filter_build_unique_id( $hook_name, $callback, $priority ) {
- if ( is_string( $callback ) ) {
- 	return $callback;
- }
+function _doing_it_wrong( $function_name, $message, $version ) {
 
- if ( is_object( $callback ) ) {
- 	// Closures are currently implemented as objects.
- 	$callback = array( $callback, '' );
- } else {
- 	$callback = (array) $callback;
- }
+	/**
+	 * Fires when the given function is being used incorrectly.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param string $function_name The function that was called.
+	 * @param string $message       A message explaining what has been done incorrectly.
+	 * @param string $version       The version of WordPress where the message was added.
+	 */
+	do_action( 'doing_it_wrong_run', $function_name, $message, $version );
 
- if ( is_object( $callback[0] ) ) {
- 	// Object class calling.
- 	return spl_object_hash( $callback[0] ) . $callback[1];
- } elseif ( is_string( $callback[0] ) ) {
- 	// Static calling.
- 	return $callback[0] . '::' . $callback[1];
- }
+	/**
+	 * Filters whether to trigger an error for _doing_it_wrong() calls.
+	 *
+	 * @since 3.1.0
+	 * @since 5.1.0 Added the `$function_name`, `$message`, and `$version` parameters.
+	 *
+	 * @param bool   $trigger       Whether to trigger the error for _doing_it_wrong() calls. Default true.
+	 * @param string $function_name The function that was called.
+	 * @param string $message       A message explaining what has been done incorrectly.
+	 * @param string $version       The version of WordPress where the message was added.
+	 */
+	if ( WP_DEBUG && apply_filters( 'doing_it_wrong_trigger_error', true, $function_name, $message, $version ) ) {
+		if ( function_exists( '__' ) ) {
+			if ( $version ) {
+				/* translators: %s: Version number. */
+				$version = sprintf( __( '(This message was added in version %s.)' ), $version );
+			}
 
- return null;
+			$message .= ' ' . sprintf(
+				/* translators: %s: Documentation URL. */
+				__( 'Please see <a href="%s">Debugging in WordPress</a> for more information.' ),
+				__( 'https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/' )
+			);
+
+			$message = sprintf(
+				/* translators: Developer debugging message. 1: PHP function name, 2: Explanatory message, 3: WordPress version number. */
+				__( 'Function %1$s was called <strong>incorrectly</strong>. %2$s %3$s' ),
+				$function_name,
+				$message,
+				$version
+			);
+		} else {
+			if ( $version ) {
+				$version = sprintf( '(This message was added in version %s.)', $version );
+			}
+
+			$message .= sprintf(
+				' Please see <a href="%s">Debugging in WordPress</a> for more information.',
+				'https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/'
+			);
+
+			$message = sprintf(
+				'Function %1$s was called <strong>incorrectly</strong>. %2$s %3$s',
+				$function_name,
+				$message,
+				$version
+			);
+		}
+
+		wp_trigger_error( '', $message );
+	}
 }
-
-function has_filter( $hook_name, $callback = false, $priority = false ) {
-    global $wp_filter;
-
-    if ( ! isset( $wp_filter[ $hook_name ] ) ) {
- return false;
-    }
-    return $wp_filter[ $hook_name ]->has_filter( $hook_name, $callback, $priority );
-}
-
-
-function add_filter( $hook_name, $callback, $priority = 10, $accepted_args = 1 ) {
-    global $wp_filter;
-
-    if ( ! isset( $wp_filter[ $hook_name ] ) ) {
- $wp_filter[ $hook_name ] = new WP_Hook();
-    }
-
-    $wp_filter[ $hook_name ]->add_filter( $hook_name, $callback, $priority, $accepted_args );
-
-    return true;
-}
-
-function apply_filters( $hook_name, $value, ...$args ) {
- global $wp_filter, $wp_filters, $wp_current_filter;
-
- if ( ! isset( $wp_filters[ $hook_name ] ) ) {
- 	$wp_filters[ $hook_name ] = 1;
- } else {
- 	++$wp_filters[ $hook_name ];
- }
-
- // Do 'all' actions first.
- if ( isset( $wp_filter['all'] ) ) {
- 	$wp_current_filter[] = $hook_name;
-
- 	$all_args = func_get_args(); // phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
- 	_wp_call_all_hook( $all_args );
- }
-
- if ( ! isset( $wp_filter[ $hook_name ] ) ) {
- 	if ( isset( $wp_filter['all'] ) ) {
- 		array_pop( $wp_current_filter );
- 	}
-
- 	return $value;
- }
-
- if ( ! isset( $wp_filter['all'] ) ) {
- 	$wp_current_filter[] = $hook_name;
- }
-
- // Pass the value to WP_Hook.
- array_unshift( $args, $value );
-
- $filtered = $wp_filter[ $hook_name ]->apply_filters( $value, $args );
-
- array_pop( $wp_current_filter );
-
- return $filtered;
-}
-

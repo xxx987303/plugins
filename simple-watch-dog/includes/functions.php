@@ -162,7 +162,6 @@ function WD_track_visitor() {
     }else{
 	if (is_user_logged_in()) {
             WD_create_tables();
-            WD_set_durations();
             $current_user = wp_get_current_user();
             $user_id  = $current_user->ID;
             $name     = $current_user->display_name;
@@ -190,34 +189,36 @@ function WD_create_tables() {
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
     $charset_collate = wddb->get_charset_collate();
-    wddb->get_results("CREATE TABLE IF NOT EXISTS ".WDvisits." (
-      id varchar(32), default NULL,
-      time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    wddb->query("CREATE TABLE IF NOT EXISTS ".WDvisits." (
+      id varchar(32) DEFAULT NULL,
+      time datetime  DEFAULT CURRENT_TIMESTAMP NOT NULL,
       remote varchar(32),
       user_id bigint(20) UNSIGNED DEFAULT NULL,
       user_name  varchar(255),
       user_agent varchar(255),
-      duration int DEFAULT 0,
-      uri  varchar(255),
-      mode  varchar(16),
+      duration int       DEFAULT NULL,
+      uri   varchar(255) DEFAULT NULL,
+      mode  varchar(16)  DEFAULT NULL,
       UNIQUE KEY `log_entry` (`time`,`user_id`)
     ) $charset_collate;");
-    wddb->get_results("CREATE TABLE IF NOT EXISTS " . WDremotes . " (
+    wddb->query("CREATE TABLE IF NOT EXISTS " . WDremotes . " (
       r_time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
       r_remote   varchar(32) DEFAULT NULL,
       r_domain   varchar(32) DEFAULT NULL,
       r_user_id  varchar(16) DEFAULT NULL,
       r_country  varchar(32) DEFAULT NULL
     ) $charset_collate;");
-    wddb->get_results("CREATE TABLE IF NOT EXISTS ".WDdaemon." (
-      d_time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
-      d_uri  varchar(255),
-      d_remote varchar(32),
+    wddb->query("CREATE TABLE IF NOT EXISTS ".WDdaemon." (
+      d_time     datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+      d_uri      varchar(255),
+      d_remote   varchar(32),
+      d_status   int DEFAULT NULL,
+      d_size     varchar(32) DEFAULT NULL,
       d_duration int DEFAULT NULL,
       d_user_agent varchar(255)
     ) $charset_collate;");
 /*
-    wddb->get_results("CREATE TABLE IF NOT EXISTS ".WDdaemon2." (
+    wddb->query("CREATE TABLE IF NOT EXISTS ".WDdaemon2." (
       d_time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
       d_uri  varchar(255),
       d_remote varchar(32),
@@ -246,7 +247,7 @@ function UTCTimeToLocalTime($time, $tz = '', $FromDateFormat = 'Y-m-d H:i:s', $T
  *   [2]=> object(stdClass)#1475 (2) { ["user_id"]=> string(1) "4" ["visits"]=> string(1) "6" }
  *      }
  */
-function WD_set_durations() {
+function WD_set_durations_OBSOLETE() {
 
     echo "\n<!-- ".__function__." -->\n";
 
@@ -273,7 +274,7 @@ function WD_set_durations() {
             }
             $q = sprintf("UPDATE %s SET duration=$duration WHERE id=%d", WDvisits, $v['id']);
             $updates++;
-            wddb->get_results($q);
+            wddb->query($q);
         }
         // WD_message($r->x . " $updates updates", 'warn');
     }
@@ -447,7 +448,7 @@ function WD_getCC($remote, $saveToDB=true) {
     WD_message('entry');
     if ($res=wddb->get_results("SELECT * FROM ".WDremotes." WHERE r_remote = '$remote' LIMIT 1")) {
 	$country = $res[0]->r_country;
-	if (empty($res[0]->r_domain) && !empty($d=getDomain($remote))) wddb->get_results("UPDATE ".WDremotes." SET r_domain='$d' WHERE r_remote = '$remote'");
+	if (empty($res[0]->r_domain) && !empty($d=getDomain($remote))) wddb->query("UPDATE ".WDremotes." SET r_domain='$d' WHERE r_remote = '$remote'");
     } elseif (!empty($buffer[$remote])){
 	$country = $buffer[$remote];
     } else {
@@ -455,27 +456,33 @@ function WD_getCC($remote, $saveToDB=true) {
 	if ($saveToDB) {
 	    // Get the "most frequent flyer"
 	    if ($res=wddb->get_results("SELECT time,user_id  FROM ".WDvisits." WHERE remote = '$remote' ORDER BY time LIMIT 1")) { $time = $res[0]->time; $user_id = $res[0]->user_id; }
-
-	    $args = [];
-	    if (isset($time))    $args['r_time']    = $time;
-	    if (isset($user_id)) $args['r_user_id'] = $user_id;
-	    $args['r_remote']  = $remote;
-	    $args['r_country'] = $country;
-	    $args['r_domain']  = getDomain($remote);
+	    $formats = $args = [];
+	    if (isset($time))    { $args['r_time']    = $time;   $formats[] = '%s';}
+	    if (isset($user_id)) { $args['r_user_id'] = $user_id;$formats[] = '%d';}
+	    $args['r_remote']  = $remote; $formats[] = '%s';
+	    $args['r_country'] = $country;$formats[] = '%s';
+	    $args['r_domain']  = getDomain($remote); $formats[] = '%s';
 	    WD_message("Adding:".joinX($args));
 	    // Optionally save the query for later updates. DRY_RUN is debined only for CLI runs
-	    $sql = "INSERT INTO ".WDremotes." (".join(',',array_keys($args)).") VALUES ('".join("','",array_values($args))."')";
-	    if (defined('DRY_RUN')) WD_save_sql($sql); 
-	    if (!$DRY_RUN) wddb->get_results("INSERT INTO ".WDremotes." (".join(',',array_keys($args)).") VALUES ('".join("','",array_values($args))."')"); 
-	    
-	    //Fix the wd_remots r_time. Вообще-то это выебон...
+	    //$sql = "INSERT INTO ".WDremotes." (".join(',',array_keys($args)).") VALUES ('".join("','",array_values($args))."')";
+	    //if (defined('DRY_RUN')) WD_save_sql($sql); 
+	    if (!$DRY_RUN){
+		if (0) {
+		    wddb->query("INSERT INTO ".WDremotes." (".join(',',array_keys($args)).") VALUES ('".join("','",array_values($args))."')"); 
+		}else{
+		    //$result = wddb->query(wddb->prepare("INSERT INTO ".WDremotes." (".join(',',array_keys($args)).") VALUES ("")", array_values($args)));
+		    $result = wddb->query($a=wddb->prepare(sprintf("INSERT INTO %s (%s) VALUES (%s)", WDremotes, join(',',array_keys($args)), join(',',$formats)), array_values($args)));
+		    echo "$a\n";
+		}
+	    }
+			//Fix the wd_remots r_time. Вообще-то это выебон...
             foreach (wddb->get_results("SELECT r_remote,r_time,MIN(time) AS time_min ".
 				       " FROM ".WDvisits.
 				       " LEFT JOIN wd_remotes ON r_remote = remote") as $r) {
 		if ($r->time_min != $r->r_time) {
 		    $sql = "UPDATE ".WDremotes." SET r_time = '".$r->time_min."' WHERE r_remote = '".$r->r_remote."'";
 		    if (defined('DRY_RUN')) WD_save_sql($sql); 
-		    if (!$DRY_RUN) wddb->get_results($sql);
+		    if (!$DRY_RUN) wddb->query($sql);
 		    WD_message("Changing r_time($r->r_remote) $r->r_time  -->  $r->time_min");
 		}
 	    }
@@ -527,4 +534,45 @@ function truncatePreserveWord($string, $limit = 100, $toTruncate=true) {
     // If a space exists, truncate up to that space; otherwise return the cut string
     if ($lastSpace !== false) return mb_substr($cutString, 0, $lastSpace) . '…';
     return $cutString . '…';
+}
+
+function getOS() {
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    
+    $os_platform = "Unknown OS Platform";
+    
+    $os_array = array(
+        '/windows nt 10/i'      => 'Windows 10',
+        '/windows nt 6.3/i'     => 'Windows 8.1',
+        '/windows nt 6.2/i'     => 'Windows 8',
+        '/windows nt 6.1/i'     => 'Windows 7',
+        '/windows nt 6.0/i'     => 'Windows Vista',
+        '/windows nt 5.2/i'     => 'Windows Server 2003/XP x64',
+        '/windows nt 5.1/i'     => 'Windows XP',
+        '/windows xp/i'         => 'Windows XP',
+        '/windows nt 5.0/i'     => 'Windows 2000',
+        '/windows me/i'         => 'Windows ME',
+        '/win98/i'              => 'Windows 98',
+        '/win95/i'              => 'Windows 95',
+        '/win16/i'              => 'Windows 3.11',
+        '/macintosh|mac os x/i' => 'Mac OS X',
+        '/mac_powerpc/i'        => 'Mac OS 9',
+        '/linux/i'              => 'Linux',
+        '/ubuntu/i'             => 'Ubuntu',
+        '/iphone/i'             => 'iPhone',
+        '/ipod/i'               => 'iPod',
+        '/ipad/i'               => 'iPad',
+        '/android/i'            => 'Android',
+        '/blackberry/i'         => 'BlackBerry',
+        '/webos/i'              => 'Mobile',
+        '/windows phone/i'      => 'Windows Phone'
+    );
+    
+    foreach ($os_array as $regex => $value) {
+        if (preg_match($regex, $user_agent)) {
+            $os_platform = $value;
+        }
+    }
+    
+    return $os_platform;
 }

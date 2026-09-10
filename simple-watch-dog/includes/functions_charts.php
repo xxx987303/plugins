@@ -215,7 +215,6 @@ function WD_get_data($type, $chart_id) {
 	$known_users[$r->user_id] = ($r->user_id?$r->display_name:'?');
     }
 
-    //print_r(wddb->get_results("SELECT * FROM ".Users));
     foreach(wddb->get_results("SELECT * FROM ".Users) as $r) {
 	if (WD_user_not_monitored($r)) continue;
         $known_users[$r->ID] = $r->display_name;
