@@ -4,7 +4,7 @@
  */
 require_once __dir__ . '/functions_fb.php';
 require_once __dir__ . '/functions_shortcodes.php';
-include_once __dir__ . '/../simple-sso/WP_sso_get_bridge.php';
+include_once __dir__ . '/../../simple-sso/WP_sso_get_bridge.php';
 
 if (!defined('PRODUCTION_MODE')) define('PRODUCTION_MODE', false);
 if (!defined('AFTER_LOGIN'))     define('AFTER_LOGIN', 'stat/'); // about/
@@ -97,16 +97,17 @@ function YB_message_new(string|array|object $textP='', $level='debug') {
  * If a local avatar exists, then use it.
  * Otherwise a avatar will be used, which can be from gravatar 
  */
-add_filter( 'get_avatar', 'YB_get_avatar', 10, 5 );
-function YB_get_avatar( $avatar = '', $id_or_email=1, $size = 96, $default = '', $alt = '' ) {
+function YB_getAvatar( $avatar = '', $id_or_email=1, $size = 96, $default = '', $alt = '' ) {
     YB_message('entry');
-    if(0)if (($id_or_email !== 1) && ($image = YB_get_template_file_uri("photos/$id_or_email.png", true))) {
+    if (($id_or_email!=1) && ($image=YB_get_template_file_uri("photos/$id_or_email.png", true))) {
         $avatar = "<img alt='$alt' src='$image' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
     }
-    YB_message("avatar $avatar");
+    //YB_message(str_replace(['<','>'],['&lt;','&gt;'],$avatar));
+    YB_message($avatar);
     YB_message('exit');
     return $avatar;
 }
+add_filter( 'get_avatar', 'YB_getAvatar', 10, 5 );
 
 /**
  * Remove posts, leave pages only
@@ -115,14 +116,6 @@ function remove_posts_menu() {
     remove_menu_page('edit.php');
 }
 add_action('admin_menu', 'remove_posts_menu');
-
-/**
-   * Add messages to admin pages
- */
-add_action('admin_footer', function() {
-    if ($messages = WD_getAllMessages()) echo "\n$messages\n";
-});
-
 
 /**
  * Remove posts, leave pages only
@@ -222,11 +215,6 @@ function YB_add_style_files() {
         if (preg_match('/.css$/', $file)) {
             $uri = YB_strip_fn(YB_get_template_file_uri("/styles/".basename($file)), true);
             echo "<link rel='stylesheet' id='my-style-".(++$styleCounter)."' href='$uri' media='all' />\n";
-/*
-<style id="yb-<?php echo preg_replace(['/^\d+_/', '/\.css/', '/_/'], ['','','-'], $file); ?>" type='text/css'>
-<?php require __dir__ . "/styles/$file"; ?>
-</style>
-*/
         }
     }
 }

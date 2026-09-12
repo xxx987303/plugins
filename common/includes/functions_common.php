@@ -15,28 +15,27 @@ function WD_message(string|array|object $text='', $color='black', $truncate=true
     global $WD_messages,  $indent, $prev;
     static $r;
 
-    $level0 = preg_match('{YB_message}', WD_getCaller(2)) ? 1 : 0;
     $messages_keeper = '/tmp/WD_message.html';
+    $level0 = preg_match('{YB_message}', WD_getCaller(2)) ? 1 : 0;
+    $ee = in_array($text,['entry','exit']);
     if (empty($prev)) $prev = '?';
     
     if (CLI_MODE) {
 	if (!$ee) echo WD_getCaller($level0+2).": $text\n";
 	return "";
-    }elseif ($text == 'print') {
-	if (!empty($messages = (string)@file_get_contents($messages_keeper))){
+    } elseif ($text == 'print') {    
+	if ($messages = (string)@file_get_contents($messages_keeper)){
 	    $messages = date('Y-m-d H:i:s',time()) . "<br>$messages";
 	}
+var_dump($messages); die("?????\n");
+	//WD_message(WD_truncatePreserveWord(strip_tags(str_replace(["\n",'<'], [' ',' <'], preg_replace("{\s+}", ' ', $messages)))), 33);
 	return $messages;
-
-        return ($messages = file_get_contents($messages_keeper)
-	    ? "\n<div class='yb-comments'>\n<h3>".__function__."...</h3>\n<code style='font-size:small'>\n".
-              $messages.
-              "\n</code>\n</div>\n"
-	    : "");
     }
+    // Compact the reply
+    if (preg_match('/^<.*>/',$text)) $text = str_replace(['<','>'],['&lt;','&gt;'], $text);
 
     // Set text colors
-    if ($ee = in_array($text,['entry','exit'])) $color='magenta';
+    if ($ee) $color='magenta';
     if (is_string($text) && preg_match('{(INSERT|SELECT|DELETE|CREATE|TRUNCATE|DROP) }',$text)) $color = 'blue';
     
     $st_ind  = '/tmp/indent';
@@ -60,20 +59,13 @@ function WD_message(string|array|object $text='', $color='black', $truncate=true
     $r = [' array ( ' => '[',
 	  ' ) '       => ']',
 	  ' => '      => '=>'];
-    if (false){
+    $skip_ee = false;
+    if (!($ee && $skip_ee) && $text != $prev)
 	file_put_contents($messages_keeper,
- 			  str_repeat('&nbsp;',2*max(0,$indent)).($ee ? "<span style=font-weight:bold>".WD_getCaller($level0+2).":</span> ":"").
- 			  "<span style=color:$color>".truncatePreserveWord(str_replace(array_keys($r), array_values($r), joinX($text)), 120)."</span>".($ee?"":" ($indent)")."<br>\n",
+ 			  str_repeat('&nbsp;',2*max(0,$indent)).x("span style=font-weight:bold",WD_getCaller($level0+2)).": ".
+ 			  x("span style=color:$color",WD_truncatePreserveWord(str_replace(array_keys($r), array_values($r), joinX($text)), 130, $truncate))."<br>\n",
  			  FILE_APPEND);
-    }else{
-	$skip_ee = false;
-	if (!($ee && $skip_ee) && $text != $prev)
-	    file_put_contents($messages_keeper,
- 			      str_repeat('&nbsp;',2*max(0,$indent))."<span style=font-weight:bold>".WD_getCaller($level0+2).":</span> ".
- 			      "<span style=color:$color>".truncatePreserveWord(str_replace(array_keys($r), array_values($r), joinX($text)), 130, $truncate).
- 			      "</span><br>\n",
- 			      FILE_APPEND);
-    }
+    // Skip repetive entries
     if (!$ee) $prev = $text;
     
     // Handle 'entry'
@@ -108,14 +100,15 @@ function WD_getCaller(int $level=2, $args=DEBUG_BACKTRACE_IGNORE_ARGS) {
     $t = (($x=@$dbt[$level]['type'])     ? $x : '');
     $f = (($x=@$dbt[$level]['function']) ? $x : '');
     $l = (($x=@$dbt[$level]['line'])     ? $x : '');
-    $reply = sprintf("%s(%s)", "$c$t$f", "$l");
-    $reply = "$c$t$f";
+    $a = (($x=@$dbt[$level]['args'])     ? $x : '');
+    $reply = sprintf("%s(%s)", "$c$t$f", $a);
+    //$reply = "$c$t$f$a";
     return str_replace(['()','ProcessWire\\'], '', $reply);
 }
 
 /**
  */
-function truncatePreserveWord($string, $limit = 100, $toTruncate=true) {
+function WD_truncatePreserveWord($string, $limit = 100, $toTruncate=true) {
     // Return the original string if it is already shorter than the limit
     return $string;
     if (!$toTruncate || mb_strlen($string) <= $limit) return $string;
@@ -157,25 +150,100 @@ function joinX(int|string|array|object|null $a, $skipEmpty=true) {
 }
 
 /**
- * Get all messages from ??_message('print')
+ * Get all messages from WD_message('print')
  */
 function WD_getAllMessages(): string {
     WD_message('entry');
     $messages = "";
-    if (defined('SHOW_MESSAGES' && SHOW_MESSAGES)) {
-	/**
-	 */
-	$oc = function($f) {
-	    return ["\n<div class='yb-comments'>\n<h3>{$f}s...</h3>\n<code style='font-size:small'>\n",
-		    "\n</code>\n</div>\n"];
-	};
-
-	if (function_exists($f='WD_message')) { $c=$oc($f); if ($m=WD_message('print')) $messages .= $c[0].$m.$c[1]; }
-      //if (function_exists($f='YB_message')) { $c=$oc($f); if ($m=YB_message('print')) $messages .= $c[0].$m.$c[1]; }
-	if (empty($messages)) log_error(WD_getCaller(2).' empty messages');
-    }
     WD_message(var_export(SHOW_MESSAGES,true));
+    if (defined('SHOW_MESSAGES' && SHOW_MESSAGES)) {
+	$messages = WD_message('print');
+	$reply = (!empty($messages)
+	    ? x("div class='yb-comments'",
+		x("h3","WD_messages...").
+		x("code style='font-size:small'", $messages))
+	    : "");
+	if (empty($messages)) log_error(WD_getCaller(2).' empty messages');
+    }else{
+	var_dump(SHOW_MESSAGES);
+    }
+var_dump($messages);
+    WD_message($reply);
     WD_message('exit');
     return $messages;
 }
     
+/**
+ * Brackets
+ */
+function x($tag, $text = '', $text2 = '') {
+    if ($text === null) {
+        return 'Null';
+    } elseif (empty($tag)) {
+        return $text;
+    } elseif (CLI_MODE) {
+        return strip_tags($text);
+    }
+    
+    if ($tag === '!') {
+        return str_replace(
+            ["\n\n\n","\n\n"],
+            "\n",
+            ("\n<!-- Start  $text ============================================================= -->\n$text2".
+            "\n<!-- End    $text ============================================================= -->\n")
+        );
+    }
+    // 'x' is an "empty" tag
+    $tag_clean = preg_replace('/ .*/', '', $tag);
+    if ($tag_clean === 'x') {
+        return $text;
+    }
+    
+  // Usual brackets
+    if (in_array($tag_clean, array('input','img'))) {
+        return "<$tag $text />\n";
+    }
+    
+    // Usual brackets
+    switch ($tag_clean) {
+        case '"':
+            if (!isset($reply)) {
+                $reply = '"'.str_replace('"', "'", $text).'"';
+            }
+            return $reply;
+        case "'":
+            if (!isset($reply)) {
+                $reply = "'".str_replace("'", '"', $text)."'";
+            }
+            return $reply;
+        case "[":
+            if (!isset($reply)) {
+                $reply = '['.$text.']';
+            }
+        case "(":
+            if (!isset($reply)) {
+                $reply = '('.$text.')';
+            }
+        case "<":
+            if (!isset($reply)) {
+                $reply = '<'.$text.'>';
+            }
+        case "/":
+            if (!isset($reply)) {
+                $reply = '/'.$text.'/';
+            }
+            return $reply;
+    }
+
+    // HTML tag as a "bracket"
+    list($delim,$postfix) = (preg_match('/^(form|select|style)/i', $tag)
+        ? array("\n","")
+			   : array("","\n"));
+    if (preg_match('/^(div|ul|form|select|style)/i', $tag)) {
+        $delim="\n";
+    } else {
+        $delim="";
+    }
+    return join($delim, array("", "<$tag>", $text, "</$tag_clean>")).$postfix;
+}
+

@@ -71,12 +71,9 @@ function YB_end_output_buffering() {
     }
     
     // Show comments & errors
-/*
-    if (in_array('administrator', wp_get_current_user()->roles) && ($messages = WD_message('print'))) {
-	$content = str_replace("</main>", "$messages\n</main>", $content);
-    }
- */
-    if (function_exists($f='YB_show_messages')) { $content = YB_show_messages($content); } else { echo "\n<!-- $f DOES NOT EXIST  -->\n"; }
+    $content = str_replace("</main>",
+			   "\n<!--     start exporting messages -->\n".WD_getAllMessages()."\n<!--     end exporting messages -->\n</main>\n",
+			   $content);
     
     // Return the tidy page if desired
     echo str_replace($CR, "\n", $head) . (TIDY_SOURCE ? getTidy($content) : $content) . $content_parts[2];

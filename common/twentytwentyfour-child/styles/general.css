@@ -39,7 +39,9 @@ p a:where(:not(.caption-thumbnail-wpc-caro, .wcp-light-box, .wp-block-site-title
     opacity: 70%;
 }
 
-/* Debuggings... */
+/* Debuggings & Messaging... */
+.wd-messages,
+.yb-messages,
 .yb-comments,
 .yb-diff {
   background: gainsboro;
