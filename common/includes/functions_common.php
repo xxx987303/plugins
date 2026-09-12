@@ -1,7 +1,10 @@
 <?php
 /**
  * General functions, used in several gits
+ * No CMS-specific dependencies, usable both in ProcessWire & WordPress
  */
+
+if (!defined('CLI_MODE')) define('CLI_MODE', empty($_SERVER['HTTP_HOST']));
 
 /**
  * Safe against add_filter add_action
@@ -12,33 +15,39 @@ function WD_message(string|array|object $text='', $color='black', $truncate=true
     global $WD_messages,  $indent, $prev;
     static $r;
 
+    $level0 = preg_match('{YB_message}', WD_getCaller(2)) ? 1 : 0;
+    $messages_keeper = '/tmp/WD_message.html';
+    if (empty($prev)) $prev = '?';
+    
     if (CLI_MODE) {
-	if (!$ee) echo WD_getCaller(2)."(): $text\n";
+	if (!$ee) echo WD_getCaller($level0+2).": $text\n";
 	return "";
+    }elseif ($text == 'print') {
+	if (!empty($messages = (string)@file_get_contents($messages_keeper))){
+	    $messages = date('Y-m-d H:i:s',time()) . "<br>$messages";
+	}
+	return $messages;
+
+        return ($messages = file_get_contents($messages_keeper)
+	    ? "\n<div class='yb-comments'>\n<h3>".__function__."...</h3>\n<code style='font-size:small'>\n".
+              $messages.
+              "\n</code>\n</div>\n"
+	    : "");
     }
 
     // Set text colors
     if ($ee = in_array($text,['entry','exit'])) $color='magenta';
-    if (is_string($text) && preg_match('{^(INSERT|SELECT|DELETE|CREATE|TRUNCATE|DROP) }',$text)) $color = 'blue';
+    if (is_string($text) && preg_match('{(INSERT|SELECT|DELETE|CREATE|TRUNCATE|DROP) }',$text)) $color = 'blue';
     
     $st_ind  = '/tmp/indent';
     if (!isset($indent)) { $indent = 0; file_put_contents($st_ind, $indent); }
     $indent = file_get_contents($st_ind);
 
-    // Open the handler
-    $handler = '/tmp/WD_message.html';
-    if (empty(@$WD_messages++)) file_put_contents($handler, "");
-
-    // Handle 'print'
-    if ($text == 'print') {
-        if (!($messages = file_get_contents($handler))) return "";
-        return "\n<div class='yb-comments'>\n<h3>".__function__."...</h3>\n<code style='font-size:small'>\n".
-               $messages.
-               "\n</code>\n</div>\n";
-    }
-
     // Handle 'exit'
     if ($text == 'exit') $indent--;
+
+    // Initialise the messages_keeper
+    if (empty(@$WD_messages++)) file_put_contents($messages_keeper, "");
 
     // Strange... But Claude thinks this is predictable
     if ($indent < 0) {
@@ -47,38 +56,61 @@ function WD_message(string|array|object $text='', $color='black', $truncate=true
         error_log(print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5), true));
     }
 
-    // Add the message to the handler
+    // Add the message to the messages_keeper
     $r = [' array ( ' => '[',
 	  ' ) '       => ']',
 	  ' => '      => '=>'];
     if (false){
-	file_put_contents($handler,
- 			  str_repeat('&nbsp;',2*max(0,$indent)).($ee ? "<span style=font-weight:bold>".WD_getCaller(2)."():</span> ":"").
+	file_put_contents($messages_keeper,
+ 			  str_repeat('&nbsp;',2*max(0,$indent)).($ee ? "<span style=font-weight:bold>".WD_getCaller($level0+2).":</span> ":"").
  			  "<span style=color:$color>".truncatePreserveWord(str_replace(array_keys($r), array_values($r), joinX($text)), 120)."</span>".($ee?"":" ($indent)")."<br>\n",
  			  FILE_APPEND);
     }else{
 	$skip_ee = false;
 	if (!($ee && $skip_ee) && $text != $prev)
-	    file_put_contents($handler,
- 			      str_repeat('&nbsp;',2*max(0,$indent))."<span style=font-weight:bold>".WD_getCaller(2)."():</span> ".
+	    file_put_contents($messages_keeper,
+ 			      str_repeat('&nbsp;',2*max(0,$indent))."<span style=font-weight:bold>".WD_getCaller($level0+2).":</span> ".
  			      "<span style=color:$color>".truncatePreserveWord(str_replace(array_keys($r), array_values($r), joinX($text)), 130, $truncate).
  			      "</span><br>\n",
  			      FILE_APPEND);
-	$prev = $text;
     }
+    if (!$ee) $prev = $text;
+    
     // Handle 'entry'
     if ($text == 'entry') { $indent++; }
+
     // Save indent
     file_put_contents($st_ind, $indent);
 }
 
 /**
  */
-function WD_getCaller($level) {
-    if (0) $dbt=debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,$level+1);
-    else   $dbt=debug_backtrace(0,$level+1);
-    //print_r($dbt);
-    return isset($dbt[$level]['function']) ? $dbt[$level]['function'] : '?';
+function YB_message($textP='', $level='debug') {
+    WD_message($textP);
+}
+
+/**
+ *   function 	string 	function name. See __FUNCTION__
+ *   line 	int 	line number. See __LINE__
+ *   file 	string 	file name. See __FILE__
+ *   class 	string 	class name. See __CLASS__
+ *   object 	object 	object if DEBUG_BACKTRACE_PROVIDE_OBJECT is given
+ *   type 	string 	call type. If a method call, "->" is returned
+ *                      If a static method call, "::" is returned
+ *                      If a function call, nothing is returned
+ *   args 	array 	If inside a function, lists the functions arguments
+ *                      If inside an included file, lists the included file name(s)
+ *                      Unless DEBUG_BACKTRACE_IGNORE_ARGS is given
+ */
+function WD_getCaller(int $level=2, $args=DEBUG_BACKTRACE_IGNORE_ARGS) {
+    $dbt = debug_backtrace($args, $level+1);
+    $c = (($x=@$dbt[$level]['class'])    ? $x : '');
+    $t = (($x=@$dbt[$level]['type'])     ? $x : '');
+    $f = (($x=@$dbt[$level]['function']) ? $x : '');
+    $l = (($x=@$dbt[$level]['line'])     ? $x : '');
+    $reply = sprintf("%s(%s)", "$c$t$f", "$l");
+    $reply = "$c$t$f";
+    return str_replace(['()','ProcessWire\\'], '', $reply);
 }
 
 /**
@@ -127,12 +159,23 @@ function joinX(int|string|array|object|null $a, $skipEmpty=true) {
 /**
  * Get all messages from ??_message('print')
  */
-function getAllMessages(): string {
+function WD_getAllMessages(): string {
+    WD_message('entry');
     $messages = "";
     if (defined('SHOW_MESSAGES' && SHOW_MESSAGES)) {
-	if (function_exists('WD_message')) $messages .= WD_message('print');
-	if (function_exists('YB_message')) $messages .= YB_message('print');
+	/**
+	 */
+	$oc = function($f) {
+	    return ["\n<div class='yb-comments'>\n<h3>{$f}s...</h3>\n<code style='font-size:small'>\n",
+		    "\n</code>\n</div>\n"];
+	};
+
+	if (function_exists($f='WD_message')) { $c=$oc($f); if ($m=WD_message('print')) $messages .= $c[0].$m.$c[1]; }
+      //if (function_exists($f='YB_message')) { $c=$oc($f); if ($m=YB_message('print')) $messages .= $c[0].$m.$c[1]; }
+	if (empty($messages)) log_error(WD_getCaller(2).' empty messages');
     }
+    WD_message(var_export(SHOW_MESSAGES,true));
+    WD_message('exit');
     return $messages;
 }
     

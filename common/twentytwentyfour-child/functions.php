@@ -4,6 +4,7 @@
  */
 require_once __dir__ . '/functions_fb.php';
 require_once __dir__ . '/functions_shortcodes.php';
+include_once __dir__ . '/../simple-sso/WP_sso_get_bridge.php';
 
 if (!defined('PRODUCTION_MODE')) define('PRODUCTION_MODE', false);
 if (!defined('AFTER_LOGIN'))     define('AFTER_LOGIN', 'stat/'); // about/
@@ -53,10 +54,8 @@ add_filter( 'relevanssi_search_ok', function( $ok, $query ) {
  * Add dev. comments
  * level might be debug or warn
  */
-function YB_message($textP='', $level='debug') {
+function YB_message_new(string|array|object $textP='', $level='debug') {
     global $YB_messages, $YB_messages_indent;
-
-    //if ($textP=='exit')echo"<br>";elseif($textP!='entry')echo "<span style='font-size: small'>$textP</span><br>";
     
     if (empty($YB_messages)) return "";
     if (empty($textP)) $textP = "";
@@ -65,7 +64,11 @@ function YB_message($textP='', $level='debug') {
             echo "\n\nMessages\n--------\n";
             echo str_replace("<CR>","\n",join("\n",($YB_messages)))."\n";
         }else {
-            return "<div class='yb-comments'><h3>Messages...</h3><code>".join('<br>',$YB_messages)."</code></div>\n";
+	    return join('<br>',$YB_messages);
+            return "\n<div class='yb-comments'>\n<h3>".__function__."...</h3>\n<code style='font-size:small'>\n".
+		   join('<br>',$YB_messages).
+		   "</code>\n</div>\n";
+            //return "<div class='yb-comments'><h3>Messages...</h3><code>".join('<br>',$YB_messages)."</code></div>\n";
         }
     } elseif (!PRODUCTION_MODE || ($level == 'warn' && in_array('administrator', wp_get_current_user()->roles))) {
         $indent = (CLI_MODE ? '  ' : '&nbsp;&nbsp;');
@@ -114,6 +117,14 @@ function remove_posts_menu() {
 add_action('admin_menu', 'remove_posts_menu');
 
 /**
+   * Add messages to admin pages
+ */
+add_action('admin_footer', function() {
+    if ($messages = WD_getAllMessages()) echo "\n$messages\n";
+});
+
+
+/**
  * Remove posts, leave pages only
  */
 function remove_posts_from_admin_bar($wp_admin_bar) {
@@ -155,7 +166,7 @@ function YB_login_redirect($redirect_to, $request, $user) {
     }
     return $redirect_to;
 }
-if (FORCE_AUTH) { add_filter('login_redirect', 'YB_login_redirect', 10, 3); }
+// if (FORCE_AUTH) { add_filter('login_redirect', 'YB_login_redirect', 10, 3); }
 
 /**
  * Create shortcode to show a page only once
@@ -444,3 +455,35 @@ function YB_wp_post_revision_title_expanded() {echo "\n<!-- ".__function__." -->
 //function YB_wp_title_rss() {echo "\n<!-- ".__function__." -->\n";}
 
 */
+function YB_message_2025($textP='', $level='debug') {
+    global $YB_messages, $YB_messages_indent;
+    
+    if (empty($textP)) $textP = "";  // Sanity...
+    if ($textP == 'print'){
+        if (!@$YB_messages) { return ""; }
+        if (CLI_MODE) {
+            echo "\n\nMessages\n--------\n";
+            echo str_replace("<CR>","\n",join("\n",($YB_messages)))."\n";
+        }else {
+	    return join('<br>',$YB_messages);
+            return "<div class='yb-comments'><h3>Messages...</h3><code>".join('<br>',$YB_messages)."</code></div>\n";
+        }
+    } elseif (!PRODUCTION_MODE || ($level == 'warn' && in_array('administrator', wp_get_current_user()->roles))) {
+            $indent = (CLI_MODE ? '  ' : '&nbsp;&nbsp;');
+        $text = $textP;
+        if (empty($YB_messages_indent)) { $YB_messages_indent = ""; }
+        if ($textP == 'exit') $YB_messages_indent = preg_replace("/^$indent/", '', $YB_messages_indent);
+        if (in_array($textP, ["entry","exit"])){ $color = 'blue'; $text = "($text)"; }
+        elseif ($level != 'debug')             { $color = 'red'; }
+        else                                   { $color = '#000000';}
+            $caller = debug_backtrace()[1]['function'];
+        if (!preg_match('/^\(/', $text) && ($caller != '{closure}')) $text = "() $text";
+        $text = $caller . $text;
+            $msg = (CLI_MODE ? $text : "<span style='color:$color'>" . preg_replace(['/</', '/>/'], ['&lt;', '&gt;'], $YB_messages_indent . $text) . "</span>");
+        if (empty($YB_messages)) $YB_messages = [];
+        if (CLI_MODE)  { echo "$msg\n"; }
+        else        { $YB_messages[] = $msg; }
+        if ($textP == 'entry') { $YB_messages_indent .= $indent; }
+    }
+    return "";
+}
