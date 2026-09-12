@@ -4,31 +4,36 @@
  */
 
 require_once __dir__ . '/SSOBridge.php';
+require_once __dir__ . '/functions_common.php';
 
 function sso_get_bridge(): \SSOBridge {
     global $config;
     static $bridge = null;
+    WD_message('entry');
+
+    date_default_timezone_set('Europe/Stockholm');
 
     if ($bridge === null) {
-	try {
-        $pdo = new \PDO( 'mysql:host=localhost;dbname=yb_sso;charset=utf8mb4',
-	    $config->dbUser, $config->dbPass,
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
-        );
-	} catch (PDOException $e) {
-	    echo "FAILED: " . $e->getMessage();
+	try { $pdo = new \PDO( 'mysql:host=localhost;dbname=yb_sso;charset=utf8mb4',
+			       $config->dbUser, $config->dbPass,
+			       [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+	    WD_message("Init PDO");
+        } catch (PDOException $e) {
+	    echo ($m="Init PDO FAILED: " . $e->getMessage());
+	    WD_message($m);
 	}
-        $bridge = new \SSOBridge($pdo, SSO_DOMAIN);
+        $bridge = new \SSOBridge($pdo);
     }
+    WD_message(joinX($bridge));
+    WD_message('exit');
     return $bridge;
 }
-/*
+
 // A. On successful PW login, register the shared session
 $wire->addHookAfter('Session::login', function (HookEvent $event) {
     $user = $event->return;
     if ($user && $user->id) {
-        try {
-            sso_get_bridge()->createSession($user->email);
+        try { sso_get_bridge()->createSession($user->email);
         } catch (\Throwable $e) {
             error_log('[SSO] createSession failed: ' . $e->getMessage());
             // swallow it — local login must still succeed
@@ -52,4 +57,3 @@ if (!$wire->user->isLoggedin()) {
 $wire->addHookBefore('Session::logout', function (HookEvent $event) {
     sso_get_bridge()->destroySession();
 });
- */

@@ -5,14 +5,20 @@ require_once __dir__ . '/SSOBridge.php';
 
 function sso_get_bridge(): SSOBridge {
     static $bridge = null;
+
+    WD_message('entry');
+    date_default_timezone_set('Europe/Stockholm');
+    
     if ($bridge === null) {
         $pdo = new PDO(
             'mysql:host='.DB_HOST.';dbname=yb_sso;charset=utf8mb4',
             DB_USER, DB_PASSWORD,
             [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
         );
-        $bridge = new SSOBridge($pdo, SSO_DOMAIN);
+        $bridge = new SSOBridge($pdo);
     }
+    WD_message($bridge);
+    WD_message('exit');
     return $bridge;
 }
 
