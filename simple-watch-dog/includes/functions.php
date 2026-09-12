@@ -7,26 +7,13 @@ if (!defined('CLI_MODE')) define('CLI_MODE', empty($_SERVER['HTTP_HOST']));
 
 // Localhost might look different...
 define('LOCALHOSTs', ['127.0.0.1', '::1', 'localhost']);
-
 if (function_exists('wp_enqueue_style')) wp_enqueue_style ('charts-css', get_stylesheet_directory_uri() . '/photoswipe/photoswipe.css');
-
-/**
- * Called from YB_end_output_buffering
- * Insert WD_messages into the page html code
- */
-function YB_show_messages($content){
-    if (SHOW_MESSAGES) {
-	$messages = "\n\n<!-- Start ".__function__." -->\n" . WD_message('print') . "\n\n<!-- End  ".__function__." -->\n";
-	$content = str_replace("</main>", "$messages\n</main>\n", $content);
-    }
-    return $content;
-}
 
 /**
  * Fix the WP "feature" when it blindly adds quotes to SQL
  * Change "`database.table`" -> "`database`.`table`"
  */
-function YB_query_fix( $sql0 ) {
+function WD_query_fix( $sql0 ) {
     $sql = preg_replace_callback('/((UPDATE|INTO|EXISTS|FROM|JOIN)\s([a-zA-Z0-9_\-\`]+\.[a-zA-Z0-9_\-\`]+))/',
 				 function ($matches) {
                             list($db,$table) = explode('.', str_replace('`','',$matches[3]));
@@ -37,7 +24,7 @@ function YB_query_fix( $sql0 ) {
     }
     return $sql;
 }
-if (!CLI_MODE) add_filter( 'query', 'YB_query_fix' );
+if (!CLI_MODE) add_filter( 'query', 'WD_query_fix' );
 
 /**
  */
@@ -234,15 +221,6 @@ function WD_log($text='', $user_id=null) {
 }
 
 /**
- */
-function WD_getCaller($level) {
-    if (0) $dbt=debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,$level+1);
-    else   $dbt=debug_backtrace(0,$level+1);
-    //print_r($dbt);
-    return isset($dbt[$level]['function']) ? $dbt[$level]['function'] : '?';
-}
-
-/**
 /**
  * MacOS  - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15
  * iPhone OS 17.5.1 - Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/127.0...
@@ -290,7 +268,7 @@ function WD_getOS($user_agent) {
           break;
       }
   }
-    WD_message("$os_platform",'warn');
+    WD_message($os_platform);
     if ($os_platform == "Unknown") WD_message("$os_platform - $user_agent",'warn');
     WD_message('exit');
     return $os_platform;
@@ -337,6 +315,7 @@ function WD_getBrowser($user_agent, $count=0) {
         }
     }
     if ($browser == "Unknown")   WD_message("$browser - $user_agent", 'warn');
+    WD_message($browser);
     WD_message('exit');
     return $browser;
 }
@@ -373,6 +352,7 @@ function getDomain($remote) {
 	if (preg_match('{noserverscouldbereached}', $reply)) $reply = "From VPN?";
 	$buffer[$remote] = $reply;
     }
+    WD_message($reply);
     return $reply;
 };
 
@@ -432,48 +412,6 @@ function WD_getCC($remote, $saveToDB=true) {
     }
     WD_message('exit');
     return $country;
-}
-
-/**
- * After many changes it became a sort of "var_dump"
- */
-function joinX($a, $skipEmpty=true){
-    if (is_object($a)) $a = get_object_vars($a);
-    if (is_array($a)) {
-	$r = "";
-	foreach($a as $k=>$v) {
-	    if (is_array($v)) { $r .= joinX($v, $skipEmpty); continue; }
-	    if (empty($v) && $v !== 0 && $v !== '0') continue;
-	    if (empty($v)||$k=='comment') continue;
-	    $r .= (is_string($v) ? "$k=>$v " : joinX($v));
-	}
-	return '['.str_replace(' => ','=>',preg_replace("/[\n\s]+/", " ", trim($r))).']';
-    } elseif (is_int($a)) {
-	return "$a";
-    } elseif (is_string($a)) {
-	return preg_replace("/[\n\s]+/", " ", trim($a));
-    } else {
-	var_dump($a);
-	die("?????????\n");
-    }
-}
-
-/**
- */
-function truncatePreserveWord($string, $limit = 100, $toTruncate=true) {
-    // Return the original string if it is already shorter than the limit
-    return $string;
-    if (!$toTruncate || mb_strlen($string) <= $limit) return $string;
-
-    // Cut the string to the maximum allowed length
-    $cutString = mb_substr($string, 0, $limit);
-
-    // Find the last space within the cut string
-    $lastSpace = mb_strrpos($cutString, ' ');
-
-    // If a space exists, truncate up to that space; otherwise return the cut string
-    if ($lastSpace !== false) return mb_substr($cutString, 0, $lastSpace) . '…';
-    return $cutString . '…';
 }
 
 function getOS() {
