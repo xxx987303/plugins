@@ -27,61 +27,6 @@ function my_keyword_tooltips() {
 add_action( 'wp_enqueue_scripts', 'my_keyword_tooltips' );
 
 /**
- * Start output buffering
- */
-function YB_start_output_buffering() {
-    if (!PRODUCTION_MODE) echo "\n<!-- ".__function__." -->\n";
-    ob_start();
-}
-if (!CLI_MODE) { add_action('wp_head', 'YB_start_output_buffering'); }
-
-/**
- * End output buffering, get the content, modify it, and then output it
- */
-function YB_end_output_buffering() {
-    global $diff_metadata;
-    
-    if (!PRODUCTION_MODE) echo "\n<!-- entering ".__function__." -->\n";
-    IF (!NO_FIX_METADATA) YB_fix_metadata();
-  
-    $content_parts = preg_split(";<main|</main>;", ob_get_clean());
-    $head    = $head_before = str_replace("\n", ($CR = " CR_RT "), $content_parts[0]); 
-    $content = $content_before = preg_replace([";\n;", ";>\s*?<;"], ["", "> <"], '<main' . $content_parts[1] . '</main>');
-    
-    // Mofify the content, moustly impose captions
-    if (!VANILLA_OUTPUT) {
-        $head    = YB_strip_images_url($head);
-        $content = YB_figcaption_to_media($content);
-        $content = YB_recover_carousel_captions($content);
-        $content = YB_strip_images_url($content);
-    }
-    
-    // See the difference between modified and original pages
-    if (!PRODUCTION_MODE && !NO_DIFF) {
-        $showDiff = function($title, $content, $old, $new="") {
-            return (($diff = (empty($new) ? $old : pb_htmlDiff($old, $new)))
-                    ? str_replace("</main>",
-                                  "<div class='yb-diff'><h3>$title</h3>\n$diff\n</div><br>\n</main>",
-                                  $content)
-                    : $content);
-        };
-        $content = $showDiff("Diff main section", $content, $content_before, $content);
-        $content = $showDiff("Diff head section", $content, $head_before, $head);
-        $content = $showDiff("Diff DB metadata (first 3 records)", $content, $diff_metadata);
-    }
-    
-    // Show comments & errors
-    $content = str_replace("</main>",
-			   "\n<!--     start exporting messages -->\n".WD_getAllMessages()."\n<!--     end exporting messages -->\n</main>\n",
-			   $content);
-    
-    // Return the tidy page if desired
-    echo str_replace($CR, "\n", $head) . (TIDY_SOURCE ? getTidy($content) : $content) . $content_parts[2];
-    echo "\n<!-- exiting ".__function__." -->\n";
-}
-if (!CLI_MODE) { add_action('wp_footer', 'YB_end_output_buffering'); }
-
-/**
  * Return the thumbnail as image OR text
  */
 function YB_get_thumbnail($text_thumbnail, $img_src="", $caption="") {

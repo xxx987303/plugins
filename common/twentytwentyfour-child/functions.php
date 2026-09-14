@@ -4,7 +4,7 @@
  */
 require_once __dir__ . '/functions_fb.php';
 require_once __dir__ . '/functions_shortcodes.php';
-include_once __dir__ . '/../../simple-sso/WP_sso_get_bridge.php';
+require_once __dir__ . '/../../simple-sso/WP_sso_get_bridge.php';
 
 if (!defined('PRODUCTION_MODE')) define('PRODUCTION_MODE', false);
 if (!defined('AFTER_LOGIN'))     define('AFTER_LOGIN', 'stat/'); // about/
@@ -68,7 +68,6 @@ function YB_message_new(string|array|object $textP='', $level='debug') {
             return "\n<div class='yb-comments'>\n<h3>".__function__."...</h3>\n<code style='font-size:small'>\n".
 		   join('<br>',$YB_messages).
 		   "</code>\n</div>\n";
-            //return "<div class='yb-comments'><h3>Messages...</h3><code>".join('<br>',$YB_messages)."</code></div>\n";
         }
     } elseif (!PRODUCTION_MODE || ($level == 'warn' && in_array('administrator', wp_get_current_user()->roles))) {
         $indent = (CLI_MODE ? '  ' : '&nbsp;&nbsp;');
@@ -443,35 +442,62 @@ function YB_wp_post_revision_title_expanded() {echo "\n<!-- ".__function__." -->
 //function YB_wp_title_rss() {echo "\n<!-- ".__function__." -->\n";}
 
 */
-function YB_message_2025($textP='', $level='debug') {
-    global $YB_messages, $YB_messages_indent;
-    
-    if (empty($textP)) $textP = "";  // Sanity...
-    if ($textP == 'print'){
-        if (!@$YB_messages) { return ""; }
-        if (CLI_MODE) {
-            echo "\n\nMessages\n--------\n";
-            echo str_replace("<CR>","\n",join("\n",($YB_messages)))."\n";
-        }else {
-	    return join('<br>',$YB_messages);
-            return "<div class='yb-comments'><h3>Messages...</h3><code>".join('<br>',$YB_messages)."</code></div>\n";
-        }
-    } elseif (!PRODUCTION_MODE || ($level == 'warn' && in_array('administrator', wp_get_current_user()->roles))) {
-            $indent = (CLI_MODE ? '  ' : '&nbsp;&nbsp;');
-        $text = $textP;
-        if (empty($YB_messages_indent)) { $YB_messages_indent = ""; }
-        if ($textP == 'exit') $YB_messages_indent = preg_replace("/^$indent/", '', $YB_messages_indent);
-        if (in_array($textP, ["entry","exit"])){ $color = 'blue'; $text = "($text)"; }
-        elseif ($level != 'debug')             { $color = 'red'; }
-        else                                   { $color = '#000000';}
-            $caller = debug_backtrace()[1]['function'];
-        if (!preg_match('/^\(/', $text) && ($caller != '{closure}')) $text = "() $text";
-        $text = $caller . $text;
-            $msg = (CLI_MODE ? $text : "<span style='color:$color'>" . preg_replace(['/</', '/>/'], ['&lt;', '&gt;'], $YB_messages_indent . $text) . "</span>");
-        if (empty($YB_messages)) $YB_messages = [];
-        if (CLI_MODE)  { echo "$msg\n"; }
-        else        { $YB_messages[] = $msg; }
-        if ($textP == 'entry') { $YB_messages_indent .= $indent; }
-    }
-    return "";
+
+/**
+ * Start output buffering
+ */
+function YB_start_output_buffering() {
+    if (!PRODUCTION_MODE) echo "\n<!-- ".__function__." -->\n";
+    ob_start();
 }
+if (!CLI_MODE) { add_action('wp_head', 'YB_start_output_buffering'); }
+
+/**
+ * End output buffering, get the content, modify it, and then output it
+ */
+function YB_end_output_buffering() {
+    global $diff_metadata;
+
+    if (!PRODUCTION_MODE) echo "\n<!-- entering ".__function__." -->\n";
+    IF (!NO_FIX_METADATA) YB_fix_metadata();
+
+    $content_parts = preg_split(";<main|</main>;", ($content = $content_before = ob_get_clean()));
+    file_put_contents('/tmp/content.html', $content);
+    //$content = $content_before = preg_replace([";\n;", ";>\s*?<;"], ["", "> <"], '<main' . $content_parts[1] . '</main>');
+    $head    = $head_before = str_replace("\n", ($CR = " CR_RT "), $content_parts[0]); 
+
+    // Mofify the content, moustly impose captions
+    if (!VANILLA_OUTPUT) {
+        $head    = YB_strip_images_url($head);
+        $content = YB_strip_images_url($content);
+        $content = YB_figcaption_to_media($content);
+        $content = YB_recover_carousel_captions($content);
+    }
+    
+    // See the difference between modified and original pages
+    if (!PRODUCTION_MODE && !NO_DIFF) {
+        $showDiff = function($title, $content, $old, $new="") {
+            return (($diff = (empty($new) ? $old : pb_htmlDiff($old, $new)))
+                    ? str_replace("</main>",
+                                  "<div class='yb-diff'><h3>$title</h3>\n$diff\n</div><br>\n</main>",
+                                  $content)
+                    : $content);
+        };
+        $content = $showDiff("Diff main section", $content, $content_before, $content);
+        $content = $showDiff("Diff head section", $content, $head_before, $head);
+        //$content = $showDiff("Diff DB metadata (first 3 records)", $content, $diff_metadata);
+    }
+    
+    // Show comments & errors
+    $content = str_replace("</main>",
+			   "\n<!--     start exporting messages -->\n".WD_getAllMessages()."\n<!--     end exporting messages -->\n</main>\n",
+			   str_replace($CR, "\n", $content));
+    
+    // Return the tidy page if desired
+    //echo str_replace($CR, "\n", $head) . (TIDY_SOURCE ? getTidy($content) : $content) . $content_parts[2];
+    echo $content;
+    file_put_contents('/tmp/content_after.html', $content);
+    echo "\n<!-- exiting ".__function__." -->\n";
+}
+if (!CLI_MODE) { add_action('wp_footer', 'YB_end_output_buffering'); }
+

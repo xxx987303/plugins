@@ -11,7 +11,7 @@ if (!defined('CLI_MODE')) define('CLI_MODE', empty($_SERVER['HTTP_HOST']));
  *'
  * $COLOR == 'ee' means "skip entry/exit" on output
  */
-function WD_message(string|array|object $text='', $color='black', $truncate=true) {
+function WD_message(string|array|object $text='', string $color='black', bool|int $truncate=true) {
     global $WD_messages,  $indent, $prev;
     static $r;
 
@@ -24,11 +24,10 @@ function WD_message(string|array|object $text='', $color='black', $truncate=true
 	if (!$ee) echo WD_getCaller($level0+2).": $text\n";
 	return "";
     } elseif ($text == 'print') {    
+	// return the collected messages
 	if ($messages = (string)@file_get_contents($messages_keeper)){
-	    $messages = date('Y-m-d H:i:s',time()) . "<br>$messages";
+	    $messages = x('strong style=color:red',date('Y-m-d H:i:s',time())) . "<br>$messages";
 	}
-var_dump($messages); die("?????\n");
-	//WD_message(WD_truncatePreserveWord(strip_tags(str_replace(["\n",'<'], [' ',' <'], preg_replace("{\s+}", ' ', $messages)))), 33);
 	return $messages;
     }
     // Compact the reply
@@ -59,12 +58,19 @@ var_dump($messages); die("?????\n");
     $r = [' array ( ' => '[',
 	  ' ) '       => ']',
 	  ' => '      => '=>'];
-    $skip_ee = false;
-    if (!($ee && $skip_ee) && $text != $prev)
-	file_put_contents($messages_keeper,
- 			  str_repeat('&nbsp;',2*max(0,$indent)).x("span style=font-weight:bold",WD_getCaller($level0+2)).": ".
- 			  x("span style=color:$color",WD_truncatePreserveWord(str_replace(array_keys($r), array_values($r), joinX($text)), 130, $truncate))."<br>\n",
- 			  FILE_APPEND);
+    $skip_ee = true;
+    if (!($ee && $skip_ee) && $text != $prev) file_put_contents($messages_keeper,
+ 								str_replace("\n", " ",
+									    str_repeat('&nbsp;',2*max(0,$indent)).
+									    x("span style=font-weight:bold",
+									      WD_getCaller($level0+2)).
+									    ": ".
+ 									    x("span style=color:$color",
+									      WD_truncatePreserveWord(str_replace(array_keys($r),
+														  array_values($r),
+														  joinX($text)), 130, $truncate)).
+									    "<br>")."\n",
+								FILE_APPEND);
     // Skip repetive entries
     if (!$ee) $prev = $text;
     
@@ -102,7 +108,7 @@ function WD_getCaller(int $level=2, $args=DEBUG_BACKTRACE_IGNORE_ARGS) {
     $l = (($x=@$dbt[$level]['line'])     ? $x : '');
     $a = (($x=@$dbt[$level]['args'])     ? $x : '');
     $reply = sprintf("%s(%s)", "$c$t$f", $a);
-    //$reply = "$c$t$f$a";
+    $reply = "$c$t$f$a";
     return str_replace(['()','ProcessWire\\'], '', $reply);
 }
 
@@ -153,24 +159,19 @@ function joinX(int|string|array|object|null $a, $skipEmpty=true) {
  * Get all messages from WD_message('print')
  */
 function WD_getAllMessages(): string {
+    if (!SHOW_MESSAGES) return "";
+
     WD_message('entry');
-    $messages = "";
-    WD_message(var_export(SHOW_MESSAGES,true));
-    if (defined('SHOW_MESSAGES' && SHOW_MESSAGES)) {
-	$messages = WD_message('print');
-	$reply = (!empty($messages)
-	    ? x("div class='yb-comments'",
-		x("h3","WD_messages...").
-		x("code style='font-size:small'", $messages))
-	    : "");
-	if (empty($messages)) log_error(WD_getCaller(2).' empty messages');
-    }else{
-	var_dump(SHOW_MESSAGES);
-    }
-var_dump($messages);
-    WD_message($reply);
+    $messages = WD_message('print');
+    $reply = (!empty($messages)
+	? file_get_contents(__dir__.'/../styles/wd.css').
+	  x("div class=yb-messages",
+	    x("h3","WD_messages...").
+	    x("code style='font-size:small'", $messages))
+	: "");
+    if (empty($messages)) log_error(WD_getCaller(2).' No messages');
     WD_message('exit');
-    return $messages;
+    return $reply;
 }
     
 /**

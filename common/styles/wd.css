@@ -1,0 +1,14 @@
+
+<style>
+.wd-messages,
+.yb-messages,
+.yb-comments,
+.yb-diff {
+    border-radius: 3em;
+    background: gainsboro;
+    padding: 1%;
+    margin-left: 10%;
+    margin-right: 10%;
+    font-size: x-small;
+}
+</style>
