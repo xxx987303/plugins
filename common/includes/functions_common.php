@@ -15,6 +15,8 @@ function WD_message(string|array|object $text='', string $color='black', bool|in
     global $WD_messages,  $indent, $prev;
     static $r;
 
+    if (!SHOW_MESSAHES) return "";
+    
     $messages_keeper = '/tmp/WD_message.html';
     $level0 = preg_match('{YB_message}', WD_getCaller(2)) ? 1 : 0;
     $ee = in_array($text,['entry','exit']);
