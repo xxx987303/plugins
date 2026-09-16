@@ -3,8 +3,9 @@
  * As is...
  */
 require_once __dir__ . '/functions_fb.php';
+require_once __dir__ . '/functions_common.php';
 require_once __dir__ . '/functions_shortcodes.php';
-require_once __dir__ . '/../../simple-sso/WP_sso_get_bridge.php';
+require_once __dir__ . '/SSO_WP_get_bridge.php'; WD_message("LOADING SSO_WP_get_bridge.php", 'red');
 
 if (!defined('PRODUCTION_MODE')) define('PRODUCTION_MODE', false);
 if (!defined('AFTER_LOGIN'))     define('AFTER_LOGIN', 'stat/'); // about/
