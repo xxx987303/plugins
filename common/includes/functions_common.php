@@ -12,10 +12,10 @@ if (!defined('CLI_MODE')) define('CLI_MODE', empty($_SERVER['HTTP_HOST']));
  * $COLOR == 'ee' means "skip entry/exit" on output
  */
 function WD_message(string|array|object $text='', string $color='black', bool|int $truncate=true) {
-    global $WD_messages,  $indent, $prev;
+    global $WD_messages,  $indent, $prevl, $lastCaller;
     static $r;
 
-    if (!SHOW_MESSAHES) return "";
+    if (!SHOW_MESSAGES) return "";
     
     $messages_keeper = '/tmp/WD_message.html';
     $level0 = preg_match('{YB_message}', WD_getCaller(2)) ? 1 : 0;
@@ -28,16 +28,16 @@ function WD_message(string|array|object $text='', string $color='black', bool|in
     } elseif ($text == 'print') {    
 	// return the collected messages
 	if ($messages = (string)@file_get_contents($messages_keeper)){
-	    $messages = x('strong style=color:red',date('Y-m-d H:i:s',time())) . "<br>$messages";
+	    $messages = x('strong class="wd_time"',date('Y-m-d H:i:s',time())) . "<br>$messages";
 	}
 	return $messages;
     }
     // Compact the reply
-    if (preg_match('/^<.*>/',$text)) $text = str_replace(['<','>'],['&lt;','&gt;'], $text);
+    if (is_string($text) && preg_match('/^<.*>/',$text)) $text = str_replace(['<','>'],['&lt;','&gt;'], $text);
 
     // Set text colors
     if ($ee) $color='magenta';
-    if (is_string($text) && preg_match('{(INSERT|SELECT|DELETE|CREATE|TRUNCATE|DROP) }',$text)) $color = 'blue';
+    if (is_string($text) && preg_match('{(UPDATE|INSERT|SELECT|DELETE|CREATE|TRUNCATE|DROP) }',$text)) $color = 'blue';
     
     $st_ind  = '/tmp/indent';
     if (!isset($indent)) { $indent = 0; file_put_contents($st_ind, $indent); }
@@ -60,19 +60,20 @@ function WD_message(string|array|object $text='', string $color='black', bool|in
     $r = [' array ( ' => '[',
 	  ' ) '       => ']',
 	  ' => '      => '=>'];
-    $skip_ee = true;
-    if (!($ee && $skip_ee) && $text != $prev) file_put_contents($messages_keeper,
- 								str_replace("\n", " ",
-									    str_repeat('&nbsp;',2*max(0,$indent)).
-									    x("span style=font-weight:bold",
-									      WD_getCaller($level0+2)).
-									    ": ".
- 									    x("span style=color:$color",
-									      WD_truncatePreserveWord(str_replace(array_keys($r),
-														  array_values($r),
-														  joinX($text)), 130, $truncate)).
-									    "<br>")."\n",
-								FILE_APPEND);
+    $skip_ee = false;
+    if (!($ee && $skip_ee) && $text != $prev) { file_put_contents($messages_keeper,
+ 								  str_replace("\n", " ",
+									      str_repeat('&nbsp;',2*max(0,$indent)).
+									      x("span class='wd_caller'", ($lastCaller=WD_getCaller($level0+2))) .
+									      (is_string($text) && preg_match('/^\(/', $text) ? '' : ': ').
+									      x("span style=color:$color", WD_truncatePreserveWord(str_replace(array_keys($r),
+																	       array_values($r),
+																	       joinX($text)),
+																   130,
+																   $truncate))) . "<br>\n",
+								  FILE_APPEND);
+	$lastCaller = x("span class='wd_caller'",$lastCaller) . x("span style=color:magenta", " : exit").'<br>';
+    }
     // Skip repetive entries
     if (!$ee) $prev = $text;
     
@@ -85,9 +86,7 @@ function WD_message(string|array|object $text='', string $color='black', bool|in
 
 /**
  */
-function YB_message($textP='', $level='debug') {
-    WD_message($textP);
-}
+function YB_message($textP='', $level='debug') { WD_message($textP); }
 
 /**
  *   function 	string 	function name. See __FUNCTION__
@@ -101,6 +100,8 @@ function YB_message($textP='', $level='debug') {
  *   args 	array 	If inside a function, lists the functions arguments
  *                      If inside an included file, lists the included file name(s)
  *                      Unless DEBUG_BACKTRACE_IGNORE_ARGS is given
+ *
+ * closure:/Users/yb/github/sh_imac.git/site/templates/_hooks.php:23
  */
 function WD_getCaller(int $level=2, $args=DEBUG_BACKTRACE_IGNORE_ARGS) {
     $dbt = debug_backtrace($args, $level+1);
@@ -109,9 +110,15 @@ function WD_getCaller(int $level=2, $args=DEBUG_BACKTRACE_IGNORE_ARGS) {
     $f = (($x=@$dbt[$level]['function']) ? $x : '');
     $l = (($x=@$dbt[$level]['line'])     ? $x : '');
     $a = (($x=@$dbt[$level]['args'])     ? $x : '');
+    if (is_array($a)) $a = joinX($a);
     $reply = sprintf("%s(%s)", "$c$t$f", $a);
     $reply = "$c$t$f$a";
-    return str_replace(['()','ProcessWire\\'], '', $reply);
+    if (preg_match('{closure:}', $reply)) {
+	$parts = explode('/',$reply);
+	$reply = sprintf('%s../%s',$parts[0],$parts[count($parts)-1]);
+    }
+//    return $reply;
+    return preg_replace(['/ProcessWire-\>/','{/Users/[a-z]*/}'], ['','~/'], str_replace('ProcessWire\\', '', $reply));
 }
 
 /**
@@ -136,9 +143,11 @@ function WD_truncatePreserveWord($string, $limit = 100, $toTruncate=true) {
  * After many changes it became a sort of "var_dump"
  */
 function joinX(int|string|array|object|null $a, $skipEmpty=true) {
-    if (is_object($a)) $a = get_object_vars($a);
-    if (is_object($a)) $a = get_class_vars($a);
-    if (is_array($a)) {
+    if (is_object($a)){
+	return "Object ".get_class($a);
+	$a = get_object_vars($a);
+	$a = get_class_vars($a);
+    }elseif (is_array($a)) {
 	$r = "";
 	foreach($a as $k=>$v) {
 	    if (is_array($v)) { $r .= joinX($v, $skipEmpty); continue; }
@@ -161,18 +170,39 @@ function joinX(int|string|array|object|null $a, $skipEmpty=true) {
  * Get all messages from WD_message('print')
  */
 function WD_getAllMessages(): string {
+    global $lastCaller;
     if (!SHOW_MESSAGES) return "";
 
-    WD_message('entry');
+    static $css = "
+<style>
+#wd_messages{
+    border-radius: 3em;
+    background: gainsboro;
+    padding: 1%;
+    margin-left: 10%;
+    margin-right: 10%;
+    font-size: x-small;
+}
+.wd_time{
+    color:chocolate;
+}
+.wd_caller{
+    font-weight:bold;
+    color:black;
+}
+</style>
+";
+
+    //WD_message('entry');
     $messages = WD_message('print');
     $reply = (!empty($messages)
-	? file_get_contents(__dir__.'/../styles/wd.css').
-	  x("div class=yb-messages",
+	? $css .
+	  x("div id=wd_messages",
 	    x("h3","WD_messages...").
-	    x("code style='font-size:small'", $messages))
+	    x("code", $messages . $lastCaller))
 	: "");
     if (empty($messages)) log_error(WD_getCaller(2).' No messages');
-    WD_message('exit');
+    //WD_message('exit');
     return $reply;
 }
     
