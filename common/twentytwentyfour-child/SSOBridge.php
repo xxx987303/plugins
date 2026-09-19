@@ -1,1 +1,1 @@
-/Users/yb/github/plugins.git/simple-sso/SSOBridge.php
+/Users/yb/github/plugins.git/sso/SSOBridge.php

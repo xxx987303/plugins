@@ -54,22 +54,6 @@ add_filter( 'relevanssi_search_ok', function( $ok, $query ) {
 //if (!CLI_MODE) {
 
 /**
- * If a local avatar exists, then use it.
- * Otherwise a avatar will be used, which can be from gravatar 
- */
-function YB_getAvatar( $avatar = '', $id_or_email=1, $size = 96, $default = '', $alt = '' ) {
-    YB_message('entry');
-    if (($id_or_email!=1) && ($image=YB_get_template_file_uri("photos/$id_or_email.png", true))) {
-        $avatar = "<img alt='$alt' src='$image' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
-    }
-    //YB_message(str_replace(['<','>'],['&lt;','&gt;'],$avatar));
-    YB_message($avatar);
-    YB_message('exit');
-    return $avatar;
-}
-add_filter( 'get_avatar', 'YB_getAvatar', 10, 5 );
-
-/**
  * Remove posts, leave pages only
  */
 function remove_posts_menu() {

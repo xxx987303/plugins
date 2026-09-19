@@ -1,1 +1,1 @@
-/Users/yb/github/plugins.git/simple-sso/SSO_WP_get_bridge.php
+/Users/yb/github/plugins.git/sso/SSO_WP_get_bridge.php

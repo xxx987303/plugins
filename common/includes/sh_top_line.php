@@ -1,5 +1,10 @@
-<?php
-$spot = 'adb';
+<?php namespace ProcessWire;
+/**
+ * Processwire plugin which imitatate WP admin toolbar
+ */
+if (defined('PROCESSWIRE')) {
+    $spot = 'adb';
+    echo "\n<!--  ------------------------------------------------------- ".basename(__file__)." ---------------------------------------- -->\n";
 ?>
 <link rel='stylesheet' id='charts-css-css' href='/<?=$spot?>/wp-content/themes/twentytwentyfour-child/photoswipe/photoswipe.css?ver=7.1' media='all' />
 <link rel='stylesheet' id='dashicons-css'  href='/<?=$spot?>/wp-includes/css/dashicons.min.css?ver=7.1' media='all' />
@@ -29,13 +34,17 @@ $spot = 'adb';
 		<li role='group' id='wp-admin-bar-my-account' class="menupop with-avatar">
 		    <a class='ab-item' role="menuitem" aria-expanded="false" href='/<?=$spot?>/wp-admin/profile.php'>Howdy,
 			<span class="display-name">yb</span>
-			<img alt='' src='https://secure.gravatar.com/avatar/b1cc58a4ec77ae5c3fbacdf46cd2c3f5f6f1e886348935a6770e0bef3958f222?s=28&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/b1cc58a4ec77ae5c3fbacdf46cd2c3f5f6f1e886348935a6770e0bef3958f222?s=56&#038;d=mm&#038;r=g 2x' class='avatar avatar-28 photo' height='28' width='28' loading='lazy' decoding='async'/>
+		   <!-- <img alt='' src='https://secure.gravatar.com/avatar/b1cc58a4ec77ae5c3fbacdf46cd2c3f5f6f1e886348935a6770e0bef3958f222?s=28&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/b1cc58a4ec77ae5c3fbacdf46cd2c3f5f6f1e886348935a6770e0bef3958f222?s=56&#038;d=mm&#038;r=g 2x' class='avatar avatar-28 photo' height='28' width='28' loading='lazy' decoding='async'/> -->
+<!--			<img alt='' src='<?=\get_WP_Avatar("",\get_WP_User(),28)?>' class='avatar avatar-64 photo' height='28' width='28' loading='lazy' decoding='async'/> -->
+			<?=\get_WP_Avatar("",\get_WP_User(),28)?>
 		    </a>
 		    <div class="ab-sub-wrapper">
 			<ul role='menu' aria-label='Howdy, yb' id='wp-admin-bar-user-actions' class="ab-submenu">
 			    <li role='group' id='wp-admin-bar-user-info'>
 				<a class='ab-item' role="menuitem" href='/<?=$spot?>/wp-admin/profile.php'>
-				    <img alt='' src='https://secure.gravatar.com/avatar/b1cc58a4ec77ae5c3fbacdf46cd2c3f5f6f1e886348935a6770e0bef3958f222?s=64&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/b1cc58a4ec77ae5c3fbacdf46cd2c3f5f6f1e886348935a6770e0bef3958f222?s=128&#038;d=mm&#038;r=g 2x' class='avatar avatar-64 photo' height='64' width='64' loading='lazy' decoding='async'/>
+			      <!-- <img alt='' src='https://secure.gravatar.com/avatar/b1cc58a4ec77ae5c3fbacdf46cd2c3f5f6f1e886348935a6770e0bef3958f222?s=64&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/b1cc58a4ec77ae5c3fbacdf46cd2c3f5f6f1e886348935a6770e0bef3958f222?s=128&#038;d=mm&#038;r=g 2x' class='avatar avatar-64 photo' height='64' width='64' loading='lazy' decoding='async'/> -->
+<!--				    <img alt='' src='<?=\get_WP_Avatar("",\get_WP_User(),64)?>' class='avatar avatar-64 photo' height='64' width='64' loading='lazy' decoding='async'/> -->
+				    <?=\get_WP_Avatar("",\get_WP_User(),64)?>
 				    <span class='display-name'>yb</span>
 				    <span class='display-name edit-profile'>Edit Profile</span>
 				</a>
@@ -56,3 +65,6 @@ $spot = 'adb';
 	</div>
     </div>
 </span>
+<?php }
+echo "\n<!--  ------------------------------------------------------ /".basename(__file__)." ---------------------------------------- -->\n\n";
+?>

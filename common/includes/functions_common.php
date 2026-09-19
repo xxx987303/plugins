@@ -57,22 +57,15 @@ function WD_message(string|array|object $text='', string $color='black', bool|in
     }
 
     // Add the message to the messages_keeper
-    $r = [' array ( ' => '[',
-	  ' ) '       => ']',
-	  ' => '      => '=>'];
-    $skip_ee = false;
+    $skip_ee = true;
     if (!($ee && $skip_ee) && $text != $prev) { file_put_contents($messages_keeper,
  								  str_replace("\n", " ",
 									      str_repeat('&nbsp;',2*max(0,$indent)).
 									      x("span class='wd_caller'", ($lastCaller=WD_getCaller($level0+2))) .
-									      (is_string($text) && preg_match('/^\(/', $text) ? '' : ': ').
-									      x("span style=color:$color", WD_truncatePreserveWord(str_replace(array_keys($r),
-																	       array_values($r),
-																	       joinX($text)),
-																   130,
-																   $truncate))) . "<br>\n",
+									      (is_string($text) && str_starts_with($text, '(') ? '' : ': ').
+									      x("span style=color:$color", WD_truncatePreserveWord(joinX($text), 130, $truncate))) . "<br>\n",
 								  FILE_APPEND);
-	$lastCaller = x("span class='wd_caller'",$lastCaller) . x("span style=color:magenta", " : exit").'<br>';
+	$lastCaller = $skip_ee ? "" : x("span class='wd_caller'",$lastCaller) . x("span style=color:magenta", " : exit").'<br>';
     }
     // Skip repetive entries
     if (!$ee) $prev = $text;
@@ -142,24 +135,33 @@ function WD_truncatePreserveWord($string, $limit = 100, $toTruncate=true) {
 /**
  * After many changes it became a sort of "var_dump"
  */
-function joinX(int|string|array|object|null $a, $skipEmpty=true) {
+function joinX(int|string|array|object|null $a, $skipEmpty=true) : string {
+
+    $escape = function(string $text) : string {
+	$r = ['<'=>'&lt;',
+	      '>'=>'&gt;'];
+	return str_replace(array_keys($r), array_values($r), trim($text));
+    };
+    
     if (is_object($a)){
+	//$a = get_object_vars($a);
+	//$a = get_class_vars($a);
 	return "Object ".get_class($a);
-	$a = get_object_vars($a);
-	$a = get_class_vars($a);
     }elseif (is_array($a)) {
-	$r = "";
+	$reply = "";
 	foreach($a as $k=>$v) {
-	    if (is_array($v)) { $r .= joinX($v, $skipEmpty); continue; }
+	    if (is_array($v)) { $reply .= joinX($v, $skipEmpty); continue; }
 	    if (empty($v) && $v !== 0 && $v !== '0') continue;
 	    if (empty($v)||$k=='comment') continue;
-	    $r .= (is_string($v) ? "$k=>$v " : joinX($v));
+	    $reply .= (is_string($v) ? "$k=>$v, " : joinX($v));
 	}
-	return '['.str_replace(' => ','=>',preg_replace("/[\n\s]+/", " ", trim($r))).']';
+	return '['.preg_replace("/[\n\s]+/", " ", $escape(trim($reply))).']';
     } elseif (is_int($a)) {
 	return "$a";
     } elseif (is_string($a)) {
-	return preg_replace("/[\n\s]+/", " ", trim($a));
+	$reply = preg_replace("/[\n\s]+/", " ", trim($a));
+	if (preg_match('/[\<\>]/', $a) && $reply != $a) { var_dump($a); var_dump($reply); exit; }
+	return $escape($reply);
     } else {
 	var_dump($a);
 	die("?????????\n");
@@ -280,3 +282,52 @@ function x($tag, $text = '', $text2 = '') {
     return join($delim, array("", "<$tag>", $text, "</$tag_clean>")).$postfix;
 }
 
+
+/**
+ * Return WP user id
+ */
+function get_WP_User() : int {
+    // Map PW user to WP
+    static $PW_WP = [  37   => 0,  // guest
+		       40   => 0,  // guest
+		       41   => 1,  // yb
+		       6342 => 2,  // mb
+		       6340 => 3,  // tb 
+		       6344 => 4,  // ab
+		       5972 => 5,  // rb
+		       6341 => 6,  // ib
+		     //xxxx => 7,  // db
+		     //xxxx => 8,  // aaz
+		     //xxxx => 9,  // Unknown Russian
+    ];
+    if (defined('PROCESSWIRE')) {
+	$user = \Processwire\Users()->getCurrentUser();
+	return isset($PW_WP[$user->id]) ? $PW_WP[$user->id] : 0;
+    } elseif (is_user_logged_in()) {
+        return wp_get_current_user()->ID;
+    } else {
+        return 0;
+    }
+}
+
+
+/**
+ * If a local avatar exists, then use it.
+ * Otherwise a avatar will be used, which might be from gravatar 
+ */
+function get_WP_Avatar($avatar='', $id_or_email='', $size = 96, $default = '', $alt = 'Avatar') {
+    YB_message('entry');
+    //if (empty($id_or_email)) $id_or_email = get_WP_User();
+    $id_or_email = get_WP_User();
+    $image = (defined("PROCESSWIRE")
+	? \ProcessWire\urls('templates') . "photos/$id_or_email.png"
+        :          "/adb/wp-content/uploads/photos/$id_or_email.png");
+    YB_message("image($id_or_email) = $image");
+    $avatar = "<img alt='$alt' src='$image' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
+    $avatar = "<img alt='$alt' src='$image' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
+    YB_message("avatar = $avatar");
+    YB_message('exit');
+    return $avatar;
+}
+// WP version
+if (function_exists('add_filter')) add_filter( 'get_avatar', 'get_WP_Avatar', 10, 5 );
