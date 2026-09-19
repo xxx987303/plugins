@@ -57,12 +57,12 @@ function WD_add_items($admin_bar) {
 //    if ( ! current_user_can( 'manage_options' ) ) { return; }
     // This is where the magic works.
     $admin_bar->add_menu([ 'id'    => 'wd_top_button',
- 		   'parent'=> null,
- 		   'group' => null,
- 		   'title' => '<span class="ab-icon"></span>Статистика',
- 		   'href'  => '/'.WD_HOME.'/stat/',
- 		   'meta'  => ['title' => 'Статистика', 'class' => '' ]]);
-    echo '<style>#wpadminbar #wp-admin-bar-wd_top_button .ab-icon:before {content: "\f239"; color: #FF9800; top: 3px;}</style>';
+ 			   'parent'=> null,
+ 			   'group' => null,
+ 			   'title' => '<span class="ab-icon"></span>Статистика',
+ 			   'href'  => '/'.WD_HOME.'/stat/',
+ 			   'meta'  => ['title' => 'Статистика', 'class' => '' ]]);
+    //echo '<style>#wpadminbar #wp-admin-bar-wd_top_button .ab-icon:before {content: "\f239"; color: #FF9800; top: 3px;}</style>';
 }
 if (!CLI_MODE) add_action('admin_bar_menu', 'WD_add_items',  40);
 

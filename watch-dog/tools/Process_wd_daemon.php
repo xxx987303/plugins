@@ -23,7 +23,7 @@
  *        gessing the user_id
  */
 
-define('DRY_RUN',  false);
+define('DRY_RUN',  true);
 define('CLI_MODE', true);
 define('WDdaemon',  '`yb_watch_dog`.`wd_daemon`');
 define('WDremotes', '`yb_watch_dog`.`wd_remotes`');
@@ -286,12 +286,13 @@ function set_duration() {
             $endFmt   = date(TS, $end);
             $uaEscaped = str_replace('"', '""', $userAgent);
 	    //        echo "\"$ip\",\"$uaEscaped\",\"$startFmt\",\"$endFmt\",$duration,$count\n";
-	    $sql = "UPDATE wd_daemon SET d_duration = $duration WHERE d_time = '$startFmt' AND d_remote='$ip' AND d_user_agent='$userAgent'";
+	    foreach (wddb->get_results("SELECT d_duration FROM wd_daemon ".($WHERE = " WHERE d_time = '$startFmt' AND d_remote='$ip' AND d_user_agent='$userAgent'")) as $r){
+		// echo $r->d_duration .' <-> '. $duration."\n";
+		if ($r->d_duration == $duration) return;
+	    }
+	    $sql = "UPDATE wd_daemon SET d_duration = $duration $WHERE";
 	    echo "$sql;\n";
-	    //if (wddb->get_results("SELECT * FROM wd_daemon WHERE d_time='$startFmt'")) echo "startFmt $startFmt\n";
-	    //if (wddb->get_results("SELECT * FROM wd_daemon WHERE d_time='$endFmt'"))   echo "endFmt   $endFmt\n";
 	    if (!DRY_RUN) {
-		// wddb->get_results($sql);
 		if (false === ($rows_affected = wddb->query(wddb->prepare($sql,'active','subscriber'))) || empty($rows_affected)) {
 		    // echo "An error occurred during the update query\n";
 		} else {
@@ -530,8 +531,6 @@ function get_user_by( $field, $value ) {
     return $user;
 }
 
-function YB_message($a='',$m='') {}
-
 if (!function_exists('add_filter')) {
     function add_filter( $hook_name, $callback, $priority = 10, $accepted_args = 1 ) {
 	global $wp_filter;
@@ -547,12 +546,12 @@ if (!function_exists('add_filter')) {
 }
 
 function wp_load_translations_early() {
-	global $wp_textdomain_registry, $wp_locale;
-	static $loaded = false;
+    global $wp_textdomain_registry, $wp_locale;
+    static $loaded = false;
 
-	if ( $loaded ) {
-		return;
-	}
+    if ( $loaded ) {
+	return;
+    }
 
 	$loaded = true;
 

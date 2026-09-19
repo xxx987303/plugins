@@ -3,9 +3,6 @@
  * 4. ProcessWire side (e.g. site/init.php or a small autoload module)
  */
 
-require_once __dir__ . '/SSOBridge.php';
-require_once __dir__ . '/functions_common.php';
-
 function sso_get_bridge(): \SSOBridge {
     global $config;
     static $bridge = null;
@@ -35,7 +32,7 @@ $wire->addHookAfter('Session::login', function (HookEvent $event) {
     if ($user && $user->id) {
         try { sso_get_bridge()->createSession($user->email);
         } catch (\Throwable $e) {
-            error_log('[SSO] createSession failed: ' . $e->getMessage());
+            WD_message('[SSO] createSession failed: ' . $e->getMessage());
             // swallow it — local login must still succeed
         }
     }

@@ -99,10 +99,9 @@ class SSOBridge {
         }
 
         // sliding expiry — keep active users logged in
-        $this->db->prepare("UPDATE sso_sessions SET last_seen_at = :now WHERE token = :token")
-                 ->execute([':now' => date(TS,time()), ':token' => $token]);
+        $this->db->prepare($sql="UPDATE sso_sessions SET last_seen_at = :now WHERE token = :token")->execute([':now' => date(TS,time()), ':token' => $token]);
 
-	WD_message($row['user_email']);
+	WD_message($sql);
 	WD_message('exit');
         return $row['user_email'];
     }

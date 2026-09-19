@@ -1,0 +1,1 @@
+INSERT INTO `yb_watch_dog`.`wd_visits` (time,user_id,user_name,uri,user_agent,remote,mode) VALUES ('2026-07-30 19:39:56','9','?','/adb/from-archive/','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Mobile/23F84 Safari/604.1','91.78.36.225','daemon');

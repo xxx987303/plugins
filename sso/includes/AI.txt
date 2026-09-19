@@ -1,0 +1,237 @@
+# Shared-Session SSO for WordPress + ProcessWire
+(same domain)
+## Idea in one sentence
+One MySQL table (`sso_sessions`) is the source of truth for "who's logged
+in." A shared
+cookie, scoped to `.example.com`, points at a row in that table. Both CMSs
+check that
+table on every request and log the local user in/out to match it. No
+redirects, no
+tokens-over-HTTP, no OAuth dance — because same-domain means the cookie
+just works.
+Identity is unified by **email address**: both WP and ProcessWire must have
+a user with
+that email for auto-login to succeed. That's the one hard requirement this
+design leans on.
+---
+## 1. Shared table
+Put this in a small database both apps can reach (a dedicated `sso_shared`
+DB is cleanest —
+don't bury it inside WP's or PW's own schema).
+```sql
+CREATE TABLE sso_sessions (
+token CHAR(64) PRIMARY KEY,
+user_email VARCHAR(255) NOT NULL,
+created_at INT UNSIGNED NOT NULL,
+expires_at INT UNSIGNED NOT NULL,
+last_seen_at INT UNSIGNED NOT NULL,
+ip VARCHAR(45),
+user_agent VARCHAR(255),
+KEY idx_email (user_email),
+KEY idx_expires (expires_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+---
+## 2. Shared PHP class (`shared/sso-bridge.php`)
+Both CMSs `require` this one file. It knows nothing about WP or PW — just
+tokens and cookies.
+```php
+<?php
+// shared/sso-bridge.php
+class SSOBridge
+{
+private PDO $db;
+private string $cookieName = 'SSOSESSID';
+private string $cookieDomain;
+private int $ttl = 60 * 60 * 24 * 14; // 14 days
+public function __construct(PDO $db, string $cookieDomain)
+{
+$this->db = $db;
+$this->cookieDomain = $cookieDomain;
+}
+/** Call right after a successful local login on either site. */
+public function createSession(string $email): string
+{
+$token = bin2hex(random_bytes(32));
+$now = time();
+$stmt = $this->db->prepare(
+"INSERT INTO sso_sessions
+(token, user_email, created_at, expires_at, last_seen_at,
+ip, user_agent)
+VALUES (:token, :email, :now, :exp, :now, :ip, :ua)"
+);
+$stmt->execute([
+':token' => $token,
+':email' => $email,
+':now' => $now,
+':exp' => $now + $this->ttl,
+':ip' => $_SERVER['REMOTE_ADDR'] ?? ''
+,
+':ua' => substr($_SERVER['HTTP_USER_AGENT'] ?? ''
+, 0, 255),
+]);
+setcookie($this->cookieName, $token, [
+'expires' => $now + $this->ttl,
+'path' => '/',
+'domain' 'secure' => true,
+'httponly' => true,
+'samesite' => 'Lax',
+=> $this->cookieDomain, // e.g. '.example.com'
+]);
+return $token;
+}
+/** Call on every page load. Returns the logged-in email, or null. */
+public function getSessionEmail(): ?string
+{
+$token = $_COOKIE[$this->cookieName] ?? null;
+if (!$token || !preg_match('/^[a-f0-9]{64}$/', $token)) {
+return null;
+}
+$stmt = $this->db->prepare(
+"SELECT user_email, expires_at FROM sso_sessions WHERE token =
+:token"
+);
+$stmt->execute([':token' => $token]);
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+if (!$row || $row['expires_at'] < time()) {
+$this->destroySession(); // stale/invalid cookie, clean it up
+return null;
+}
+// sliding expiry — keep active users logged in
+$this->db->prepare("UPDATE sso_sessions SET last_seen_at = :now
+WHERE token = :token")
+->execute([':now' => time(), ':token' => $token]);
+return $row['user_email'];
+}
+/** Call on logout from either site. */
+public function destroySession(): void
+{
+$token = $_COOKIE[$this->cookieName] ?? null;
+if ($token) {
+$this->db->prepare("DELETE FROM sso_sessions WHERE token =
+:token")
+->execute([':token' => $token]);
+}
+setcookie($this->cookieName, '', [
+'expires' => time() - 3600,
+'path' => '/',
+'domain' => $this->cookieDomain,
+'secure' => true,
+'httponly' => true,
+'samesite' => 'Lax',
+]);
+}
+}
+```
+---
+## 3. WordPress side (as a must-use plugin,
+`wp-content/mu-plugins/sso-bridge.php`)
+```php
+<?php
+/* Plugin Name: SSO Bridge */
+require_once '/path/to/shared/sso-bridge.php';
+function sso_get_bridge(): SSOBridge
+{
+static $bridge = null;
+if ($bridge === null) {
+$pdo = new PDO(
+'mysql:host=localhost;dbname=sso_shared;charset=utf8mb4',
+'ssouser', getenv('SSO_DB_PASS'),
+[PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+);
+$bridge = new SSOBridge($pdo, '.example.com');
+}
+return $bridge;
+}
+// A. On successful WP login, register the shared session
+add_action('wp_login', function ($user_login, $user) {
+sso_get_bridge()->createSession($user->user_email);
+}, 10, 2);
+// B. On every load, if not locally logged in, check for a valid SSO session
+add_action('init', function () {
+if (is_user_logged_in()) return;
+$email = sso_get_bridge()->getSessionEmail();
+if (!$email) return;
+$user = get_user_by('email', $email);
+if (!$user) return; // policy choice: bail, or auto-provision here
+wp_set_current_user($user->ID);
+wp_set_auth_cookie($user->ID);
+});
+// C. On WP logout, kill the shared session too
+add_action('wp_logout', function () {
+sso_get_bridge()->destroySession();
+});
+```
+---
+## 4. ProcessWire side (e.g. `site/init.php` or a small
+autoload module)
+```php
+<?php namespace ProcessWire;
+require_once __DIR__ . '/../shared/sso-bridge.php';
+function sso_get_bridge(): \SSOBridge
+{
+static $bridge = null;
+if ($bridge === null) {
+$pdo = new \PDO(
+'mysql:host=localhost;dbname=sso_shared;charset=utf8mb4',
+'ssouser', getenv('SSO_DB_PASS'),
+[\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+);
+$bridge = new \SSOBridge($pdo, '.example.com');
+}
+return $bridge;
+}
+// A. On successful PW login, register the shared session
+$wire->addHookAfter('Session::login', function (HookEvent $event) {
+$user = $event->return; // the logged-in User, or false on failure
+if ($user && $user->id) {
+sso_get_bridge()->createSession($user->email);
+}
+});
+// B. On every load, if not locally logged in, check for a valid SSO session
+if (!$wire->user->isLoggedin()) {
+$email = sso_get_bridge()->getSessionEmail();
+if ($email) {
+$pwUser = $wire->users->get("email=$email");
+if ($pwUser && $pwUser->id) {
+$wire->session->forceLogin($pwUser); // built-in PW method
+}
+}
+}
+// C. On PW logout, kill the shared session too
+$wire->addHookBefore('Session::logout', function (HookEvent $event) {
+sso_get_bridge()->destroySession();
+});
+```
+---
+## Things to decide before you build this for real
+- **Auto-provisioning:** if someone exists in WP but not in PW (or vice
+versa), do you
+create them on the fly, or require accounts to exist on both sides first?
+The sketch
+above just bails silently — you'll want at least a log entry.
+- **Instant cross-site logout:** logging out on Site A deletes the shared
+row immediately,
+but Site B only notices on its *next* page load — until then its local
+session cookie
+still looks valid. Usually fine (worst case: a few seconds/minutes of
+staleness). If you
+need it instant, Site A's logout handler can fire a quick internal
+request to a small
+"clear local session" endpoint on Site B.
+- **Password changes / account disable:** decide whether those should also
+revoke rows in
+`sso_sessions` for that email, so a disabled user isn't still riding an
+old shared session.
+- **Secrets:** don't hardcode the DB password — pull from environment
+variables or each
+CMS's existing config file, as shown with `getenv()`
+.
+- **Table cleanup:** a daily cron `DELETE FROM sso_sessions WHERE
+expires_at < UNIX_TIMESTAMP()`
+keeps the table from growing forever.
+This is deliberately minimal — no admin UI, no refresh tokens, no protocol.
+If later you
+add a site on a different domain, that one site becomes an OIDC client
+against a proper
+IdP while these two keep using the shared session between themselves.

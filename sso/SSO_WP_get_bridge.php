@@ -32,12 +32,14 @@ add_action('init', function () {
     if (is_user_logged_in()) return;
 
     $email = sso_get_bridge()->getSessionEmail();
+    WD_message("Get current SSO user email=".$email);
     if (!$email) return;
 
     $user = get_user_by('email', $email);
     if (!$user) return; // policy choice: bail, or auto-provision here
-
+    WD_message("Set current user ID=".$user->ID);
     wp_set_current_user($user->ID);
+    WD_message("Set auth cookie for ID=".$user->ID);
     wp_set_auth_cookie($user->ID);
 });
 

@@ -1,0 +1,1238 @@
+Doing WD_import_cPanel
+Doing WD_import_cPanel
+Doing WD_import_cPanel
+
+IP regexps
+==========
+Array
+(
+    [130.229.128.[0-9]+] => 1
+    [130.237.181.[0-9]+] => 1
+    [130.237.96.[0-9]+] => 1
+    [185.176.246.[0-9]+] => 1
+    [193.180.91.[0-9]+] => 1
+    [194.103.157.[0-9]+] => 1
+    [46.252.1.[0-9]+] => 1
+    [46.252.8.[0-9]+] => 1
+    [194.230.146.[0-9]+] => 2
+    [95.75.213.[0-9]+] => 2
+    [212.233.85.[0-9]+] => 3
+    [93.158.130.[0-9]+] => 4
+    [176.126.133.[0-9]+] => 7
+    [195.5.50.[0-9]+] => 7
+    [31.41.90.[0-9]+] => 7
+    [176.193.99.[0-9]+] => 9
+    [91.78.36.[0-9]+] => 9
+    [91.79.37.[0-9]+] => 9
+    [144.31.91.[0-9]+] => 999
+)
+
+-0------------------------------------ yb.onestudio.ch-ssl_log-May-2026
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-08 08:09:46';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-15 03:37:48';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 5 WHERE d_time = '2026-05-22 05:52:18';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 31 WHERE d_time = '2026-05-27 15:45:27';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-05-27 16:22:38';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-05-27 16:40:19';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-29 03:25:46';
+An error occurred during the update query
+-1------------------------------------ 
+
+Written 0 records
+
+
+Doing WD_import_cPanel
+Doing WD_import_cPanel
+Doing WD_import_cPanel
+
+IP regexps
+==========
+Array
+(
+    [130.229.128.[0-9]+] => 1
+    [130.237.181.[0-9]+] => 1
+    [130.237.96.[0-9]+] => 1
+    [185.176.246.[0-9]+] => 1
+    [193.180.91.[0-9]+] => 1
+    [194.103.157.[0-9]+] => 1
+    [46.252.1.[0-9]+] => 1
+    [46.252.8.[0-9]+] => 1
+    [194.230.146.[0-9]+] => 2
+    [95.75.213.[0-9]+] => 2
+    [212.233.85.[0-9]+] => 3
+    [93.158.130.[0-9]+] => 4
+    [176.126.133.[0-9]+] => 7
+    [195.5.50.[0-9]+] => 7
+    [31.41.90.[0-9]+] => 7
+    [176.193.99.[0-9]+] => 9
+    [91.78.36.[0-9]+] => 9
+    [91.79.37.[0-9]+] => 9
+    [144.31.91.[0-9]+] => 999
+)
+
+-0------------------------------------ yb.onestudio.ch-ssl_log-Jun-2026
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:23','/restor/sad/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:23','/restor/bath/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:23','/restor/bt/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:23','/restor/stul/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:23','/restor/chair/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:23','/restor/device/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:23','/restor/andromeda/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:23','/restor/soriano/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:27','/restor/sad2/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:27','/restor/clock1896/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:23','/restor/fridge/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:23','/restor/tougin/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:26','/restor/sad2/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:27','/restor/table1946/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-05 07:20:27','/restor/bat/','31.220.103.146','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-10 11:54:24','/restor/clock1896/','185.176.246.223','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:53','/restor/sad/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:53','/restor/bath/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:53','/restor/fridge/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:53','/restor/soriano/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:55','/restor/sad2/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:57','/restor/bat/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:57','/restor/clock1896/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:53','/restor/chair/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:53','/restor/bt/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:53','/restor/stul/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:53','/restor/andromeda/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:53','/restor/tougin/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:53','/restor/device/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:57','/restor/table1946/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-12 15:53:57','/restor/sad2/','62.146.225.153','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:19','/restor/chair/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:20','/restor/tougin/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:19','/restor/sad2/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:23','/restor/bath/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:23','/restor/bt/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:23','/restor/device/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:23','/restor/andromeda/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:23','/restor/stul/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:19','/restor/bat/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:19','/restor/table1946/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:20','/restor/soriano/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:19','/restor/clock1896/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:23','/restor/sad/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:22','/restor/clock1896/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:23','/restor/fridge/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:25','/restor/device/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:25','/restor/bt/','65.21.124.77','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:49','/restor/clock1896/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:50','/restor/table1946/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:50','/restor/sad2/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:51','/restor/bat/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:51','/restor/chair/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:52','/restor/soriano/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:53','/restor/tougin/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:54','/restor/bath/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:55','/restor/device/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:55','/restor/sad/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:55','/restor/fridge/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:55','/restor/tougin/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:42','/restor/sad2/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:44','/restor/clock1896/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:44','/restor/table1946/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:45','/restor/bat/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:45','/restor/soriano/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:45','/restor/device/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:46','/restor/sad2/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:46','/restor/chair/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:47','/restor/device/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:47','/restor/soriano/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:47','/restor/chair/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:48','/restor/sad/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:47','/restor/tougin/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:55','/restor/stul/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:55','/restor/andromeda/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:18:55','/restor/bt/','104.252.191.88','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:47','/restor/table1946/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:47','/restor/andromeda/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:48','/restor/sad2/pp2024/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:48','/restor/bt/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:48','/restor/clock1896/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:48','/restor/stul/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:48','/restor/fridge/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:52','/restor/table1946/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:47','/restor/bath/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:48','/restor/bat/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:48','/restor/stul/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:51','/restor/device/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:54','/restor/soriano/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:57','/restor/bt/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:55','/restor/chair/','107.172.195.147','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:58','/restor/tougin/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:58','/restor/clock1896/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:58','/restor/table1946/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:59','/restor/soriano/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-13 02:19:58','/restor/bat/','104.164.126.72','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:27','/restor/stul/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:27','/restor/bath/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:27','/restor/tougin/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:27','/restor/chair/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:27','/restor/bt/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:27','/restor/fridge/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:27','/restor/andromeda/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:27','/restor/device/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:27','/restor/sad/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:27','/restor/soriano/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:31','/restor/sad2/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:31','/restor/table1946/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:31','/restor/bat/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-06-20 12:32:31','/restor/clock1896/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-08 08:09:46';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-15 03:37:48';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 5 WHERE d_time = '2026-05-22 05:52:18';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 31 WHERE d_time = '2026-05-27 15:45:27';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-05-27 16:22:38';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-05-27 16:40:19';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-29 03:25:46';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-06-05 07:20:23';
+10 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-06-10 11:54:24';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-06-12 15:53:53';
+10 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 6 WHERE d_time = '2026-06-13 02:18:19';
+5 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 6 WHERE d_time = '2026-06-13 02:18:49';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 13 WHERE d_time = '2026-06-13 02:19:42';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 15 WHERE d_time = '2026-06-13 02:19:44';
+2 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-06-20 12:32:27';
+10 row(s) were successfully updated.
+-1------------------------------------ 
+
+Written 110 records
+
+
+Doing WD_import_cPanel
+Doing WD_import_cPanel
+Doing WD_import_cPanel
+
+IP regexps
+==========
+Array
+(
+    [130.229.128.[0-9]+] => 1
+    [130.237.181.[0-9]+] => 1
+    [130.237.96.[0-9]+] => 1
+    [185.176.246.[0-9]+] => 1
+    [193.180.91.[0-9]+] => 1
+    [194.103.157.[0-9]+] => 1
+    [46.252.1.[0-9]+] => 1
+    [46.252.8.[0-9]+] => 1
+    [194.230.146.[0-9]+] => 2
+    [95.75.213.[0-9]+] => 2
+    [212.233.85.[0-9]+] => 3
+    [93.158.130.[0-9]+] => 4
+    [176.126.133.[0-9]+] => 7
+    [195.5.50.[0-9]+] => 7
+    [31.41.90.[0-9]+] => 7
+    [176.193.99.[0-9]+] => 9
+    [91.78.36.[0-9]+] => 9
+    [91.79.37.[0-9]+] => 9
+    [144.31.91.[0-9]+] => 999
+)
+
+-0------------------------------------ yb.onestudio.ch-ssl_log-Jul-2026
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:33','/restor/stul/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:33','/restor/sad/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:33','/restor/device/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:33','/restor/andromeda/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:33','/restor/bath/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:33','/restor/soriano/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:33','/restor/fridge/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:36','/restor/sad2/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:37','/restor/table1946/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:37','/restor/bat/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:37','/restor/sad2/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:33','/restor/chair/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:33','/restor/tougin/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:33','/restor/bt/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 03:21:37','/restor/clock1896/','89.117.72.154','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-09 12:48:37','/restor/soriano/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-10 12:56:21','/adb/counter/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-10 12:56:30','/adb/childhood/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 09:30:37','/adb/dvisk/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 09:31:11','/adb/war/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 09:31:42','/adb/war/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 10:43:55','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 10:44:27','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 11:04:21','/restor/bat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:11:16','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:12:01','/adb/dvisk/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:12:59','/adb/rodni/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:15:10','/adb/childhood/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:21:58','/adb/rodni/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:22:07','/adb/kharkiv/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:22:25','/adb/childhood/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:22:40','/adb/childhood/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:22:42','/adb/counter/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:22:44','/adb/dembil/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:22:49','/adb/55120-2/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:22:58','/adb/rodni/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:23:07','/adb/kharkiv/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:23:27','/adb/rodni/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:21:47','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:23:39','/adb/dembil/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:36:27','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/152.3 Mobile/15E148 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:59:33','/adb/stat/','213.170.135.144','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Mobile/23F77 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:39:28','/adb/kharkiv/','46.252.8.1','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/152.3 Mobile/15E148 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 12:39:42','/adb/rodni/','46.252.8.1','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/152.3 Mobile/15E148 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 13:34:39','/adb/rodni/','46.252.8.1','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/152.3 Mobile/15E148 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-11 19:44:51','/adb/childhood/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/sad/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/bat/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/chair/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/clock1896/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/soriano/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/tougin/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/bt/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/stul/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/device/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/table1946/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/bath/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/sad2/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/andromeda/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 01:48:14','/restor/fridge/','185.93.89.147','Mozilla/5.0 (compatible; jscrawler/0.1; +https://github.com/)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 14:44:58','/adb/kharkiv/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 14:40:11','/adb/kharkiv/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 14:45:17','/adb/childhood/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 14:45:49','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 15:00:49','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 15:01:35','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 17:03:52','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 17:07:19','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 17:07:26','/adb/dembil/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 17:08:05','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 19:10:35','/adb/kharkiv/','46.252.8.1','Mozilla/5.0 (iPad; CPU OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 19:10:29','/adb/kharkiv/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 19:11:30','/adb/rodni/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 19:13:25','/adb/childhood/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 19:30:05','/adb/childhood/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 19:33:09','/adb/kharkiv/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 19:33:12','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 20:12:50','/adb/kharkiv/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 20:14:02','/adb/rodni/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 20:14:52','/adb/kharkiv/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-12 21:16:05','/adb/aleksandrovskoe/','194.230.146.141','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-13 02:11:43','/adb/kharkiv/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-13 02:11:47','/adb/kharkiv/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-13 02:12:46','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-13 02:13:03','/adb/kharkiv/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-13 02:13:04','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-13 11:26:36','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-13 11:30:09','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-13 11:30:24','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-13 15:43:02','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-13 15:46:34','/adb/rodni/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-13 15:46:47','/adb/dvisk/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-14 18:58:19','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-14 22:02:43','/adb/stat/','176.193.99.230','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-14 22:03:21','/adb/war/','176.193.99.230','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-14 22:06:17','/adb/war/','176.193.99.230','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-14 23:28:02','/adb/war/','94.183.151.76','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 11:40:35','/adb/rodni/','176.193.99.230','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 11:40:23','/adb/rodni/','72.56.106.210','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 13:38:04','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 13:57:12','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 13:48:58','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 13:57:59','/adb/dvisk/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 14:00:14','/adb/dembil/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:47','/restor/sad/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:47','/restor/bt/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:47','/restor/stul/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:47','/restor/bath/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:47','/restor/chair/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:47','/restor/device/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:47','/restor/tougin/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:50','/restor/sad2/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:51','/restor/bat/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:51','/restor/clock1896/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:47','/restor/andromeda/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:47','/restor/fridge/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:47','/restor/soriano/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:51','/restor/table1946/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 21:56:51','/restor/sad2/','5.161.182.186','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 23:21:54','/adb/stat/','91.79.37.8','Mozilla/5.0 (iPhone; CPU iPhone OS 26_5_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/150.0.7871.113 Mobile/15E148 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-15 23:25:54','/adb/rodni/','91.79.37.8','Mozilla/5.0 (iPhone; CPU iPhone OS 26_5_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/150.0.7871.113 Mobile/15E148 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 10:23:29','/adb/kharkiv/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 10:23:45','/adb/rodni/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 10:24:13','/adb/kharkiv/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 10:24:35','/adb/childhood/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 10:24:42','/adb/counter/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 10:24:54','/adb/war/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 10:25:05','/adb/dvisk/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 10:26:35','/adb/childhood/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 10:26:57','/adb/counter/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 10:27:12','/adb/war/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 10:39:01','/adb/dvisk/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 22:41:37','/adb/rodni/','195.5.50.69','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Mobile/15E148 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 22:41:33','/adb/rodni/','144.31.91.15','Mozilla/5.0 (iPhone; CPU iPhone OS 26_5_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/150.0.7871.113 Mobile/15E148 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-16 22:41:50','/adb/war/','144.31.91.15','Mozilla/5.0 (iPhone; CPU iPhone OS 26_5_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/150.0.7871.113 Mobile/15E148 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-17 12:27:23','/adb/rodni/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-17 12:28:21','/adb/rodni/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-17 12:28:26','/adb/aleksandrovskoe/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-17 12:24:21','/adb/war/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-17 12:30:54','/adb/dembil/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-17 12:30:48','/adb/kharkiv/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-17 12:33:02','/adb/aleksandrovskoe/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-18 10:04:56','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-18 10:12:13','/adb/author/db/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-18 17:22:16','/adb/childhood/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-18 17:26:55','/adb/dembil/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-18 17:23:58','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-19 06:16:26','/adb/stat/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-19 06:25:23','/adb/childhood/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-19 06:21:51','/adb/childhood/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-19 07:04:15','/adb/counter/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-19 09:01:44','/adb/war/','31.41.90.5','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-19 09:01:34','/adb/war/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-19 09:01:37','/adb/war/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-19 16:57:11','/adb/childhood/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-20 11:33:52','/adb/pref/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-20 11:34:09','/adb/childhood/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-20 11:44:59','/adb/pref/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-20 11:45:21','/adb/kharkiv/','95.75.213.135','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-20 12:01:42','/adb/pref/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-20 13:09:46','/adb/kharkiv/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-20 13:10:07','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-20 17:45:43','/adb/pref/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-20 15:41:50','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-20 15:42:15','/adb/kharkiv/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-21 15:56:45','/adb/childhood/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-21 15:57:19','/adb/childhood/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 18:32:25','/adb/pref/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 18:32:39','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 18:38:01','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 19:25:25','/adb/stat/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 18:42:55','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 18:43:24','/adb/pref/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 19:26:04','/adb/rodni/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 19:39:48','/adb/stat/','91.78.36.225','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Mobile/23F84 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 19:39:56','/adb/from-archive/','91.78.36.225','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Mobile/23F84 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 19:40:09','/adb/stat/','91.78.36.225','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Mobile/23F84 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 19:40:16','/adb/rodni/','91.78.36.225','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Mobile/23F84 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 19:45:22','/adb/childhood/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 19:55:29','/adb/aleksandrovskoe/','91.78.36.225','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Mobile/23F84 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 19:55:35','/adb/war/','91.78.36.225','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Mobile/23F84 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-30 21:38:37','/adb/stat/','176.126.133.217','Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Mobile Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 09:57:30','/restor/tougin/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 10:41:15','/restor/clock1896/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 11:49:15','/restor/sad/','176.126.133.217','Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Mobile Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 11:49:15','/restor/sad2/','176.126.133.217','Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Mobile Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 11:49:18','/restor/sad2/','66.249.93.102','Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36 (compatible; Google-Read-Aloud; +https://support.google.com/webmasters/answer/1061943)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 11:49:19','/restor/sad2/','192.178.11.133','Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36 (compatible; Google-Read-Aloud; +https://support.google.com/webmasters/answer/1061943)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 11:49:21','/restor/sad2/','192.178.11.133','Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36 (compatible; Google-Read-Aloud; +https://support.google.com/webmasters/answer/1061943)');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 11:51:09','/restor/clock1896/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 12:11:38','/restor/table1946/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-08 08:09:46';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-15 03:37:48';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 5 WHERE d_time = '2026-05-22 05:52:18';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 31 WHERE d_time = '2026-05-27 15:45:27';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-05-27 16:22:38';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-05-27 16:40:19';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-29 03:25:46';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-06-05 07:20:23';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-06-10 11:54:24';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-06-12 15:53:53';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 6 WHERE d_time = '2026-06-13 02:18:19';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 6 WHERE d_time = '2026-06-13 02:18:49';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 13 WHERE d_time = '2026-06-13 02:19:42';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 15 WHERE d_time = '2026-06-13 02:19:44';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-06-20 12:32:27';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-07-15 21:56:47';
+10 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-07-09 03:21:33';
+10 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-09 12:48:37';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 9 WHERE d_time = '2026-07-10 12:56:21';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 65 WHERE d_time = '2026-07-11 09:30:37';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 32 WHERE d_time = '2026-07-11 10:43:55';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-11 11:04:21';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 631 WHERE d_time = '2026-07-11 12:11:16';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-11 19:44:51';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 1284 WHERE d_time = '2026-07-12 14:40:11';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 228 WHERE d_time = '2026-07-13 11:26:36';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 225 WHERE d_time = '2026-07-13 15:43:02';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 1330 WHERE d_time = '2026-07-15 13:38:04';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 437 WHERE d_time = '2026-07-18 10:04:56';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 279 WHERE d_time = '2026-07-18 17:22:16';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 17 WHERE d_time = '2026-07-20 11:33:52';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-20 17:45:43';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 101 WHERE d_time = '2026-07-11 12:21:58';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 122 WHERE d_time = '2026-07-12 20:12:50';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-12 21:16:05';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 195 WHERE d_time = '2026-07-11 12:36:27';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-11 13:34:39';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-11 12:59:33';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-12 01:48:14';
+14 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 253 WHERE d_time = '2026-07-12 17:03:52';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 176 WHERE d_time = '2026-07-12 19:10:29';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 187 WHERE d_time = '2026-07-12 19:30:05';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 81 WHERE d_time = '2026-07-13 02:11:43';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-14 18:58:19';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-20 12:01:42';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 21 WHERE d_time = '2026-07-20 13:09:46';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 25 WHERE d_time = '2026-07-20 15:41:50';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-12 19:10:35';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 214 WHERE d_time = '2026-07-14 22:02:43';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-15 11:40:35';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-14 23:28:02';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-15 11:40:23';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 240 WHERE d_time = '2026-07-15 23:21:54';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 932 WHERE d_time = '2026-07-16 10:23:29';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-16 22:41:37';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 17 WHERE d_time = '2026-07-16 22:41:33';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 521 WHERE d_time = '2026-07-17 12:24:21';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 22 WHERE d_time = '2026-07-20 11:44:59';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 537 WHERE d_time = '2026-07-19 06:16:26';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-19 07:04:15';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 3 WHERE d_time = '2026-07-19 09:01:34';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-19 16:57:11';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 34 WHERE d_time = '2026-07-21 15:56:45';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 39 WHERE d_time = '2026-07-30 19:25:25';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-30 19:45:22';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 11:51:09';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 12:11:38';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-19 09:01:44';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 659 WHERE d_time = '2026-07-30 18:32:25';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 09:57:30';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 10:41:15';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 28 WHERE d_time = '2026-07-30 19:39:48';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 6 WHERE d_time = '2026-07-30 19:55:29';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-30 21:38:37';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 11:49:15';
+2 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 11:49:18';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 2 WHERE d_time = '2026-07-31 11:49:19';
+1 row(s) were successfully updated.
+-1------------------------------------ 
+
+Written 191 records
+
+
+Doing WD_import_cPanel
+Doing WD_import_cPanel
+Doing WD_import_cPanel
+
+IP regexps
+==========
+Array
+(
+    [130.229.128.[0-9]+] => 1
+    [130.237.181.[0-9]+] => 1
+    [130.237.96.[0-9]+] => 1
+    [185.176.246.[0-9]+] => 1
+    [193.180.91.[0-9]+] => 1
+    [194.103.157.[0-9]+] => 1
+    [46.252.1.[0-9]+] => 1
+    [46.252.8.[0-9]+] => 1
+    [194.230.146.[0-9]+] => 2
+    [95.75.213.[0-9]+] => 2
+    [212.233.85.[0-9]+] => 3
+    [93.158.130.[0-9]+] => 4
+    [176.126.133.[0-9]+] => 7
+    [195.5.50.[0-9]+] => 7
+    [31.41.90.[0-9]+] => 7
+    [176.193.99.[0-9]+] => 9
+    [91.78.36.[0-9]+] => 9
+    [91.79.37.[0-9]+] => 9
+    [144.31.91.[0-9]+] => 999
+)
+
+-0------------------------------------ yb.onestudio.ch-ssl_log-Aug-2026
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 16:07:45','/restor/device/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 17:37:29','/adb/war/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 17:57:20','/adb/55120-2/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 18:10:02','/adb/dembil/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 18:10:19','/adb/aleksandrovskoe/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 18:08:17','/adb/dembil/','176.126.133.217','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 22:13:56','/restor/sad2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 22:13:01','/restor/clock1896/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-07-31 22:18:28','/restor/bat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-01 12:44:22','/restor/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-01 12:44:52','/restor/bat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-01 12:45:01','/restor/fridge/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-01 12:54:40','/restor/table1946/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-01 12:54:49','/restor/clock1896/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-01 12:52:50','/restor/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-01 19:56:24','/restor/soriano/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-01 19:54:20','/restor/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:53','/restor/stul/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:53','/restor/device/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:53','/restor/fridge/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:54','/restor/tougin/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:57','/restor/clock1896/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:57','/restor/sad2/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:53','/restor/andromeda/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:53','/restor/sad/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:53','/restor/bt/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:53','/restor/chair/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:53','/restor/soriano/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:53','/restor/bath/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:56','/restor/sad2/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:57','/restor/bat/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-06 01:56:57','/restor/table1946/','62.146.225.69','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-13 11:34:50','/restor/bat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-13 11:36:27','/restor/bat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-13 11:55:52','/restor/bt/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-13 11:56:30','/restor/bt/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 OPR/133.0.0.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-13 11:56:17','/restor/bt/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-13 11:56:51','/restor/bat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 OPR/133.0.0.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-13 12:00:01','/restor/sad2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-13 11:56:55','/restor/bt/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 OPR/133.0.0.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-13 11:57:11','/restor/bat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 OPR/133.0.0.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-13 11:58:03','/restor/bat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-13 12:00:09','/restor/sad2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-13 12:00:18','/restor/bat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-15 01:00:15','/adb/war/','144.31.91.15','Mozilla/5.0 (iPhone; CPU iPhone OS 26_5_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/151.0.7922.112 Mobile/15E148 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-15 01:00:41','/adb/stat/','144.31.91.15','Mozilla/5.0 (iPhone; CPU iPhone OS 26_5_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/151.0.7922.112 Mobile/15E148 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-15 01:00:47','/adb/stat/','31.41.90.36','Mozilla/5.0 (iPhone; CPU iPhone OS 26_5_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/151.0.7922.57 Mobile/15E148 Safari/604.1');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-15 17:30:43','/restor/sad2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 OPR/133.0.0.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-15 17:30:52','/restor/bat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 OPR/133.0.0.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-15 17:30:54','/restor/fridge/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 OPR/133.0.0.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-15 17:31:07','/adb/fridge/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 OPR/133.0.0.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-15 17:31:54','/adb/pref/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 OPR/133.0.0.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-15 17:31:58','/adb/dvisk/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 OPR/133.0.0.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-15 17:34:08','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 OPR/133.0.0.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-15 21:37:35','/restor/sad2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-15 21:37:42','/restor/table1946/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5.2 Safari/605.1.15');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-17 16:03:51','/restor/table1946/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-17 16:04:31','/restor/stst/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-17 16:04:38','/restor/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-17 16:05:45','/restor/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-17 16:06:07','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-17 16:06:49','/adb/pref/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 08:28:38','/restor/tougin/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) QuickLook/5.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:52','/restor/sad/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:52','/restor/bath/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:52','/restor/andromeda/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:52','/restor/device/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:52','/restor/fridge/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:52','/restor/bt/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:52','/restor/stul/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:52','/restor/soriano/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:56','/restor/sad2/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:56','/restor/clock1896/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:52','/restor/tougin/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:52','/restor/chair/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:55','/restor/sad2/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:56','/restor/bat/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-19 20:38:56','/restor/table1946/','31.220.97.232','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:08','/restor/bath/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:08','/restor/chair/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:08','/restor/soriano/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:07','/restor/sad/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:08','/restor/bt/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:07','/restor/stul/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:08','/restor/fridge/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:08','/restor/device/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:07','/restor/andromeda/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:11','/restor/sad2/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:12','/restor/sad2/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:12','/restor/table1946/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:12','/restor/clock1896/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:12','/restor/bat/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-08-26 21:42:08','/restor/tougin/','62.146.225.75','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36');
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-08 08:09:46';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-15 03:37:48';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 5 WHERE d_time = '2026-05-22 05:52:18';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 31 WHERE d_time = '2026-05-27 15:45:27';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-05-27 16:22:38';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-05-27 16:40:19';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-29 03:25:46';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-06-05 07:20:23';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-06-10 11:54:24';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-06-12 15:53:53';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 6 WHERE d_time = '2026-06-13 02:18:19';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 6 WHERE d_time = '2026-06-13 02:18:49';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 13 WHERE d_time = '2026-06-13 02:19:42';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 15 WHERE d_time = '2026-06-13 02:19:44';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-06-20 12:32:27';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-07-15 21:56:47';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-07-09 03:21:33';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-09 12:48:37';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 9 WHERE d_time = '2026-07-10 12:56:21';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 65 WHERE d_time = '2026-07-11 09:30:37';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 32 WHERE d_time = '2026-07-11 10:43:55';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-11 11:04:21';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 631 WHERE d_time = '2026-07-11 12:11:16';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-11 19:44:51';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 1284 WHERE d_time = '2026-07-12 14:40:11';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 228 WHERE d_time = '2026-07-13 11:26:36';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 225 WHERE d_time = '2026-07-13 15:43:02';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 1330 WHERE d_time = '2026-07-15 13:38:04';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 437 WHERE d_time = '2026-07-18 10:04:56';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 279 WHERE d_time = '2026-07-18 17:22:16';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 17 WHERE d_time = '2026-07-20 11:33:52';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-20 17:45:43';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 101 WHERE d_time = '2026-07-11 12:21:58';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 122 WHERE d_time = '2026-07-12 20:12:50';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-12 21:16:05';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 195 WHERE d_time = '2026-07-11 12:36:27';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-11 13:34:39';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-11 12:59:33';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-12 01:48:14';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 253 WHERE d_time = '2026-07-12 17:03:52';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 176 WHERE d_time = '2026-07-12 19:10:29';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 187 WHERE d_time = '2026-07-12 19:30:05';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 81 WHERE d_time = '2026-07-13 02:11:43';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-14 18:58:19';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-20 12:01:42';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 21 WHERE d_time = '2026-07-20 13:09:46';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 25 WHERE d_time = '2026-07-20 15:41:50';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-12 19:10:35';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 214 WHERE d_time = '2026-07-14 22:02:43';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-15 11:40:35';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-14 23:28:02';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-15 11:40:23';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 240 WHERE d_time = '2026-07-15 23:21:54';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 932 WHERE d_time = '2026-07-16 10:23:29';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-16 22:41:37';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 17 WHERE d_time = '2026-07-16 22:41:33';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 521 WHERE d_time = '2026-07-17 12:24:21';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 22 WHERE d_time = '2026-07-20 11:44:59';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 537 WHERE d_time = '2026-07-19 06:16:26';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-19 07:04:15';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 3 WHERE d_time = '2026-07-19 09:01:34';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-19 16:57:11';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 34 WHERE d_time = '2026-07-21 15:56:45';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 39 WHERE d_time = '2026-07-30 19:25:25';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-30 19:45:22';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 11:51:09';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 12:11:38';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 16:07:45';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 17:37:29';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 779 WHERE d_time = '2026-07-31 17:57:20';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-19 09:01:44';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 659 WHERE d_time = '2026-07-30 18:32:25';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 09:57:30';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 10:41:15';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 327 WHERE d_time = '2026-07-31 22:13:01';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 627 WHERE d_time = '2026-08-01 12:44:22';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 124 WHERE d_time = '2026-08-01 19:54:20';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-08-13 11:34:50';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-08-13 11:55:52';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 178 WHERE d_time = '2026-08-17 16:03:51';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 28 WHERE d_time = '2026-07-30 19:39:48';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 6 WHERE d_time = '2026-07-30 19:55:29';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-30 21:38:37';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 11:49:15';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 11:49:18';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 2 WHERE d_time = '2026-07-31 11:49:19';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-08-06 01:56:53';
+9 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-08-13 11:36:27';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 241 WHERE d_time = '2026-08-13 11:56:17';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 7 WHERE d_time = '2026-08-15 21:37:35';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 41 WHERE d_time = '2026-08-13 11:56:30';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 205 WHERE d_time = '2026-08-15 17:30:43';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 26 WHERE d_time = '2026-08-15 01:00:15';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-08-15 01:00:47';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-08-19 08:28:38';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-08-19 20:38:52';
+10 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 5 WHERE d_time = '2026-08-26 21:42:07';
+3 row(s) were successfully updated.
+-1------------------------------------ 
+
+Written 93 records
+
+
+Doing WD_import_cPanel
+Doing WD_import_cPanel
+Doing WD_import_cPanel
+
+IP regexps
+==========
+Array
+(
+    [130.229.128.[0-9]+] => 1
+    [130.237.181.[0-9]+] => 1
+    [130.237.96.[0-9]+] => 1
+    [185.176.246.[0-9]+] => 1
+    [193.180.91.[0-9]+] => 1
+    [194.103.157.[0-9]+] => 1
+    [46.252.1.[0-9]+] => 1
+    [46.252.8.[0-9]+] => 1
+    [194.230.146.[0-9]+] => 2
+    [95.75.213.[0-9]+] => 2
+    [212.233.85.[0-9]+] => 3
+    [93.158.130.[0-9]+] => 4
+    [176.126.133.[0-9]+] => 7
+    [195.5.50.[0-9]+] => 7
+    [31.41.90.[0-9]+] => 7
+    [176.193.99.[0-9]+] => 9
+    [91.78.36.[0-9]+] => 9
+    [91.79.37.[0-9]+] => 9
+    [144.31.91.[0-9]+] => 999
+)
+
+-0------------------------------------ yb.onestudio.ch-ssl_log-Sep-2026
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 09:12:09','/restor/table1946/','164.92.115.110','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 10:17:11','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 10:17:20','/adb/rodni/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 10:17:29','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 11:32:12','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 11:32:21','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 11:32:53','/adb/kharkiv/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 13:26:30','/adb/stat/','193.180.91.215','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 13:27:40','/adb/kharkiv/','193.180.91.215','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 13:28:41','/adb/rodni/','193.180.91.215','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 15:55:13','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 16:55:14','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 17:51:59','/restor/device/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 17:52:13','/restor/clock1896/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 17:53:00','/restor/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 17:53:06','/restor/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 17:53:21','/restor/sad2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 17:57:29','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 17:57:32','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 17:57:39','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 19:02:12','/adb/55120-2/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 19:02:32','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 19:03:35','/adb/from-archive/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 19:14:20','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 19:01:18','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 19:31:24','/restor/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-02 19:31:40','/restor/clock1896/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-03 09:08:22','/adb/55120-2/','130.237.96.130','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-03 09:08:33','/adb/from-archive/','130.237.96.130','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-03 09:09:08','/adb/stat/','130.237.96.130','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-03 12:40:29','/restor/stat/','130.229.128.144','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-03 12:41:52','/restor/clock1896/','130.229.128.144','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-03 12:46:51','/restor/stat/','130.229.128.144','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-03 12:46:56','/restor/stat/','130.229.128.144','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-03 12:47:33','/adb/stat/','130.229.128.144','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-03 16:36:23','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-04 13:24:24','/restor/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-04 13:22:38','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-04 15:30:58','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-04 15:30:44','/restor/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-04 20:48:12','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-04 20:42:32','/adb/dvisk/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-04 20:42:34','/adb/dvisk/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-04 20:43:22','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-04 20:53:58','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-04 20:54:03','/adb/aleksandrovskoe/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-05 12:51:27','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-05 13:18:26','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+INSERT INTO `yb_watch_dog`.`wd_daemon` (d_time,d_uri,d_remote,d_user_agent) VALUES ('2026-09-05 13:18:27','/adb/stat/','46.252.8.1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:154.0) Gecko/20100101 Firefox/154.0');
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-08 08:09:46';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-15 03:37:48';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 5 WHERE d_time = '2026-05-22 05:52:18';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 31 WHERE d_time = '2026-05-27 15:45:27';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-05-27 16:22:38';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-05-27 16:40:19';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-05-29 03:25:46';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-06-05 07:20:23';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-06-10 11:54:24';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-06-12 15:53:53';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 6 WHERE d_time = '2026-06-13 02:18:19';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 6 WHERE d_time = '2026-06-13 02:18:49';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 13 WHERE d_time = '2026-06-13 02:19:42';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 15 WHERE d_time = '2026-06-13 02:19:44';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-06-20 12:32:27';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-07-15 21:56:47';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-07-09 03:21:33';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-09 12:48:37';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 9 WHERE d_time = '2026-07-10 12:56:21';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 65 WHERE d_time = '2026-07-11 09:30:37';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 32 WHERE d_time = '2026-07-11 10:43:55';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-11 11:04:21';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 631 WHERE d_time = '2026-07-11 12:11:16';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-11 19:44:51';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 1284 WHERE d_time = '2026-07-12 14:40:11';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 228 WHERE d_time = '2026-07-13 11:26:36';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 225 WHERE d_time = '2026-07-13 15:43:02';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 1330 WHERE d_time = '2026-07-15 13:38:04';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 437 WHERE d_time = '2026-07-18 10:04:56';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 279 WHERE d_time = '2026-07-18 17:22:16';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 17 WHERE d_time = '2026-07-20 11:33:52';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-20 17:45:43';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 101 WHERE d_time = '2026-07-11 12:21:58';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 122 WHERE d_time = '2026-07-12 20:12:50';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-12 21:16:05';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 195 WHERE d_time = '2026-07-11 12:36:27';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-11 13:34:39';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-11 12:59:33';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-12 01:48:14';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 253 WHERE d_time = '2026-07-12 17:03:52';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 176 WHERE d_time = '2026-07-12 19:10:29';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 187 WHERE d_time = '2026-07-12 19:30:05';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 81 WHERE d_time = '2026-07-13 02:11:43';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-14 18:58:19';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-20 12:01:42';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 21 WHERE d_time = '2026-07-20 13:09:46';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 25 WHERE d_time = '2026-07-20 15:41:50';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-12 19:10:35';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 214 WHERE d_time = '2026-07-14 22:02:43';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-15 11:40:35';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-14 23:28:02';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-15 11:40:23';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 240 WHERE d_time = '2026-07-15 23:21:54';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 932 WHERE d_time = '2026-07-16 10:23:29';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-16 22:41:37';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 17 WHERE d_time = '2026-07-16 22:41:33';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 521 WHERE d_time = '2026-07-17 12:24:21';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 22 WHERE d_time = '2026-07-20 11:44:59';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 537 WHERE d_time = '2026-07-19 06:16:26';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-19 07:04:15';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 3 WHERE d_time = '2026-07-19 09:01:34';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-19 16:57:11';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 34 WHERE d_time = '2026-07-21 15:56:45';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 39 WHERE d_time = '2026-07-30 19:25:25';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-30 19:45:22';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 11:51:09';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 12:11:38';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 16:07:45';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 17:37:29';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 779 WHERE d_time = '2026-07-31 17:57:20';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-19 09:01:44';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 659 WHERE d_time = '2026-07-30 18:32:25';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 09:57:30';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 10:41:15';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 327 WHERE d_time = '2026-07-31 22:13:01';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 627 WHERE d_time = '2026-08-01 12:44:22';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 124 WHERE d_time = '2026-08-01 19:54:20';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-08-13 11:34:50';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-08-13 11:55:52';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 178 WHERE d_time = '2026-08-17 16:03:51';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 28 WHERE d_time = '2026-07-30 19:39:48';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 6 WHERE d_time = '2026-07-30 19:55:29';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-30 21:38:37';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 11:49:15';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-07-31 11:49:18';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 2 WHERE d_time = '2026-07-31 11:49:19';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-08-06 01:56:53';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-08-13 11:36:27';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 241 WHERE d_time = '2026-08-13 11:56:17';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 7 WHERE d_time = '2026-08-15 21:37:35';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 41 WHERE d_time = '2026-08-13 11:56:30';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 205 WHERE d_time = '2026-08-15 17:30:43';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 26 WHERE d_time = '2026-08-15 01:00:15';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-08-15 01:00:47';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-08-19 08:28:38';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 4 WHERE d_time = '2026-08-19 20:38:52';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 5 WHERE d_time = '2026-08-26 21:42:07';
+An error occurred during the update query
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-09-02 09:12:09';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 18 WHERE d_time = '2026-09-02 10:17:11';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 41 WHERE d_time = '2026-09-02 11:32:12';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-09-02 15:55:13';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-09-02 16:55:14';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 340 WHERE d_time = '2026-09-02 17:51:59';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 782 WHERE d_time = '2026-09-02 19:01:18';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 16 WHERE d_time = '2026-09-02 19:31:24';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-09-03 16:36:23';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 106 WHERE d_time = '2026-09-04 13:22:38';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 14 WHERE d_time = '2026-09-04 15:30:44';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 691 WHERE d_time = '2026-09-04 20:42:32';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 0 WHERE d_time = '2026-09-05 12:51:27';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 1 WHERE d_time = '2026-09-05 13:18:26';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 131 WHERE d_time = '2026-09-02 13:26:30';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 46 WHERE d_time = '2026-09-03 09:08:22';
+1 row(s) were successfully updated.
+UPDATE wd_daemon SET d_duration = 424 WHERE d_time = '2026-09-03 12:40:29';
+1 row(s) were successfully updated.
+-1------------------------------------ 
+
+Written 49 records
+
+
