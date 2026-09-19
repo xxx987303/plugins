@@ -3,9 +3,10 @@
  * As is...
  */
 require_once __dir__ . '/functions_fb.php';
-require_once __dir__ . '/functions_common.php';
 require_once __dir__ . '/functions_shortcodes.php';
+require_once __dir__ . '/functions_toolbar.php';
 require_once __dir__ . '/SSO_WP_get_bridge.php'; WD_message("LOADING SSO_WP_get_bridge.php", 'red');
+if (!function_exists('WD_message')) require_once __dir__ . '/functions_common.php';
 
 if (!defined('PRODUCTION_MODE')) define('PRODUCTION_MODE', false);
 if (!defined('AFTER_LOGIN'))     define('AFTER_LOGIN', 'stat/'); // about/
@@ -49,47 +50,6 @@ add_filter( 'relevanssi_search_ok', function( $ok, $query ) {
     }
     return $ok;
 }, 10, 2 );
-
-
-/**
- * Add dev. comments
- * level might be debug or warn
- */
-function YB_message_new(string|array|object $textP='', $level='debug') {
-    global $YB_messages, $YB_messages_indent;
-    
-    if (empty($YB_messages)) return "";
-    if (empty($textP)) $textP = "";
-    if ($textP == 'print'){
-        if (CLI_MODE) {
-            echo "\n\nMessages\n--------\n";
-            echo str_replace("<CR>","\n",join("\n",($YB_messages)))."\n";
-        }else {
-	    return join('<br>',$YB_messages);
-            return "\n<div class='yb-comments'>\n<h3>".__function__."...</h3>\n<code style='font-size:small'>\n".
-		   join('<br>',$YB_messages).
-		   "</code>\n</div>\n";
-        }
-    } elseif (!PRODUCTION_MODE || ($level == 'warn' && in_array('administrator', wp_get_current_user()->roles))) {
-        $indent = (CLI_MODE ? '  ' : '&nbsp;&nbsp;');
-        $text = $textP;
-        if (empty($YB_messages_indent)) { $YB_messages_indent = ""; }
-        if ($textP == 'exit') $YB_messages_indent = preg_replace("/^$indent/", '', $YB_messages_indent);
-        if (in_array($textP, ["entry","exit"])){ $color = 'blue'; $text = "($text)"; }
-        elseif ($level != 'debug')             { $color = 'red'; }
-        else                                   { $color = '#000000';}
-        $caller = debug_backtrace()[1]['function'];
-        if (!preg_match('/^\(/', $text) && ($caller != '{closure}')) $text = "() $text";
-        $text = $caller . $text;
-        $msg = (CLI_MODE ? $text : "<span style='color:$color'>" . preg_replace(['/</', '/>/'], ['&lt;', '&gt;'], $YB_messages_indent . $text) . "</span>");
-        if (empty($YB_messages)) $YB_messages = [];
-        if (CLI_MODE)  { echo "$msg\n"; }
-        else        { $YB_messages[] = $msg; }
-        if ($textP == 'entry') { $YB_messages_indent .= $indent; }
-    }
-    return "";
-}
-
 
 //if (!CLI_MODE) {
 
