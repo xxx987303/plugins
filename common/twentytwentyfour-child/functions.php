@@ -5,8 +5,9 @@
 require_once __dir__ . '/functions_fb.php';
 require_once __dir__ . '/functions_shortcodes.php';
 require_once __dir__ . '/functions_toolbar.php';
-require_once __dir__ . '/SSO_WP_get_bridge.php'; WD_message("LOADING SSO_WP_get_bridge.php", 'red');
 if (!function_exists('WD_message')) require_once __dir__ . '/functions_common.php';
+require_once __dir__ . '/SSO_WP_get_bridge.php'; WD_message("LOADING SSO_WP_get_bridge.php", 'red');
+require_once __dir__ . '/functions_common.php';
 
 if (!defined('PRODUCTION_MODE')) define('PRODUCTION_MODE', false);
 if (!defined('AFTER_LOGIN'))     define('AFTER_LOGIN', 'stat/'); // about/
@@ -170,7 +171,7 @@ add_action('wp_head', 'YB_add_style_files');
  */
 function getTidy($fn) {
     if (empty($fn)) return '';
-    if (preg_match(';<body|</body;', $fn)) { die("This function assumes that <body> & </body are not there..."); }
+    if (preg_match(';<body|</body;', $fn)) { abortIt("This function assumes that <body> & </body are not there..."); }
     $tmp_file = '/tmp/shell_exec.html';
     shell_exec("rm -vf $tmp_file");
     file_put_contents($tmp_file, $fn);

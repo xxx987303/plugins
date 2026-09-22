@@ -1,6 +1,8 @@
 <?php namespace ProcessWire;
 /**
  * Processwire plugin which imitatate WP admin toolbar
+ *
+   * Well, it is slightly "not perfect", will try better..
  */
 if (defined('PROCESSWIRE')) {
     $spot = 'adb';
@@ -24,35 +26,37 @@ if (defined('PROCESSWIRE')) {
 	<div class="quicklinks" id="wp-toolbar" role="navigation" aria-label="Toolbar">
 	    <ul role='menu' id='wp-admin-bar-root-default' class="ab-top-menu">
 		<li role='group' id='wp-admin-bar-site-name' class="menupop has-site-icon">
-		    <a class='ab-item' role="menuitem" aria-expanded="false" href='/sh_imac/'>
-			<img class="site-icon" src="/sh/site/assets/files/0000/sh_logo50.png" alt="" width="20" height="20" />Sweet Home
+		    <a class='ab-item' role="menuitem" aria-expanded="false" href="<?=SH?>">
+			<img class="site-icon" src="<?=SH?>site/assets/files/0000/SH_logo_circle_28.jpg" alt="" width="20" height="20" />Sweet Home
 		    </a>
 		</li>
-		<li role='group' id='wp-admin-bar-wd_top_button'><a class='ab-item' role="menuitem" href='/<?=$spot?>/stat/' title='Статистика'><span class="ab-icon"></span>Статистика</a></li>
+		<?php if (!empty($SPOT_id)) { ?>
+		<li role='group' id='wp-admin-bar-wd_top_button'>
+		    <a class='ab-item' role="menuitem" href='<?=SH?><?=$SPOT_id?>_spot/statistics/' title='Статистика'><span class="ab-icon"></span>Статистика</a>
+		</li>
+		<?php } ?>
 	    </ul>
 	    <ul role='menu' id='wp-admin-bar-top-secondary' class="ab-top-secondary ab-top-menu">
 		<li role='group' id='wp-admin-bar-my-account' class="menupop with-avatar">
-		    <a class='ab-item' role="menuitem" aria-expanded="false" href='/<?=$spot?>/wp-admin/profile.php'>Howdy,
-			<span class="display-name">yb</span>
-		   <!-- <img alt='' src='https://secure.gravatar.com/avatar/b1cc58a4ec77ae5c3fbacdf46cd2c3f5f6f1e886348935a6770e0bef3958f222?s=28&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/b1cc58a4ec77ae5c3fbacdf46cd2c3f5f6f1e886348935a6770e0bef3958f222?s=56&#038;d=mm&#038;r=g 2x' class='avatar avatar-28 photo' height='28' width='28' loading='lazy' decoding='async'/> -->
-<!--			<img alt='' src='<?=\get_WP_Avatar("",\get_WP_User(),28)?>' class='avatar avatar-64 photo' height='28' width='28' loading='lazy' decoding='async'/> -->
-			<?=\get_WP_Avatar("",\get_WP_User(),28)?>
+		    <a class='ab-item' role="menuitem" aria-expanded="false" href='#'>Howdy,
+			<span class="display-name"><?=\get_WP_User()[1]?></span>
+			<?=\get_WP_Avatar("",\get_WP_User()[0],28)?>
 		    </a>
 		    <div class="ab-sub-wrapper">
-			<ul role='menu' aria-label='Howdy, yb' id='wp-admin-bar-user-actions' class="ab-submenu">
+			<ul role='menu' aria-label='Howdy, '<?=\get_WP_User()[2]?> id='wp-admin-bar-user-actions' class="ab-submenu">
 			    <li role='group' id='wp-admin-bar-user-info'>
-				<a class='ab-item' role="menuitem" href='/<?=$spot?>/wp-admin/profile.php'>
-			      <!-- <img alt='' src='https://secure.gravatar.com/avatar/b1cc58a4ec77ae5c3fbacdf46cd2c3f5f6f1e886348935a6770e0bef3958f222?s=64&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/b1cc58a4ec77ae5c3fbacdf46cd2c3f5f6f1e886348935a6770e0bef3958f222?s=128&#038;d=mm&#038;r=g 2x' class='avatar avatar-64 photo' height='64' width='64' loading='lazy' decoding='async'/> -->
-<!--				    <img alt='' src='<?=\get_WP_Avatar("",\get_WP_User(),64)?>' class='avatar avatar-64 photo' height='64' width='64' loading='lazy' decoding='async'/> -->
-				    <?=\get_WP_Avatar("",\get_WP_User(),64)?>
-				    <span class='display-name'>yb</span>
-				    <span class='display-name edit-profile'>Edit Profile</span>
-				</a>
+				<?=\get_WP_Avatar("",\get_WP_User()[0],60)?><span class='display-name'><?=\get_WP_User()[2]?></span>
 			    </li>
-			    <li role='group' id='wp-admin-bar-logout'><a class='ab-item' role="menuitem" href='/<?=$spot?>/wp-login.php?action=logout&#038;_wpnonce=7952a461c8'>Log Out</a></li>
+			    <li role='group' id='wp-admin-bar-logout'>
+				<!-- <a class='ab-item' role="menuitem" href='/<?=$spot?>/wp-login.php?action=logout&#038;_wpnonce=7952a461c8'>Log Out</a> -->
+				<?=x("form method='post' action='".SH."' style='display:contents'",
+				     session()->CSRF->renderInput('logout') .
+				     x("button type='submit' name='logout' value='1' style='display:contents'", x("span style='color:white;white-space:nowrap;'",'Log out')))?>
+			    </li>
 			</ul>
 		    </div>
 		</li>
+<!--
 		<li role='group' id='wp-admin-bar-search' class="admin-bar-search"><div class="ab-item ab-empty-item" tabindex="-1" role="menuitem">
 		    <form action="/<?=$spot?>/" method="get" id="adminbarsearch">
 			<input class="adminbar-input" name="s" id="adminbar-search" type="text" value="" maxlength="150" />
@@ -60,6 +64,7 @@ if (defined('PROCESSWIRE')) {
 			<input type="submit" class="adminbar-button" value="Search" />
 		    </form>
 		</div>
+-->
 		</li>
 	    </ul>
 	</div>

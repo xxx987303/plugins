@@ -13,7 +13,7 @@ if (!defined('CLI_MODE')) define('CLI_MODE', empty($_SERVER['HTTP_HOST']));
  */
 function WD_message(string|array|object $text='', string $color='black', bool|int $truncate=true) {
     global $WD_messages,  $indent, $prevl, $lastCaller;
-    static $r;
+    static $r, $dejaVu = [];
 
     if (!SHOW_MESSAGES) return "";
     
@@ -58,6 +58,7 @@ function WD_message(string|array|object $text='', string $color='black', bool|in
 
     // Add the message to the messages_keeper
     $skip_ee = true;
+    if (!@$dejaVu[WD_getCaller($level0+2).$text]++)
     if (!($ee && $skip_ee) && $text != $prev) { file_put_contents($messages_keeper,
  								  str_replace("\n", " ",
 									      str_repeat('&nbsp;',2*max(0,$indent)).
@@ -136,11 +137,11 @@ function WD_truncatePreserveWord($string, $limit = 100, $toTruncate=true) {
  * After many changes it became a sort of "var_dump"
  */
 function joinX(int|string|array|object|null $a, $skipEmpty=true) : string {
-
+    
     $escape = function(string $text) : string {
-	$r = ['<'=>'&lt;',
-	      '>'=>'&gt;'];
-	return str_replace(array_keys($r), array_values($r), trim($text));
+	$r = ['<'=>'&lt;', '>'=>'&gt;'];
+	return str_replace(array_keys($r), array_values($r),
+			   preg_replace("/[\n\s]+/", " ", trim($text)));
     };
     
     if (is_object($a)){
@@ -155,16 +156,13 @@ function joinX(int|string|array|object|null $a, $skipEmpty=true) : string {
 	    if (empty($v)||$k=='comment') continue;
 	    $reply .= (is_string($v) ? "$k=>$v, " : joinX($v));
 	}
-	return '['.preg_replace("/[\n\s]+/", " ", $escape(trim($reply))).']';
+	return '['.$escape(trim($reply)).']';
     } elseif (is_int($a)) {
 	return "$a";
     } elseif (is_string($a)) {
-	$reply = preg_replace("/[\n\s]+/", " ", trim($a));
-	if (preg_match('/[\<\>]/', $a) && $reply != $a) { var_dump($a); var_dump($reply); exit; }
-	return $escape($reply);
+	return $escape($a);
     } else {
-	var_dump($a);
-	die("?????????\n");
+	abortIt("CANT PARCE THE ARGUMENT\n", $a);
     }
 }
 
@@ -285,28 +283,37 @@ function x($tag, $text = '', $text2 = '') {
 
 /**
  * Return WP user id
+ * If input is zero, return the current user
  */
-function get_WP_User() : int {
+function get_WP_User(int $id=0) : array {
     // Map PW user to WP
-    static $PW_WP = [  37   => 0,  // guest
-		       40   => 0,  // guest
-		       41   => 1,  // yb
-		       6342 => 2,  // mb
-		       6340 => 3,  // tb 
-		       6344 => 4,  // ab
-		       5972 => 5,  // rb
-		       6341 => 6,  // ib
-		     //xxxx => 7,  // db
-		     //xxxx => 8,  // aaz
-		     //xxxx => 9,  // Unknown Russian
+    static $PW_WP = [  37   => [0,'?','?'],  // guest
+		       40   => [0,'?','?'],  // guest
+		       41   => [1,'yb','ЮА'],
+		       6342 => [2,'mb','Миша'],
+		       6340 => [3,'tb','Тима'], 
+		       6344 => [4,'ab','Антон'],
+		       5972 => [5,'rb','Margo'],
+		       6341 => [6,'ib','Иван'],
+		       'xx' => [7,'db','Дмитрий'],
+		       'xx' => [8,'aaz','Саша'],
+		       'xx' => [9,'?']  // Unknown Russian
     ];
     if (defined('PROCESSWIRE')) {
-	$user = \Processwire\Users()->getCurrentUser();
-	return isset($PW_WP[$user->id]) ? $PW_WP[$user->id] : 0;
+	// PW code
+	if (empty($id)) {
+	    $user = \Processwire\Users()->getCurrentUser();
+	    return isset($PW_WP[$user->id]) ? $PW_WP[$user->id] : [0,'?','?'];
+	} else {
+	    return isset($PW_WP[id]) ? $PW_WP[$user->id] : [0,'?','?'];
+	}
     } elseif (is_user_logged_in()) {
-        return wp_get_current_user()->ID;
+	// WP code
+        return [wp_get_current_user()->ID,
+		wp_get_current_user()->display_name,
+		wp_get_current_user()->display_name];
     } else {
-        return 0;
+        return [0,'?','?'];
     }
 }
 
@@ -317,8 +324,7 @@ function get_WP_User() : int {
  */
 function get_WP_Avatar($avatar='', $id_or_email='', $size = 96, $default = '', $alt = 'Avatar') {
     YB_message('entry');
-    //if (empty($id_or_email)) $id_or_email = get_WP_User();
-    $id_or_email = get_WP_User();
+    $id_or_email = get_WP_User()[0];
     $image = (defined("PROCESSWIRE")
 	? \ProcessWire\urls('templates') . "photos/$id_or_email.png"
         :          "/adb/wp-content/uploads/photos/$id_or_email.png");
@@ -331,3 +337,74 @@ function get_WP_Avatar($avatar='', $id_or_email='', $size = 96, $default = '', $
 }
 // WP version
 if (function_exists('add_filter')) add_filter( 'get_avatar', 'get_WP_Avatar', 10, 5 );
+
+/**
+ * Error exit
+ */
+function abortIt($text = 'Shit...', $extras=[]) {
+    if (!defined('CLI_MODE')) define('CLI_MODE', false);
+    echo (CLI_MODE
+    //? sprintf("\n%s\n", `echo "$(tput bold)$(tput setaf 1)"`)
+      ? sprintf("\n%s\n", shell_exec("tput bold").shell_exec("tput setaf 1"))
+      : str_replace("font-size:small;", "", @$GLOBALS['debug_messages']) . "<pre>\n\n<span style='color:red'>$text</span>\n\n");
+    if ($extras){
+        if (CLI_MODE) var_dump($extras);
+        else tidy_dump($extras,'extras');
+    }
+    
+    debug_print_backtrace(); // DEBUG_BACKTRACE_IGNORE_ARGS
+    echo (CLI_MODE
+      ? sprintf("\n%s\n%s\n", $text, shell_exec("tput sgr0"))
+      : "</pre>\n");
+    die(var_export($text,true)."\n");
+}
+
+
+if (!function_exists('tidy_dump')) {
+    /**
+     * Compact version of print_r, mostly for debuging
+     */
+    function tidy_dump($object, $title = 'tidy_dump', $trim = false, $skip_empty = true) {
+	if (empty(@$GLOBALS['debug_messages'])) $GLOBALS['debug_messages'] = "";
+	if ($title == 'return') { $return=true; $trim='do'; } else { $return = false; }
+      //if (!DEBUG && !input::get('show_tidy') && $trim !== 'do') { return ''; }
+	if ($trim === 'do') { $trim = true; }
+
+	if ($title === 'get_object_name') {
+            $tt = array('/object.([^\)]*)\).(\d*).*/'=> '$1',
+			'/string\([0-9]*\) /'        => '',
+			'/\n.*/'                     => '');
+	} else {
+            $tt = [
+		'/(\[|\])/'     => '',
+		'/\n *(\(|\))/' => '$1',
+		'/\)\n\)/'      => '))', // (((( help emacs
+		//  '/\(\n *([^\)^\n]*\))\n/'  => '($1'."\n",
+		'/\n\n/'        => "\n",
+		//'/\)\n\)/'      => "))",
+            ];
+            if ($skip_empty) {
+		$tt = array_merge($tt, ['/\n[^=]*\>?\n/' => "\n"]);
+            }
+	}
+	ob_start();
+	print_r($object);
+	$output = ob_get_clean();
+	$reply = preg_replace(array_keys($tt), array_values($tt), $output);
+	// Skip empty items
+	if(true) $reply = preg_replace('/.* => \n/', "", $reply);
+	if ($title === 'get_object_name') {
+            return "Object ".trim(str_replace(['ProcessWire','\\','Object'], '', $reply));
+	}
+	if ($trim) { $reply = trim($reply)."\n"; }
+        $line = preg_replace("/ProcessWire./","",
+			     sprintf("%s %s",
+				     ($title=="tidy_dump" ? $title : "tidy_dump($title): "),
+				     $reply));
+	//str_replace("\n","\n          ","\n".$reply));
+	echo (CLI_MODE
+            ? "$line\n"
+            : x('pre', $line));
+        return "";
+    }
+}

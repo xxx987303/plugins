@@ -6,8 +6,6 @@
 if (!defined('CLI_MODE'))        define('CLI_MODE', empty($_SERVER['HTTP_HOST']));
 if (!defined('PRODUCTION_MODE')) define('PRODUCTION_MODE', false);
 
-//require_once ABSPATH . '/wp-content/plugins/wp-watch-dog/includes/functions.php';
-
 /**
  * [FBimage i="image.png" c="caption" t="text thumbnail, otherwise image" h?=?"thumbnail height"]
  * "c" has precedence over the image caption

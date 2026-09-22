@@ -8,7 +8,6 @@ if (!defined('PRODUCTION_MODE')) define('PRODUCTION_MODE', false);
 define('NO_FIX_METADATA', true);
 define('NO_DIFF', true);
 define('HIDE_CHART_TEST_DIV', PRODUCTION_MODE);
-//require_once ABSPATH . '/wp-content/plugins/wp-watch-dog/includes/functions.php';
 
 /**
  * Hover tooltips
