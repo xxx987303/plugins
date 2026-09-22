@@ -1,5 +1,24 @@
 == Changelog ==
 
+= 7.4.0 =
+* Added: Optional CSS-only scroll spy to underline the current section link in supporting browsers. Enable Highlight current section in the block settings or enforce it globally under Settings > SimpleTOC. No JavaScript or polyfill is added.
+
+= 7.3.1 =
+* Fixed: Heading anchors for non-Latin scripts (Japanese, Chinese, Korean, Cyrillic, etc.) were double URL-encoded, breaking externally shared or hand-written fragment links. Props to the reporter of issue #89.
+
+= 7.3.0 =
+* Changed: Box is now a native Gutenberg block style in the Styles tab.
+* Added: Native text, link, background color, margin, and padding controls.
+* Added: theme.json styling support for colors, spacing, and typography.
+* Added: WordPress 7.1 support and automated compatibility tests.
+* Changed: Existing box-style blocks and the global Force box style setting remain compatible.
+* Thanks: Lovro Hrust (@lovor) for the theme.json and block styling feedback.
+
+= 7.2.0 =
+* Changed: SimpleTOC now always uses the standard Gutenberg block wrapper so themes can style it through theme.json.
+* Removed: Obsolete block and global wrapper settings because the standard wrapper is now always active.
+* Added: Native Gutenberg typography controls for font size and line height.
+
 = 7.1.1 =
 * Fixed: Prevented WordPress HTML API notices when nested block content is not a string.
 * Fixed: Escaped TOC links and titles before rendering them.

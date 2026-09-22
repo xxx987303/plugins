@@ -2,8 +2,8 @@
 Contributors: MarcDK
 Tags: TOC, Table of Contents, Block, Accessibility, Table
 Requires at least: 6.2
-Tested up to: 7.0
-Stable tag: 7.1.1
+Tested up to: 7.1
+Stable tag: 7.4.0
 Requires PHP: 7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -42,25 +42,33 @@ Hidden TOCs use native `<details>` and `<summary>` semantics without extra ARIA 
 * Minimal and valid HTML output.
 * Utilizes the browser's built-in details tag for a collapsible interface.
 * No JavaScript or CSS by default. Optional features such as the accordion menu, smooth scrolling, or box style add minimal assets only when enabled.
-* Optional box style for the TOC with a default gray background.
-* Style SimpleTOC with Gutenberg's native group styling options.
+* Optional Box style in Gutenberg's Styles tab with a default gray background.
+* Native text, link, background, spacing, and typography controls.
+* Global block styling through theme.json.
 * Inherits the style of your theme.
 * Smooth scrolling effect using CSS. 
 * Accessibility built-in by following web standards.
-* Optional ARIA Label and navigation role attributes.
+* Standard Gutenberg block wrapper with navigation role and ARIA label attributes.
 * Translated in [multiple languages](https://translate.wordpress.org/projects/wp-plugins/simpletoc/). Including German, Japanese, Chinese (Taiwan), Dutch, Brazilian Portuguese, French, Spanish and Latvia.
 * Ideal for creating a Frequently Asked Questions section on your website.
 
 = Customization = 
 
 * Administrators can utilize global settings to supersede the individual block settings.
-* Add background and text color with Gutenberg groups.
+* Set text, link, and background colors in Gutenberg's Styles tab.
 * Native block support for wide and full width.
+* Set vertical margins and padding with native spacing controls.
 * Control the maximum depth of the headings.
 * Choose between an ordered, bullet HTML list. Or indent the list.
-* Enable a box style and choose a box color directly in the block sidebar.
+* Select the Box style directly in Gutenberg's Styles tab.
 * Select a heading level or turn it into a paragraph.
 * Disable the h2 heading of the TOC block and add your own.
+
+= Highlight the current section =
+
+Enable "Highlight current section" under Advanced Features in the SimpleTOC block settings. The link for the current section is underlined as visitors scroll. This option is off by default. To enable it for all blocks, turn on "Force highlight current section" under Settings > SimpleTOC. The global setting takes precedence over individual block settings. Developers can override the global setting with the `simpletoc_scroll_spy_enabled` filter.
+
+This feature uses native CSS `scroll-target-group` and `:target-current`. Browser support is limited. Browsers without support keep the normal table of contents and working links. No JavaScript fallback or polyfill is included. Highlighting applies to headings on the current page and does not make the table of contents sticky.
 
 = Compatibility =
 
@@ -72,26 +80,8 @@ Hidden TOCs use native `<details>` and `<summary>` semantics without extra ARIA 
 SimpleTOC is open-source and developed on [GitHub Pages](https://github.com/mtoensing/SimpleTOC). If you find a bug or have an idea for a feature please feel free to contribute and create a pull request. 
 
 == Changelog ==
-= 7.1.1 =
-* Fixed: Prevented WordPress HTML API notices when nested block content is not a string.
-* Fixed: Escaped TOC links and titles before rendering them.
-* Fixed: Preserved legacy SimpleTOC block validity in the WordPress editor.
-
-= 7.1.0 =
-* Fixed: Avoid DOMDocument HTML parsing for highlighted heading markup by using the WordPress HTML API.
-* Changed: Minimum required WordPress version is now 6.2.
-* Added: PHPUnit coverage for core rendering helpers and an editor e2e smoke test.
-
-= 7.0.10 =
-* Fixed: Prevent the SimpleTOC editor preview from collapsing during WordPress autosaves.
-* Changed: Automatic editor refresh now runs after manual post saves and keeps the previous TOC visible while updating.
-
-= 7.0.9 =
-* Fixed: Restored WordPress 7.0 editor previews for existing SimpleTOC blocks that contain legacy editor-only attributes.
-* Fixed: The "Hide SimpleTOC" editor toggle no longer stores a redundant helper attribute.
-
-= 7.0.8 =
-* Fixed: Prevent editor preview errors when another plugin adds editor-only attributes to blocks, for example Noted! block notes. Thanks Hans-Gerd Gerhards (@hage).
+= 7.4.0 =
+* Added: Optional CSS-only scroll spy to underline the current section link in supporting browsers. Enable Highlight current section in the block settings or enforce it globally under Settings > SimpleTOC. No JavaScript or polyfill is added.
 
 == Installation ==
 
@@ -105,9 +95,9 @@ In Gutenberg, add a block and search for "SimpleTOC" or just "TOC". Please save 
 
 SimpleTOC allows you to configure global settings for your WordPress website. These settings can be enforced globally, overriding any block-level configurations that may exist. To access these settings, navigate to the SimpleTOC section of the WordPress Settings.
 
-= How do I add a background color to SimpleTOC using Gutenberg groups? =
+= How do I add colors or the Box style to SimpleTOC? =
 
-Select the block and select "group" in the context menu. Apply "background color", "link color" and "text color" to this group. SimpleTOC will inherit these styles. You would like to use this styled SimpleTOC group next time you write a post? Convert it to a reusable block.
+Select the SimpleTOC block and open Gutenberg's Styles tab. Choose the Box style or use the native color controls to set text, link, and background colors. Native spacing controls are available for vertical margins and padding.
 
 = How to exclude a single heading from the TOC? = 
 
@@ -117,9 +107,51 @@ If you really want to hide a single heading from the table of contents, then add
 
 You can convert your configured SimpleTOC block into a reusable block in Gutenberg. It will keep its settings. This way, you can use your desired settings for each new post by adding the reusable block.
 
-= How to add a div tag wrapper to the TOC? =
+= How can I style SimpleTOC through theme.json? =
 
-If you add a custom class to the SimpleTOC block in "Advanced" and then "Additional CSS Class(es)" a div with that class will be wrapped around the HTML output. 
+Add styles for the `simpletoc/toc` block to your theme.json. SimpleTOC uses the standard Gutenberg block wrapper and supports native colors, vertical margins, padding, font size, and line height settings.
+
+The following example sets default colors, spacing, and typography for every SimpleTOC block:
+
+    {
+        "$schema": "https://schemas.wp.org/trunk/theme.json",
+        "version": 3,
+        "styles": {
+            "blocks": {
+                "simpletoc/toc": {
+                    "color": {
+                        "background": "#f5f5f5",
+                        "text": "#1e1e1e"
+                    },
+                    "elements": {
+                        "link": {
+                            "color": {
+                                "text": "#0057b8"
+                            }
+                        }
+                    },
+                    "spacing": {
+                        "margin": {
+                            "top": "1.5rem",
+                            "bottom": "1.5rem"
+                        },
+                        "padding": {
+                            "top": "1rem",
+                            "right": "1rem",
+                            "bottom": "1rem",
+                            "left": "1rem"
+                        }
+                    },
+                    "typography": {
+                        "fontSize": "1rem",
+                        "lineHeight": "1.6"
+                    }
+                }
+            }
+        }
+    }
+
+Replace the example values with your theme's values or preset variables. Selecting the Box style adds the standard `is-style-boxed` class.
 
 = How to allow developers to exclude specific headings programmatically? = 
 

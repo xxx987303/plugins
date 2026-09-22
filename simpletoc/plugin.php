@@ -3,7 +3,7 @@
  * Plugin Name:   SimpleTOC - Table of Contents Block
  * Plugin URI:    https://marc.tv/simpletoc-wordpress-inhaltsverzeichnis-plugin-gutenberg/
  * Description:   SEO-friendly Table of Contents Gutenberg block. No JavaScript or CSS by default.
- * Version:       7.1.1
+ * Version:       7.4.0
  * Requires at least: 6.2
  * Requires PHP: 7.3
  * Author:        Marc Tönsing
@@ -21,7 +21,7 @@ require_once __DIR__ . '/simpletoc-admin-settings.php';
 require_once __DIR__ . '/simpletoc-class-headline-ids.php';
 
 const DEFAULT_BOX_COLOR = '#ebebeb';
-const SIMPLETOC_VERSION = '7.1.1';
+const SIMPLETOC_VERSION = '7.4.0';
 
 /**
  * Prevents direct execution of the plugin file.
@@ -58,7 +58,8 @@ function register_simpletoc_block() {
 		'simpletoc-toc-editor-script',
 		'window.simpletocEditorSettings = ' . wp_json_encode(
 			array(
-				'settingsUrl' => admin_url( 'options-general.php?page=simpletoc' ),
+				'settingsUrl'      => admin_url( 'options-general.php?page=simpletoc' ),
+				'scrollSpyEnabled' => simpletoc_scroll_spy_enabled(),
 			)
 		) . ';',
 		'before'
@@ -77,6 +78,8 @@ add_action( 'init', __NAMESPACE__ . '\register_simpletoc_block' );
  */
 function add_simpletoc_block_editor_settings( $editor_settings, $editor_context ) {
 	$editor_settings['simpletocSettingsUrl'] = admin_url( 'options-general.php?page=simpletoc' );
+
+	$editor_settings['simpletocScrollSpyEnabled'] = simpletoc_scroll_spy_enabled();
 
 	return $editor_settings;
 }
@@ -245,19 +248,28 @@ function render_callback_simpletoc( $attributes ) {
 	$is_backend  = defined( 'REST_REQUEST' ) && REST_REQUEST && 'edit' === filter_input( INPUT_GET, 'context' );
 	$title_text  = $attributes['title_text'] ? esc_html( trim( $attributes['title_text'] ) ) : __( 'Table of Contents', 'simpletoc' );
 	$alignclass  = ! empty( $attributes['align'] ) ? 'align' . $attributes['align'] : '';
-	$class_name  = ! empty( $attributes['className'] ) ? wp_strip_all_tags( $attributes['className'] ) : '';
 	$title_level = $attributes['title_level'];
 	$global_box_style_enabled = apply_filters( 'simpletoc_box_style_enabled', false ) || true === (bool) get_option( 'simpletoc_box_style_enabled', false );
-	$box_style_enabled        = $global_box_style_enabled || ! empty( $attributes['box_style'] );
+	$legacy_box_style_enabled = ! empty( $attributes['box_style'] );
+	$typography_enabled       = ! empty( $attributes['fontSize'] ) || ! empty( $attributes['style']['typography'] );
 	$wrapper_classes   = array( 'simpletoc' );
 	$wrapper_style     = '';
 
-	if ( $box_style_enabled ) {
+	if ( simpletoc_scroll_spy_enabled() || ! empty( $attributes['scroll_spy'] ) ) {
+		$wrapper_classes[] = 'has-simpletoc-scroll-spy';
+	}
+
+	if ( $typography_enabled ) {
+		$wrapper_classes[] = 'has-simpletoc-typography';
+	}
+
+	if ( $global_box_style_enabled || $legacy_box_style_enabled ) {
+		$wrapper_classes[] = 'is-style-boxed';
 		$wrapper_classes[] = 'has-simpletoc-box-style';
 
 		if ( $global_box_style_enabled ) {
 			$wrapper_classes[] = 'has-background';
-			$wrapper_style = safecss_filter_attr( 'background-color:' . DEFAULT_BOX_COLOR . ';' );
+			$wrapper_style     = safecss_filter_attr( 'background-color:' . DEFAULT_BOX_COLOR . ';' );
 		} elseif ( ! empty( $attributes['box_color'] ) ) {
 			$wrapper_classes[] = 'has-background';
 			$wrapper_style     = safecss_filter_attr( 'background-color:' . $attributes['box_color'] . ';' );
@@ -267,16 +279,14 @@ function render_callback_simpletoc( $attributes ) {
 		}
 	}
 
-	$wrapper_enabled = apply_filters( 'simpletoc_wrapper_enabled', false ) || true === (bool) get_option( 'simpletoc_wrapper_enabled', false ) || true === (bool) get_option( 'simpletoc_accordion_enabled', false );
 	$wrapper_attrs   = get_block_wrapper_attributes(
 		array(
 			'class' => implode( ' ', $wrapper_classes ),
 			'style' => $wrapper_style,
 		)
 	);
-	$has_wrapper     = ! empty( $class_name ) || $wrapper_enabled || $attributes['accordion'] || $attributes['wrapper'] || $box_style_enabled;
-	$pre_html        = $has_wrapper ? '<div role="navigation" aria-label="' . esc_attr__( 'Table of Contents', 'simpletoc' ) . '" ' . $wrapper_attrs . '>' : '';
-	$post_html       = $has_wrapper ? '</div>' : '';
+	$pre_html        = '<div role="navigation" aria-label="' . esc_attr__( 'Table of Contents', 'simpletoc' ) . '" ' . $wrapper_attrs . '>';
+	$post_html       = '</div>';
 
 	$post   = get_post();
 	$blocks = ! is_null( $post ) && ! is_null( $post->post_content ) ? parse_blocks( $post->post_content ) : '';
@@ -287,15 +297,15 @@ function render_callback_simpletoc( $attributes ) {
 	$toc_html       = generate_toc( $headings_clean, $attributes );
 
 	if ( empty( $blocks ) ) {
-		return get_empty_blocks_message( $is_backend, $attributes, $title_level, $alignclass, $title_text, __( 'No blocks found.', 'simpletoc' ), __( 'Save or update post first.', 'simpletoc' ), $wrapper_attrs, $has_wrapper );
+		return get_empty_blocks_message( $is_backend, $attributes, $title_level, $alignclass, $title_text, __( 'No blocks found.', 'simpletoc' ), __( 'Save or update post first.', 'simpletoc' ), $wrapper_attrs );
 	}
 
 	if ( empty( $headings_clean ) ) {
-		return get_empty_blocks_message( $is_backend, $attributes, $title_level, $alignclass, $title_text, __( 'No headings found.', 'simpletoc' ), __( 'Save or update post first.', 'simpletoc' ), $wrapper_attrs, $has_wrapper );
+		return get_empty_blocks_message( $is_backend, $attributes, $title_level, $alignclass, $title_text, __( 'No headings found.', 'simpletoc' ), __( 'Save or update post first.', 'simpletoc' ), $wrapper_attrs );
 	}
 
 	if ( empty( $toc_html ) ) {
-		return get_empty_blocks_message( $is_backend, $attributes, $title_level, $alignclass, $title_text, __( 'No headings found.', 'simpletoc' ), __( 'Check minimal and maximum level block settings.', 'simpletoc' ), $wrapper_attrs, $has_wrapper );
+		return get_empty_blocks_message( $is_backend, $attributes, $title_level, $alignclass, $title_text, __( 'No headings found.', 'simpletoc' ), __( 'Check minimal and maximum level block settings.', 'simpletoc' ), $wrapper_attrs );
 	}
 
 	return $pre_html . $toc_html . $post_html;
@@ -311,25 +321,18 @@ function render_callback_simpletoc( $attributes ) {
  * @param string $title_text    The text for the Table of Contents title.
  * @param string $warning_text1 The first part of the warning message to be displayed.
  * @param string $warning_text2 The second part of the warning message to be displayed.
- * @param string $wrapper_attrs Wrapper attributes for the optional block wrapper.
- * @param bool   $has_wrapper   Indicates if the wrapper should be rendered.
+ * @param string $wrapper_attrs Block wrapper attributes.
  *
  * @return string The HTML output for the empty blocks message.
  */
-function get_empty_blocks_message( $is_backend, $attributes, $title_level, $alignclass, $title_text, $warning_text1, $warning_text2, $wrapper_attrs = '', $has_wrapper = false ) {
+function get_empty_blocks_message( $is_backend, $attributes, $title_level, $alignclass, $title_text, $warning_text1, $warning_text2, $wrapper_attrs = '' ) {
 	$html = '';
 
 	if ( $is_backend ) {
-		if ( $has_wrapper ) {
-			$html .= '<div role="navigation" aria-label="' . esc_attr__( 'Table of Contents', 'simpletoc' ) . '" ' . $wrapper_attrs . '>';
-		}
-
+		$html .= '<div role="navigation" aria-label="' . esc_attr__( 'Table of Contents', 'simpletoc' ) . '" ' . $wrapper_attrs . '>';
 		$html .= sprintf( '<h%d class="%s">%s</h%d>', $title_level, esc_attr( trim( 'simpletoc-title ' . $alignclass ) ), $title_text, $title_level );
 		$html .= sprintf( '<p class="components-notice is-warning %s">%s %s</p>', esc_attr( $alignclass ), esc_html( $warning_text1 ), esc_html( $warning_text2 ) );
-
-		if ( $has_wrapper ) {
-			$html .= '</div>';
-		}
+		$html .= '</div>';
 	}
 
 	return $html;
@@ -480,10 +483,9 @@ function simpletoc_sanitize_string( $string_to_sanitize ) {
 	// remove umlauts and accents.
 	$string_without_accents = remove_accents( $html_wo_nbs );
 	// Sanitizes a title, replacing whitespace and a few other characters with dashes.
-	$sanitized_string = sanitize_title_with_dashes( $string_without_accents );
-	// Encode for use in an url.
-	$urlencoded = rawurlencode( $sanitized_string );
-	return $urlencoded;
+	// Already returns a URL-safe, percent-encoded slug for non-ASCII input, so no
+	// further rawurlencode() is needed (that would double-encode the string).
+	return sanitize_title_with_dashes( $string_without_accents );
 }
 
 /**
@@ -971,7 +973,6 @@ function add_accordion_start( $html, $attributes, $itemcount, $alignclass ) {
 		}
 
 		$html = "<$title_tag class=\"$html_class\">$title_text</$title_tag>\n";
-                $title_text = $html = "";
 	}
 
 	// If there are no items in the table of contents, return an empty string.

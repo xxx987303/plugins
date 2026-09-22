@@ -8,6 +8,15 @@
 namespace MToensing\SimpleTOC;
 
 /**
+ * Whether scroll highlighting is enforced globally.
+ *
+ * @return bool
+ */
+function simpletoc_scroll_spy_enabled() {
+	return (bool) apply_filters( 'simpletoc_scroll_spy_enabled', (bool) get_option( 'simpletoc_scroll_spy_enabled', false ) );
+}
+
+/**
  * Add SimpleTOC global settings page.
  */
 function simpletoc_add_settings_page() {
@@ -48,16 +57,11 @@ function simpletoc_settings_page() {
  */
 function simpletoc_register_settings() {
 	// Register settings and filters for existing features.
-	$wrapper_enabled_filter       = apply_filters( 'simpletoc_wrapper_enabled', null );
 	$accordion_enabled_filter     = apply_filters( 'simpletoc_accordion_enabled', null );
 	$smooth_enabled_filter        = apply_filters( 'simpletoc_smooth_enabled', null );
 	$absolute_urls_enabled_filter = apply_filters( 'simpletoc_absolute_urls_enabled', null );
 	$autoupdate_enabled_filter    = apply_filters( 'simpletoc_autoupdate_enabled', null );
 	$box_style_enabled_filter     = apply_filters( 'simpletoc_box_style_enabled', null );
-
-	if ( null === $wrapper_enabled_filter ) {
-		register_setting( 'simpletoc_settings', 'simpletoc_wrapper_enabled' );
-	}
 
 	if ( null === $accordion_enabled_filter ) {
 		register_setting( 'simpletoc_settings', 'simpletoc_accordion_enabled' );
@@ -79,6 +83,18 @@ function simpletoc_register_settings() {
 		register_setting( 'simpletoc_settings', 'simpletoc_box_style_enabled' );
 	}
 
+	if ( null === apply_filters( 'simpletoc_scroll_spy_enabled', null ) ) {
+		register_setting(
+			'simpletoc_settings',
+			'simpletoc_scroll_spy_enabled',
+			array(
+				'type'              => 'boolean',
+				'sanitize_callback' => 'rest_sanitize_boolean',
+				'default'           => false,
+			)
+		);
+	}
+
 	// Add settings sections and fields.
 	add_settings_section(
 		'simpletoc_wrapper_section',
@@ -91,14 +107,6 @@ function simpletoc_register_settings() {
 		'simpletoc_accordion_enabled',
 		esc_html__( 'Force accordion menu', 'simpletoc' ),
 		__NAMESPACE__ . '\simpletoc_accordion_enabled_callback',
-		'simpletoc',
-		'simpletoc_wrapper_section'
-	);
-
-	add_settings_field(
-		'simpletoc_wrapper_enabled',
-		esc_html__( 'Force wrapper div', 'simpletoc' ),
-		__NAMESPACE__ . '\simpletoc_wrapper_enabled_callback',
 		'simpletoc',
 		'simpletoc_wrapper_section'
 	);
@@ -129,6 +137,14 @@ function simpletoc_register_settings() {
 	);
 
 	add_settings_field(
+		'simpletoc_scroll_spy_enabled',
+		esc_html__( 'Force highlight current section', 'simpletoc' ),
+		__NAMESPACE__ . '\simpletoc_scroll_spy_enabled_callback',
+		'simpletoc',
+		'simpletoc_wrapper_section'
+	);
+
+	add_settings_field(
 		'simpletoc_box_style_enabled',
 		esc_html__( 'Force box style', 'simpletoc' ),
 		__NAMESPACE__ . '\simpletoc_box_style_enabled_callback',
@@ -153,30 +169,12 @@ function simpletoc_wrapper_section_callback() {
 }
 
 /**
- * SimpleTOC wrapper enabled callback.
- */
-function simpletoc_wrapper_enabled_callback() {
-	$wrapper_enabled = get_option( 'simpletoc_wrapper_enabled', false );
-
-	if ( has_filter( 'simpletoc_wrapper_enabled' ) ) {
-		echo '<input type="checkbox" name="simpletoc_wrapper_enabled" id="simpletoc_wrapper_enabled" value="1" checked="checked" disabled="disabled" />';
-		echo '<label for="simpletoc_wrapper_enabled" class="description">' . esc_html__( 'Setting controlled by "simpletoc_wrapper_enabled" filter. Remove filter to adjust setting.', 'simpletoc' ) . '</label>';
-	} else {
-		echo '<input type="checkbox" name="simpletoc_wrapper_enabled" id="simpletoc_wrapper_enabled" value="1" ' . checked( 1, $wrapper_enabled, false ) . ' />';
-		echo '<label for="simpletoc_wrapper_enabled" class="description">' . esc_html__( 'Additionally adds the role "navigation" and ARIA attributes.', 'simpletoc' ) . '</label>';
-	}
-}
-
-/**
  * SimpleTOC accordion enabled callback.
  */
 function simpletoc_accordion_enabled_callback() {
 	$accordion_enabled = get_option( 'simpletoc_accordion_enabled', false );
-	if ( $accordion_enabled ) {
-		update_option( 'simpletoc_wrapper_enabled', true );
-	}
 	echo '<input type="checkbox" name="simpletoc_accordion_enabled" id="simpletoc_accordion_enabled" value="1" ' . checked( 1, $accordion_enabled, false ) . ' />';
-	echo '<label for="simpletoc_accordion_enabled" class="description">' . esc_html__( 'Adds minimal JavaScript and css styles.', 'simpletoc' ) . ' <strong>' . esc_html__( 'Notice:', 'simpletoc' ) . '</strong> ' . esc_html__( 'This will automatically enable the wrapper div.', 'simpletoc' ) . '</label>';
+	echo '<label for="simpletoc_accordion_enabled" class="description">' . esc_html__( 'Adds minimal JavaScript and css styles.', 'simpletoc' ) . '</label>';
 }
 
 /**
@@ -217,6 +215,18 @@ function simpletoc_box_style_enabled_callback() {
 		echo '<label for="simpletoc_box_style_enabled" class="description">' . esc_html__( 'Setting controlled by "simpletoc_box_style_enabled" filter. Remove filter to adjust setting.', 'simpletoc' ) . '</label>';
 	} else {
 		echo '<input type="checkbox" name="simpletoc_box_style_enabled" id="simpletoc_box_style_enabled" value="1" ' . checked( 1, $box_style_enabled, false ) . ' />';
-		echo '<label for="simpletoc_box_style_enabled" class="description">' . esc_html__( 'Enables the box style for all SimpleTOC blocks with the default gray background. Wrapper markup is added automatically.', 'simpletoc' ) . '</label>';
+		echo '<label for="simpletoc_box_style_enabled" class="description">' . esc_html__( 'Applies the Box style with the default gray background to all SimpleTOC blocks.', 'simpletoc' ) . '</label>';
+	}
+}
+
+/**
+ * Scroll highlighting setting.
+ */
+function simpletoc_scroll_spy_enabled_callback() {
+	$controlled = null !== apply_filters( 'simpletoc_scroll_spy_enabled', null );
+	echo '<input type="checkbox" name="simpletoc_scroll_spy_enabled" id="simpletoc_scroll_spy_enabled" value="1" ' . checked( true, simpletoc_scroll_spy_enabled(), false ) . disabled( $controlled, true, false ) . ' />';
+	echo '<label for="simpletoc_scroll_spy_enabled" class="description">' . esc_html__( 'Underlines the current section link in all SimpleTOC blocks in supported browsers. No JavaScript fallback.', 'simpletoc' ) . '</label>';
+	if ( $controlled ) {
+		echo '<p class="description">' . esc_html__( 'Setting controlled by the simpletoc_scroll_spy_enabled filter.', 'simpletoc' ) . '</p>';
 	}
 }
