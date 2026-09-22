@@ -25,7 +25,7 @@ if (false) {
 	
 	$total_visits = wddb->get_var("SELECT COUNT(*) FROM ".WDvisits);
 	$user_visits  = wddb->get_results("SELECT user_id, COUNT(*) as visits FROM ".WDvisits." WHERE user_id IS NOT NULL GROUP BY user_id");
-?>    
+?>
 <div class="wrap">
  <h1>Visitor Statistics</h1>
  <p>Total Visits: <?php echo $total_visits;?></p>

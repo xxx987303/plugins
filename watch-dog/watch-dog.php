@@ -1,6 +1,6 @@
 <?php
 /*'
-   Plugin Name: Simple Watch Dog
+   Plugin Name: Watch Dog
    Description: User activity tracker.
    Version: 2.0
    Author: YB
@@ -8,6 +8,8 @@
 
 // Prevent direct access to the file
 //if (!defined('ABSPATH')) exit;
+
+if (function_exists('WD_message')) WD_message(__file__);
 
 // Monitor or not the admin entries?
 define("WD_SKIP_ADMIN", PRODUCTION_MODE);

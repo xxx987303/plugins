@@ -1,13 +1,16 @@
 <?php
-
+/**
+ * WP 
+ */
 require_once __dir__ . '/functions_common.php';
 
 // Set CLI_MODE
 if (!defined('CLI_MODE')) define('CLI_MODE', empty($_SERVER['HTTP_HOST']));
 
 // Localhost might look different...
-define('LOCALHOSTs', ['127.0.0.1', '::1', 'localhost']);
-if (function_exists('wp_enqueue_style')) wp_enqueue_style ('charts-css', get_stylesheet_directory_uri() . '/photoswipe/photoswipe.css');
+if (!defined('LOCALHOSTs'))    define('LOCALHOSTs', ['127.0.0.1', '::1', 'localhost']);
+
+//if (function_exists('wp_enqueue_style')) wp_enqueue_style('charts-css', get_stylesheet_directory_uri() . '/photoswipe/photoswipe.css');
 
 /**
  * Fix the WP "feature" when it blindly adds quotes to SQL
@@ -24,7 +27,7 @@ function WD_query_fix( $sql0 ) {
     }
     return $sql;
 }
-if (!CLI_MODE) add_filter( 'query', 'WD_query_fix' );
+if (!CLI_MODE && function_exists('add_filter')) add_filter( 'query', 'WD_query_fix' );
 
 /**
  */
@@ -45,7 +48,7 @@ function WD_user_not_monitored($r) {
     if     (isset($r->user_login)) {$arg1 = 'login'; $arg2 = $r->user_login; }
     elseif (isset($r->r_user_id))  {$arg1 = 'id';    $arg2 = $r->r_user_id; }
     elseif (isset($r->user_id))    {$arg1 = 'id';    $arg2 = $r->user_id; }
-    else   die("Please add argument " . joinX($r)."\n"); 
+    else   abortIt("Please add argument " . joinX($r)."\n"); 
     $not_monitored = PRODUCTION_MODE && WD_SKIP_ADMIN && ($arg2 == 1 || $arg2=='yb');
     WD_message("Not monitored ".$arg2." - ".var_export($not_monitored,true));
     return $not_monitored;

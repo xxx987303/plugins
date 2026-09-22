@@ -1,0 +1,4 @@
+<?php
+/**
+ * ProcessWire statistics page -->
+ */

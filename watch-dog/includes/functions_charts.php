@@ -3,32 +3,43 @@
  * Watchdog charts
  */
 
-$notLocal = (PRODUCTION_MODE ? ' remote NOT IN ("' . implode('","', LOCALHOSTs) . '")' : ' 1');
-//define('MY_SITE', " uri REGEXP '".WD_HOME."/[a-zA-Z0-9]+/' AND NOT REGEXP '/[\?]/' AND $notLocal AND user_agent IS NOT NULL");
+if (!defined('PRODUCTION_MODE')) define('PRODUCTION_MODE', true);
+
+$notLocal = (PRODUCTION_MODE ? sprintf(' remote NOT IN ("%s")',join('","', LOCALHOSTs)) : ' 1');
 define('MY_SITE', " uri REGEXP '".WD_HOME."/([a-zA-Z0-9]+|55120-2|from-archive)/' AND user_id>0 AND $notLocal AND user_agent IS NOT NULL");
 define('VALID_URI', ['restor','restor_tmp','adb','adb_tmp']);
 
+WD_message(__file__);
+
 /*
  * Fire shortcodes
- */
-add_shortcode( 'ChartBrowsers','WD_shortcode_ChartBrowsers');
-add_shortcode( 'ChartUsers',   'WD_shortcode_ChartUsers');
-add_shortcode( 'ChartTimes',   'WD_shortcode_ChartTimes');
-add_shortcode( 'ChartPages',   'WD_shortcode_ChartPages');
-add_shortcode( 'ChartCC',      'WD_shortcode_ChartCC');
-add_shortcode( 'ChartOS',      'WD_shortcode_ChartOS');
+  */
+if (function_exists('add_shortcode')) {
+    add_shortcode( 'ChartBrowsers','WD_shortcode_ChartBrowsers');
+    add_shortcode( 'ChartUsers',   'WD_shortcode_ChartUsers');
+    add_shortcode( 'ChartTimes',   'WD_shortcode_ChartTimes');
+    add_shortcode( 'ChartPages',   'WD_shortcode_ChartPages');
+    add_shortcode( 'ChartCC',      'WD_shortcode_ChartCC');
+    add_shortcode( 'ChartOS',      'WD_shortcode_ChartOS');
+}
 
 /**
  *
  */
-function YB_envoce_amchart($shortcode, $atts, $argsCodes) {
+function YB_invoke_amchart($shortcode, $atts, $argsCodes) {
     global $dejaVu_amcharts, $chart_counter, $communicator;
     WD_message('entry');
     if (empty($atts)) WD_message("EMPTY ATTS shortcode=$shortcode argsCodes=".joinX($argsCodes));
     // Call JS
     $js = function($name) {
-      //wp_enqueue_script(my_slug($name,'amcharts-'), YB_get_template_file_uri("js/amcharts_5_$name.js"), []);
-	wp_enqueue_script(my_slug($name,'amcharts-'), plugin_dir_url(__FILE__) . "../js/amcharts_5_$name.js", []);
+	if (defined('PROCESSWIRE')){
+	    $scripts = new \ProcessWire\FilenameArray();
+	    $scripts->add($config->urls->templates . "scripts/amcharts_5_$name.js", []);
+	  //$styles  = new \ProcessWire\FilenameArray();
+	  //$styles->add($config->urls->templates . 'styles/main.css');
+	}else{
+	     wp_enqueue_script(my_slug($name,'amcharts-'),plugin_dir_url(__FILE__) . "../js/amcharts_5_$name.js", []);
+	}
     };
 	
     $x = $js('index') . $js('xy') . $js('percent') . $js("themes_Animated");
@@ -54,12 +65,30 @@ function YB_envoce_amchart($shortcode, $atts, $argsCodes) {
 	$reply = current_user_can('manage_options') ? "<p>No statistics available yet for $callingSequence</p>" : '';
     } else {
         // Communicate arguments to JS 
-	wp_enqueue_script('communicator', plugin_dir_url(__FILE__) . "../js/amcharts/communicator.js", ['jquery'], '1.0.0', true);
-        wp_localize_script('communicator', "args", $communicator);
+	if (defined('PROCESSWIRE')) {
+	    $scripts = new \ProcessWire\FilenameArray();
+	    $scripts->add($config->urls->templates . "scripts/amcharts/communicator.js", []);
+            // Load the executor
+	    // Set values (anywhere: template, module, hook)
+	    $config->js('myPlugin', [
+		'apiUrl'  => $page->url . 'api/',
+		'perPage' => 12,
+		'labels'  => [
+		    'loading' => __('Loading...'),
+		    'error'   => __('Something went wrong'),
+		],
+	    ]);
 
-        // Load the executor
-	wp_enqueue_script($shortcode, plugin_dir_url(__FILE__) . "../js/amcharts/$shortcode.js", ['jquery'], '1.0.0', true);
-         
+	    // Read everything back
+	    $data = $config->js(); // array	    // ???
+	    $scripts->add($config->urls->templates . "scripts/amcharts/$shortcode.js", []);
+	}else{
+	    wp_enqueue_script('communicator', plugin_dir_url(__FILE__) . "../js/amcharts/communicator.js", ['jquery'], '1.0.0', true);
+            wp_localize_script('communicator', "args", $communicator);
+            // Load the executor
+	    wp_enqueue_script($shortcode, plugin_dir_url(__FILE__) . "../js/amcharts/$shortcode.js", ['jquery'], '1.0.0', true);
+	}
+        
         $reply = "<div class='amchart_title'>".(empty($t=@$args['title'])?"":$t)."</div>\n"
              //. "<div class='chart_wrapper'>".(HIDE_CHART_TEST_DIV ? "" : "<p id='test$shortcode$ID'>$callingSequence</p>")
 	       . "<div class='chart_wrapper'>".(1 ||  HIDE_CHART_TEST_DIV  ? "" : "<p id='test$shortcode$chart_id'>$callingSequence</p>")
@@ -74,7 +103,7 @@ function YB_envoce_amchart($shortcode, $atts, $argsCodes) {
  */
 function WD_shortcode_ChartPages($atts, $content=null, $tag='' ) {
     WD_message('entry');
-    $reply = YB_envoce_amchart('ChartPages',
+    $reply = YB_invoke_amchart('ChartPages',
                           $atts,
                           ['k' => 'page',
                            'v' => 'value']);
@@ -86,7 +115,7 @@ function WD_shortcode_ChartPages($atts, $content=null, $tag='' ) {
  */
 function WD_shortcode_ChartTimes($atts, $content=null, $tag='' ) {
     WD_message('entry');
-    $reply = YB_envoce_amchart('ChartTimes',
+    $reply = YB_invoke_amchart('ChartTimes',
                           $atts,
                           ['k' => 'time',
                            'v' => 'value']);
@@ -99,7 +128,7 @@ function WD_shortcode_ChartTimes($atts, $content=null, $tag='' ) {
  */
 function WD_shortcode_ChartCC($atts, $content=null, $tag='' ) {
     WD_message('entry');
-    $reply = YB_envoce_amchart('ChartCC',
+    $reply = YB_invoke_amchart('ChartCC',
                           $atts,
                           ['k' => 'name',
                            'v' => 'countCC',
@@ -113,7 +142,7 @@ function WD_shortcode_ChartCC($atts, $content=null, $tag='' ) {
  */
 function WD_shortcode_ChartBrowsers($atts, $content=null, $tag='' ) {
     WD_message('entry');
-    $reply = YB_envoce_amchart('ChartBrowsers',
+    $reply = YB_invoke_amchart('ChartBrowsers',
                           $atts,
                           ['k' => 'browser',
                            'v' => 'value']);
@@ -126,7 +155,7 @@ function WD_shortcode_ChartBrowsers($atts, $content=null, $tag='' ) {
  */
 function WD_shortcode_ChartOS($atts, $content=null, $tag='' ) {
     WD_message('entry');
-    $reply = YB_envoce_amchart('ChartOS',
+    $reply = YB_invoke_amchart('ChartOS',
                           $atts,
                           ['k' => 'os',
                            'v' => 'value']);
@@ -140,7 +169,7 @@ function WD_shortcode_ChartOS($atts, $content=null, $tag='' ) {
 
 function WD_shortcode_ChartUsers($atts, $content=null, $tag='' ) {
     WD_message('entry');
-    $reply = YB_envoce_amchart('ChartUsers',
+    $reply = YB_invoke_amchart('ChartUsers',
                           $atts,
                           ['n' => 'name',
                            'v' => 'value',
@@ -263,15 +292,10 @@ function WD_get_data($type, $chart_id) {
 	global $notLocal;
 	$results = wddb->get_results($sql="SELECT $pivot,user_id,concat_ws('|',time,uri,$pivot) AS stamp,count(*) AS count ".
 					  " FROM wd_visits ".
-					  " LEFT JOIN wd_remotes ON remote=r_remote ".
-					  " WHERE user_id>0 AND ".MY_SITE." AND $notLocal AND remote != '46.252.8.1' ".
-					  " GROUP BY $pivot");
-	$results = wddb->get_results($sql="SELECT $pivot,user_id,concat_ws('|',time,uri,$pivot) AS stamp,count(*) AS count ".
-					  " FROM wd_visits ".
 					  ($pivot=='r_country' ? " LEFT JOIN wd_remotes ON remote=r_remote " : "").
 					  " WHERE user_id>0 AND ".MY_SITE." AND $notLocal AND remote != '46.252.8.1' ".
 					  " GROUP BY $pivot");
-	WD_message("getChartData($pivot) $sql)", "green");
+	WD_message($sql);
 	// Massage the reply, merge multiple answers (the snipped was provided by Claude AI)
 	$grouped = [];
 	foreach ($results as $item) {
@@ -292,7 +316,7 @@ function WD_get_data($type, $chart_id) {
     switch(preg_replace('/[0-9]*$/', '', $type)) {    
 
 	case 'ChartUsers':
-	    foreach(wddb->get_results($sql="SELECT user_id,count(*) AS visits  FROM wd_visits WHERE ".MY_SITE." GROUP BY  user_id") as $r){
+	    foreach(wddb->get_results("SELECT user_id,count(*) AS visits  FROM `wd_visits` WHERE ".MY_SITE." GROUP BY  user_id") as $r){
  		foreach($getChartData('user_id') as $counter=>$r) {
 		    if (WD_user_not_monitored($r)) continue;
                     $data["n$counter"] = ($login=WD_display_name($r->user_id,'user_login')); // ('id',$r->user_id)->user_login);
@@ -300,7 +324,7 @@ function WD_get_data($type, $chart_id) {
                     $data["i$counter"] = ['src' => YB_get_template_file_uri("photos/$login.png", true)];
 		}
 	    }
-	    WD_message($sql,'blue');
+	    //WD_message($sql);
             $logsTitle = sprintf("%s ÷ %s %s",
 				 $translator(date('j M Y',$gen->t_fr)), $translator(date('j M Y',$gen->t_to)),
 				 //$gen->total_visits, date('Y-m-d',$gen->t_fr), (date('Y-m-d',$gen->t_to)),

@@ -1,0 +1,5 @@
+        $results = wddb->get_results($sql="SELECT $pivot,user_id,concat_ws('|',time,uri,$pivot) AS stamp,count(*) AS count ".
+                                          " FROM wd_visits ".
+                                          " LEFT JOIN wd_remotes ON remote=r_remote ".
+                                          " WHERE user_id>0 AND ".MY_SITE." AND $notLocal AND remote != '46.252.8.1' ".
+                                          " GROUP BY $pivot");
